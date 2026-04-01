@@ -1,0 +1,119 @@
+diff --git a/src/Lean/Compiler/LCNF/ToSwiftIR.lean b/src/Lean/Compiler/LCNF/ToSwiftIR.lean
+index 8cb289cf46..b2383061e8 100644
+--- a/src/Lean/Compiler/LCNF/ToSwiftIR.lean
++++ b/src/Lean/Compiler/LCNF/ToSwiftIR.lean
+@@ -36,7 +36,7 @@ def debugDumpLCNF : Option String := none
+ 
+ /-- Lean typeclasses that map directly to Swift stdlib protocols. -/
+ private def isSafeClass (name : Name) : Bool :=
+-  name == ``BEq || name == ``Ord || name == `ToString
++  name == ``BEq || name == ``Ord || name == `ToString || name == ``Hashable
+ 
+ /-- Map a Lean typeclass name to its Swift stdlib protocol equivalent. -/
+ private def swiftProtocolName (name : Name) : Name :=
+@@ -809,6 +809,49 @@ private def collectInductives (localDecls : Array (Decl .pure))
+     | _ => pure ()
+   return result
+ 
++/-! ## Protocol conformance inference -/
++
++/-- Infer protocol conformances for emitted types from typeclass instances. -/
++private def collectConformances (localDecls : Array (Decl .pure))
++    (emittedTypes : Array Name) : TranslateM (Array SwiftDecl) := do
++  let env ← getEnv
++  let mut result : Array SwiftDecl := #[]
++  let mut seen : Array (Name × Name) := #[]  -- (typeName, className) dedup
++  for decl in localDecls do
++    if !isInstanceDecl decl.name then continue
++    -- Extract class name and concrete type from instance type
++    let (className, concreteTypeName) := match decl.type with
++      | .app (.const cn _) (.const tn _) => (cn, tn)
++      | .const cn _ => (cn, Name.anonymous)
++      | _ => (Name.anonymous, Name.anonymous)
++    if !isSafeClass className then continue
++    if concreteTypeName == Name.anonymous then continue
++    -- Only generate conformances for types we actually emit
++    if !emittedTypes.contains concreteTypeName then continue
++    -- Deduplicate
++    if seen.contains (concreteTypeName, className) then continue
++    seen := seen.push (concreteTypeName, className)
++    -- Build witness map from constructor fields
++    let mut witnessMap : Array (Name × Name) := #[]
++    if let some (.inductInfo ival) := env.find? className then
++      if let some ctorName := ival.ctors[0]? then
++        if let some (.ctorInfo cval) := env.find? ctorName then
++          let mut cur := cval.type
++          let mut skipCount := cval.numParams
++          while true do
++            match cur with
++            | .forallE fname _ cbody _ =>
++              if skipCount > 0 then
++                skipCount := skipCount - 1
++                cur := cbody.instantiate1 (mkConst ``lcErased)
++              else
++                witnessMap := witnessMap.push (fname, concreteTypeName ++ fname)
++                cur := cbody.instantiate1 (mkConst ``lcErased)
++            | _ => break
++    result := result.push (.conformance concreteTypeName #[]
++      (swiftProtocolName className) witnessMap)
++  return result
++
+ /-! ## Collect const references from LCNF code -/
+ 
+ /-- Collect all const names referenced in LCNF code (function calls). -/
+@@ -905,10 +948,11 @@ def buildModule (modName : Name) (localDecls : Array (Decl .pure))
+ 
+   -- Translate the surviving declarations
+   let inductiveDecls ← collectInductives localDecls
+-  -- Conformance generation disabled — runtime types already conform to
+-  -- Equatable, Comparable, Hashable, CustomStringConvertible.
+-  -- User-defined types can add conformances in the runtime package.
+-  let conformanceDecls : Array SwiftDecl := #[]
++  -- Infer protocol conformances from typeclass instances for emitted types
++  let emittedTypeNames := inductiveDecls.filterMap fun d => match d with
++    | .struct _ name _ _ _ | .enum _ name _ _ _ => some name
++    | _ => none
++  let conformanceDecls ← collectConformances localDecls emittedTypeNames
+   let mut funcDecls : Array SwiftDecl := #[]
+   let mut emittedSet : Array Name := #[]
+   for decl in localDecls do
+diff --git a/swift-runtime/Sources/LeanGenerated/Generated.swift b/swift-runtime/Sources/LeanGenerated/Generated.swift
+index aeb74aa370..130e9255ea 100644
+--- a/swift-runtime/Sources/LeanGenerated/Generated.swift
++++ b/swift-runtime/Sources/LeanGenerated/Generated.swift
+@@ -192,6 +192,18 @@ public struct IO_FileRight: @unchecked Sendable {
+   }
+ }
+ 
++extension IO_Error: CustomStringConvertible {
++  public var description: String { IO_Error_toString  (self) }
++}
++
++extension IO_TaskState: CustomStringConvertible {
++  public var description: String { IO_TaskState_toString  (self) }
++}
++
++extension IO_TaskState: Comparable {
++  public static func < (lhs: IO_TaskState, rhs: IO_TaskState) -> Bool { IO_TaskState_compare  (lhs, rhs) == .lt }
++}
++
+ public let UInt64_size: Nat = {
+   18446744073709551616
+ }()
+@@ -1623,6 +1635,14 @@ public func Array_compareLex<A>(_ cmp: @escaping (A, A) -> Ordering, _ `a₁`: A
+   return Array_compareLex_go(cmp, `a₁`, `a₂`, _x_1)
+ }
+ 
++public let instHashable: Hashable<()> = {
++  func _f_1() -> UInt64 {
++    let _x_3: UInt64 = fatalError("erased")
++    _x_3
++  }
++  return Hashable<()>(_f_1)
++}()
++
+ /// List.insertIdxTR
+ public extension List {
+   func insertIdxTR(_ n: Nat, _ a: A) -> List<A> {
+
+---staged---

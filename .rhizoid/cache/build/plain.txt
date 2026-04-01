@@ -1,0 +1,13 @@
+Building Swift package: LeanRuntime
+bash -c /usr/bin/swift build --disable-sandbox 2>&1
+event{type,detail}: error,"emit-module command failed with exit code 1 (use -v to see invocation)"
+event{type,detail}: error,"/Users/ch/Develop/lean4/swift-runtime/Sources/LeanGenerated/Generated.swift:1638: protocol 'Hashable' does not have primary associated types that can be constrained"
+event{type,detail}: error,"/Users/ch/Develop/lean4/swift-runtime/Sources/LeanGenerated/Generated.swift:196: cannot find 'IO_Error_toString' in scope"
+event{type,detail}: error,"/Users/ch/Develop/lean4/swift-runtime/Sources/LeanGenerated/Generated.swift:200: cannot find 'IO_TaskState_toString' in scope"
+event{type,detail}: error,"/Users/ch/Develop/lean4/swift-runtime/Sources/LeanGenerated/Generated.swift:204: cannot find 'IO_TaskState_compare' in scope"
+event{type,detail}: warning,"/Users/ch/Develop/lean4/swift-runtime/Sources/LeanGenerated/Generated.swift:1544: immutable value 'idx_3' was never used; consider replacing with '_' or removing it [#no-usage]"
+---
+status: failed
+summary:
+  errors: 5
+  warnings: 1
