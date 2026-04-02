@@ -1,8 +1,8 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 import PackageDescription
 let package = Package(
     name: "LeanRuntime",
-    platforms: [.macOS(.v15)],
+    platforms: [.macOS(.v26), .iOS(.v26)],
     products: [
         .library(name: "LeanRuntime", targets: ["LeanRuntime"]),
         .library(name: "LeanExterns", targets: ["LeanExterns"]),
