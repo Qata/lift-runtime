@@ -522,6 +522,7 @@ public func Std_Iter_toIterM<I, A>(_ iter: Std_Iter<I, A>) -> Std_IterM<I, A> {
 
 public struct String_Slice_Pos: @unchecked Sendable {
   public var raw: Nat
+  public var offset: Nat { raw }
   public var valid: Any
   public init(_ raw: Nat, _ valid: Any) { self.raw = raw; self.valid = valid }
 }
