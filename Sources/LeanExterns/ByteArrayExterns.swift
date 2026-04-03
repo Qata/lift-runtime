@@ -18,10 +18,7 @@ public func ByteArray_push(_ a___u64___internal__hyg_1: Array<UInt8>, _ a___u64_
   var a = a___u64___internal__hyg_1; a.append(a___u64___internal__hyg_2); return a
 }
 
-/// @[extern] ByteArray.empty
-public func ByteArray_empty() -> Array<UInt8> {
-  return []
-}
+// ByteArray_empty is generated as a global let — no extern needed
 
 /// @[extern] ByteArray.size
 public func ByteArray_size(_ a___u64___internal__hyg_1: Array<UInt8>) -> Nat {
