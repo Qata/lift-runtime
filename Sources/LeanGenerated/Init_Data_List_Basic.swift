@@ -11,7 +11,7 @@ import LeanExterns
 /// List.intersperseTR
 public extension List {
   func intersperseTR(_ sep: A) -> List<A> {
-    func _f_2(_ a: Any, _ r: List<A>) -> List<A> {
+    func _f_2(_ a: A, _ r: List<A>) -> List<A> {
       let _x_3: List<A> = .cons(a, r)
       return List<A>.cons(sep, _x_3)
     }
@@ -82,7 +82,7 @@ public extension List {
 /// List.instDecidableRelSubsetOfDecidableEq_src
 public extension List {
   func instDecidableRelSubsetOfDecidableEq_src(_ inst_1: @escaping (A, A) -> Decidable, _ x_3: List<A>) -> Decidable {
-    func _f_5(_ a: Any) -> Decidable {
+    func _f_5(_ a: A) -> Decidable {
       x_3.instDecidableMemOfLawfulBEq_src(a)
     }
     return self.decidableBAll(_f_5)
@@ -1009,7 +1009,7 @@ public extension List {
 /// List.nodupDecidable
 public extension List {
   func nodupDecidable(_ inst_1: @escaping (A, A) -> Decidable) -> Decidable {
-    func _f_2(_ a: Any, _ b: Any) -> Decidable {
+    func _f_2(_ a: A, _ b: A) -> Decidable {
       let _x_3: Decidable = inst_1(a, b)
       return instDecidableNot(_x_3)
     }

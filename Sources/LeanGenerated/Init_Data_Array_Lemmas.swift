@@ -28,7 +28,7 @@ public func Array_instDecidableExistsAndMemOfDecidablePred_src<A>(_ xs: Array<A>
 
 /// Array.toListRev
 @inline(__always) public func Array_toListRev<A>(_ xs: Array<A>) -> List<A> {
-  func _f_1(_ x1_2: List<A>, _ x2_3: Any) -> List<A> {
+  func _f_1(_ x1_2: List<A>, _ x2_3: A) -> List<A> {
     List<A>.cons(x2_3, x1_2)
   }
   let _x_5: List<A> = .`nil`

@@ -23,7 +23,7 @@ public extension List where A: Equatable {
 
 /// _private.src.Init.Data.List.Impl.0.List.setTR.go
 public func List_setTR_go<A>(_ l: List<A>, _ a: A, _ x_1: List<A>, _ x_2: Nat, _ x_3: Array<A>) -> List<A> {
-  func _f_4(_ x1_5: Any, _ x2_6: List<A>) -> List<A> {
+  func _f_4(_ x1_5: A, _ x2_6: List<A>) -> List<A> {
     List<A>.cons(x1_5, x2_6)
   }
   switch x_1 {
@@ -66,7 +66,7 @@ public extension List {
 
 /// _private.src.Init.Data.List.Impl.0.List.replaceTR.go
 public func List_replaceTR_go<A: Equatable>(_ l: List<A>, _ b: A, _ c: A, _ x_2: List<A>, _ x_3: Array<A>) -> List<A> {
-  func _f_4(_ x1_5: Any, _ x2_6: List<A>) -> List<A> {
+  func _f_4(_ x1_5: A, _ x2_6: List<A>) -> List<A> {
     List<A>.cons(x1_5, x2_6)
   }
   switch x_2 {
@@ -136,7 +136,7 @@ public extension List {
 
 /// _private.src.Init.Data.List.Impl.0.List.intercalateTR.go
 public func List_intercalateTR_go<A>(_ sep: Array<A>, _ x_1: List<A>, _ x_2: List<List<A>>, _ x_3: Array<A>) -> List<A> {
-  func _f_4(_ x1_5: Any, _ x2_6: List<A>) -> List<A> {
+  func _f_4(_ x1_5: A, _ x2_6: List<A>) -> List<A> {
     List<A>.cons(x1_5, x2_6)
   }
   switch x_2 {
@@ -187,7 +187,7 @@ public extension List {
 
 /// _private.src.Init.Data.List.Impl.0.List.erasePTR.go
 public func List_erasePTR_go<A>(_ p: @escaping (A) -> Bool, _ l: List<A>, _ x_1: List<A>, _ x_2: Array<A>) -> List<A> {
-  func _f_3(_ x1_4: Any, _ x2_5: List<A>) -> List<A> {
+  func _f_3(_ x1_4: A, _ x2_5: List<A>) -> List<A> {
     List<A>.cons(x1_4, x2_5)
   }
   switch x_1 {
@@ -217,7 +217,7 @@ public func List_erasePTR_go<A>(_ p: @escaping (A) -> Bool, _ l: List<A>, _ x_1:
 
 /// _private.src.Init.Data.List.Impl.0.List.eraseIdxTR.go
 public func List_eraseIdxTR_go<A>(_ l: List<A>, _ x_1: List<A>, _ x_2: Nat, _ x_3: Array<A>) -> List<A> {
-  func _f_4(_ x1_5: Any, _ x2_6: List<A>) -> List<A> {
+  func _f_4(_ x1_5: A, _ x2_6: List<A>) -> List<A> {
     List<A>.cons(x1_5, x2_6)
   }
   switch x_1 {
@@ -247,7 +247,7 @@ public func List_eraseIdxTR_go<A>(_ l: List<A>, _ x_1: List<A>, _ x_2: Nat, _ x_
 
 /// _private.src.Init.Data.List.Impl.0.List.eraseTR.go
 public func List_eraseTR_go<A: Equatable>(_ l: List<A>, _ a: A, _ x_2: List<A>, _ x_3: Array<A>) -> List<A> {
-  func _f_4(_ x1_5: Any, _ x2_6: List<A>) -> List<A> {
+  func _f_4(_ x1_5: A, _ x2_6: List<A>) -> List<A> {
     List<A>.cons(x1_5, x2_6)
   }
   switch x_2 {

@@ -43,7 +43,7 @@ public func Array_instDecidableEmpEq<A>(_ ys: Array<A>) -> Decidable {
 
 /// Array.instDecidableEqImpl
 public func Array_instDecidableEqImpl<A>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: Array<A>, _ ys: Array<A>) -> Decidable {
-  func _f_2(_ a: Any, _ b: Any) -> Bool {
+  func _f_2(_ a: A, _ b: A) -> Bool {
     let _x_3: Decidable = inst_1(a, b)
     return Decidable_decide(_x_3)
   }

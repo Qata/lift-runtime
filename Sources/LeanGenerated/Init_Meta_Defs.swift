@@ -10,7 +10,7 @@ import LeanExterns
 
 /// Array.getSepElems
 @inline(__always) public func Array_getSepElems<A>(_ `as`: Array<A>) -> Array<A> {
-  func _f_1(_ x1_2: Prod<Bool, Array<A>>, _ x2_3: Any) -> Prod<Bool, Array<A>> {
+  func _f_1(_ x1_2: Prod<Bool, Array<A>>, _ x2_3: A) -> Prod<Bool, Array<A>> {
     let fst_4: Bool = x1_2.fst
     let snd_5: Array<A> = x1_2.snd
     if fst_4 {

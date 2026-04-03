@@ -244,7 +244,7 @@ public func Array_allDiff<A: Equatable>(_ `as`: Array<A>) -> Bool {
 
 /// Array.appendList
 public func Array_appendList<A>(_ `as`: Array<A>, _ bs: List<A>) -> Array<A> {
-  func _f_1(_ xs: Array<A>, _ v: Any) -> Array<A> {
+  func _f_1(_ xs: Array<A>, _ v: A) -> Array<A> {
     Array_push(xs, v)
   }
   return List_foldl(_f_1, `as`, bs)
