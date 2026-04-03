@@ -378,7 +378,7 @@ public func instDecidableEqUInt8(_ a: UInt8, _ b: UInt8) -> Decidable { a == b ?
 
 public func Int_toNat(_ n: SignedNat) -> Nat { n.isNegative ? 0 : n.magnitude }
 public func Nat_cast(_ n: Nat) -> BitVec { BitVec(n) }
-public func Fin_modn(_ a: Fin, _ b: Nat) -> Fin { Fin(a.val % b) }
+public func Fin_modn(_ n: Nat, _ a: Fin, _ b: Nat) -> Fin { Fin(a.val % b) }
 public func UInt8_toFin(_ n: UInt8) -> Fin { Fin(Nat(UInt(n))) }
 public func UInt16_toFin(_ n: UInt16) -> Fin { Fin(Nat(UInt(n))) }
 public func UInt32_toFin(_ n: UInt32) -> Fin { Fin(Nat(UInt(n))) }
@@ -462,6 +462,13 @@ public func Array_toList<A>(_ `as`: Array<A>) -> List<A> {
 public func ByteArray_data(_ bs: Array<UInt8>) -> Array<UInt8> {
   bs
 }
+
+// MARK: - BitVec → UInt conversions
+
+extension UInt8 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
+extension UInt16 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
+extension UInt32 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
+extension UInt64 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 
 // MARK: - Array.toList extension
 
