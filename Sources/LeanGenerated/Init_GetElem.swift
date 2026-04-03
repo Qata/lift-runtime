@@ -11,16 +11,13 @@ import LeanExterns
 /// List.get?Internal
 public extension List {
   func `get?Internal`(_ x_2: Nat) -> A? {
-    switch self {
-    case .cons(let head_3, let tail_4):
-      if x_2 == 0 {
-        return A?.some(head_3)
-      } else {
-        let n_6: Nat = x_2 - 1
-        return tail_4.`get?Internal`(n_6)
-      }
-    default:
-      return nil
+    let head_3 = self.head_3
+    let tail_4 = self.tail_4
+    if x_2 == 0 {
+      return A?.some(head_3)
+    } else {
+      let n_6: Nat = x_2 - 1
+      return tail_4.`get?Internal`(n_6)
     }
   }
 }

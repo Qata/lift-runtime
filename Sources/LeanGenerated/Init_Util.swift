@@ -54,25 +54,17 @@ import LeanExterns
 public func ptrEqList<A>(_ x_1: List<A>, _ x_2: List<A>) -> Bool {
   switch x_1 {
   case .`nil`:
-    switch x_2 {
-    case .`nil`:
-      return true
-    default:
-      return false
-    }
+    return true
   case .cons(let head_5, let tail_6):
-    switch x_2 {
-    case .cons(let head_7, let tail_8):
-      let _x_9: UInt = ptrAddrUnsafe(head_5)
-      let _x_10: UInt = ptrAddrUnsafe(head_7)
-      let _x_12: Bool = _x_9 == _x_10
-      if _x_12 {
-        return ptrEqList(tail_6, tail_8)
-      } else {
-        return _x_12
-      }
-    default:
-      return false
+    let head_7 = x_2.head_7
+    let tail_8 = x_2.tail_8
+    let _x_9: UInt = ptrAddrUnsafe(head_5)
+    let _x_10: UInt = ptrAddrUnsafe(head_7)
+    let _x_12: Bool = _x_9 == _x_10
+    if _x_12 {
+      return ptrEqList(tail_6, tail_8)
+    } else {
+      return _x_12
     }
   default:
     fatalError("unreachable")

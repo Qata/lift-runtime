@@ -78,19 +78,11 @@ public extension Sum {
 public func Sum_instBEq_beq<A: Equatable, B: Equatable>(_ x_5: Sum<A, B>, _ x_6: Sum<A, B>) -> Bool {
   switch x_5 {
   case .inl(let val_7):
-    switch x_6 {
-    case .inl(let val_8):
-      return val_7 == val_8
-    default:
-      return false
-    }
+    let val_8 = x_6.val_8
+    return val_7 == val_8
   case .inr(let val_12):
-    switch x_6 {
-    case .inr(let val_13):
-      return val_12 == val_13
-    default:
-      return false
-    }
+    let val_13 = x_6.val_13
+    return val_12 == val_13
   default:
     fatalError("unreachable")
   }

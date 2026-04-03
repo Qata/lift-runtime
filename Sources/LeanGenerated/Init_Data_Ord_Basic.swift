@@ -43,12 +43,7 @@ public func Ordering_instDecidableForallOfDecidablePred(_ inst_1: @escaping (Ord
 /// Ordering.isGE
 public extension Ordering {
   var isGE: Bool {
-    switch self {
-    case .lt:
-      return false
-    default:
-      return true
-    }
+    return false
   }
 }
 
@@ -131,12 +126,7 @@ public extension Ordering {
 /// Ordering.isLE
 public extension Ordering {
   var isLE: Bool {
-    switch self {
-    case .gt:
-      return false
-    default:
-      return true
-    }
+    return false
   }
 }
 
@@ -147,12 +137,7 @@ public extension Ordering {
 /// Ordering.isLT
 public extension Ordering {
   var isLT: Bool {
-    switch self {
-    case .lt:
-      return true
-    default:
-      return false
-    }
+    return true
   }
 }
 
@@ -203,12 +188,7 @@ public func instDecidableEqOrdering(_ x_1: Ordering, _ y_2: Ordering) -> Decidab
 /// Ordering.isEq
 public extension Ordering {
   var isEq: Bool {
-    switch self {
-    case .eq:
-      return true
-    default:
-      return false
-    }
+    return true
   }
 }
 
@@ -219,12 +199,7 @@ public extension Ordering {
 /// Ordering.isNe
 public extension Ordering {
   var isNe: Bool {
-    switch self {
-    case .eq:
-      return false
-    default:
-      return true
-    }
+    return false
   }
 }
 
@@ -235,23 +210,13 @@ public extension Ordering {
 /// compareLex
 @inline(__always) public func compareLex<A, B>(_ `cmp₁`: @escaping (A, B) -> Ordering, _ `cmp₂`: @escaping (A, B) -> Ordering, _ a: A, _ b: B) -> Ordering {
   let _x_1: Ordering = `cmp₁`(a, b)
-  switch _x_1 {
-  case .eq:
-    return `cmp₂`(a, b)
-  default:
-    return _x_1
-  }
+  return `cmp₂`(a, b)
 }
 
 /// Ordering.isGT
 public extension Ordering {
   var isGT: Bool {
-    switch self {
-    case .gt:
-      return true
-    default:
-      return false
-    }
+    return true
   }
 }
 
@@ -264,24 +229,14 @@ public extension List {
   func compareLex(_ cmp: @escaping (A, A) -> Ordering, _ x_2: List<A>) -> Ordering {
     switch self {
     case .`nil`:
-      switch x_2 {
-      case .`nil`:
-        return Ordering.eq
-      default:
-        return Ordering.lt
-      }
+      return Ordering.eq
     case .cons(let head_5, let tail_6):
       switch x_2 {
       case .`nil`:
         return Ordering.gt
       case .cons(let head_8, let tail_9):
         let _x_10: Ordering = cmp(head_5, head_8)
-        switch _x_10 {
-        case .eq:
-          return tail_6.compareLex(cmp, tail_9)
-        default:
-          return _x_10
-        }
+        return tail_6.compareLex(cmp, tail_9)
       default:
         fatalError("unreachable")
       }
@@ -302,24 +257,13 @@ public let instInhabitedOrdering_default: Ordering = {
 /// instDecidableRelLt_src
 @inline(__always) public func instDecidableRelLt_src<A: Comparable>(_ a: A, _ b: A) -> Decidable {
   let _x_3: Ordering = Ord_compare(a, b)
-  switch _x_3 {
-  case .lt:
-    let _x_4: Bool = true
-    return decidable_of_bool(_x_4)
-  default:
-    let _x_6: Bool = false
-    return decidable_of_bool(_x_6)
-  }
+  let _x_4: Bool = true
+  return decidable_of_bool(_x_4)
 }
 
 /// instDecidableRelLe_src
 @inline(__always) public func instDecidableRelLe_src<A: Comparable>(_ x_2: A, _ x_3: A) -> Decidable {
   let _x_5: Ordering = Ord_compare(x_2, x_3)
-  switch _x_5 {
-  case .gt:
-    return Decidable.isFalse
-  default:
-    return Decidable.isTrue
-  }
+  return Decidable.isFalse
 }
 
