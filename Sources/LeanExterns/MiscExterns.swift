@@ -420,3 +420,53 @@ public func Array_mapMUnsafe_map<A, B>(_ f: @escaping (A) -> B, _ sz: UInt, _ i:
 public func Array_contains<A: Equatable>(_ `as`: Array<A>, _ a: A) -> Bool {
   `as`.contains(a)
 }
+
+// MARK: - Ord / comparison
+
+public func Ord_compare<A: Comparable>(_ a: A, _ b: A) -> Ordering {
+  if a < b { return .lt }
+  else if a == b { return .eq }
+  else { return .gt }
+}
+
+// MARK: - Decidable combinators
+
+public func exists_prop_decidable(_ d1: Decidable, _ d2: @escaping @autoclosure () -> Decidable) -> Decidable {
+  switch d1 {
+  case .isTrue: return .isTrue
+  case .isFalse:
+    switch d2() {
+    case .isTrue: return .isTrue
+    case .isFalse: return .isFalse
+    }
+  }
+}
+
+public func instDecidableNot(_ d: Decidable) -> Decidable {
+  switch d {
+  case .isTrue: return .isFalse
+  case .isFalse: return .isTrue
+  }
+}
+
+// MARK: - Array extensions
+
+public func Array_toList<A>(_ `as`: Array<A>) -> List<A> {
+  var result: List<A> = .nil
+  for i in stride(from: `as`.count - 1, through: 0, by: -1) {
+    result = .cons(`as`[i], result)
+  }
+  return result
+}
+
+public func ByteArray_data(_ bs: Array<UInt8>) -> Array<UInt8> {
+  bs
+}
+
+// MARK: - Array.toList extension
+
+extension Array {
+  public var toList: List<Element> {
+    Array_toList(self)
+  }
+}
