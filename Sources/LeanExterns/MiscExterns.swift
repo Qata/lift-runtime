@@ -586,6 +586,23 @@ public func String_Slice_Pos_prevn(_ pos: String_Slice_Pos, _ n: Nat) -> String_
   return String_Slice_Pos(newRaw, pos.valid)
 }
 
+// MARK: - String.mk (from List<Character>)
+
+extension String {
+  public init(_ chars: List<Character>) {
+    var result = ""
+    var cur = chars
+    while case .cons(let c, let tail) = cur {
+      result.append(c)
+      cur = tail
+    }
+    self = result
+  }
+  public init(_ bytes: Array<UInt8>) {
+    self = String(decoding: bytes, as: UTF8.self)
+  }
+}
+
 // MARK: - ByteArray.data (identity — ByteArray is already Array<UInt8>)
 
 extension Array where Element == UInt8 {
