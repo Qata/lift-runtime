@@ -74,7 +74,7 @@ public extension ByteArray_Iterator {
 }
 
 public let ByteArray_instInhabitedIterator_default: ByteArray_Iterator = {
-  let _x_1: Array<UInt8> = ByteArray_empty
+  let _x_1: Array<UInt8> = ByteArray_empty()
   let _x_2: Nat = 0
   return ByteArray_Iterator(_x_1, _x_2)
 }()
@@ -168,7 +168,7 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.extract
 public func ByteArray_extract(_ a: Array<UInt8>, _ b: Nat, _ e: Nat) -> Array<UInt8> {
-  let _x_1: Array<UInt8> = ByteArray_empty
+  let _x_1: Array<UInt8> = ByteArray_empty()
   let _x_2: Nat = 0
   let _x_3: Nat = e - b
   let _x_4: Bool = true
@@ -205,7 +205,7 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.instDecidableEq_src
 public func ByteArray_instDecidableEq_src(_ x_1: Array<UInt8>, _ x_2: Array<UInt8>) -> Decidable {
-  let _x_3: (UInt8, UInt8) -> Decidable = instDecidableEqUInt8
+  let _x_3: (UInt8, UInt8) -> Decidable = instDecidableEqUInt8()
   let _x_4: Array<UInt8> = ByteArray_data(x_1)
   let _x_5: Array<UInt8> = ByteArray_data(x_2)
   let _x_6: Decidable = Array_instDecidableEqImpl(_x_3, _x_4, _x_5)

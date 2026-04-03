@@ -35,9 +35,14 @@ public func Array_compareLex_go<A>(_ cmp: @escaping (A, A) -> Ordering, _ `a₁`
       let _x_5 = Array_getInternal(`a₁`, i)
       let _x_6 = Array_getInternal(`a₂`, i)
       let _x_7: Ordering = cmp(_x_5, _x_6)
-      let _x_8: Nat = 1
-      let _x_9: Nat = i + _x_8
-      return Array_compareLex_go(cmp, `a₁`, `a₂`, _x_9)
+      switch _x_7 {
+      case .eq:
+        let _x_8: Nat = 1
+        let _x_9: Nat = i + _x_8
+        return Array_compareLex_go(cmp, `a₁`, `a₂`, _x_9)
+      default:
+        return _x_7
+      }
     }
   }
 }

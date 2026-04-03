@@ -532,6 +532,58 @@ public struct Subtype<A>: @unchecked Sendable {
   public init(_ val: A) { self.val = val }
 }
 
+// MARK: - List operations
+
+public func List_foldl<A, B>(_ f: @escaping (B, A) -> B, _ init_: B, _ xs: List<A>) -> B {
+  var result = init_
+  var cur = xs
+  while case .cons(let head, let tail) = cur {
+    result = f(result, head)
+    cur = tail
+  }
+  return result
+}
+
+public func List_map<A, B>(_ f: @escaping (A) -> B, _ xs: List<A>) -> List<B> {
+  switch xs {
+  case .nil: return .nil
+  case .cons(let head, let tail): return .cons(f(head), List_map(f, tail))
+  }
+}
+
+public func decidable_of_bool(_ b: Bool) -> Decidable {
+  b ? .isTrue : .isFalse
+}
+
+public func Nat_decidableExistsLT(_ h: @escaping (Nat) -> Decidable, _ n: Nat) -> Decidable {
+  var i: Nat = 0
+  while i < n {
+    switch h(i) { case .isTrue: return .isTrue; case .isFalse: break }
+    i = i + 1
+  }
+  return .isFalse
+}
+
+public func `Nat_decidableExistsLT'`(_ h: @escaping (Nat) -> Decidable, _ n: Nat) -> Decidable {
+  Nat_decidableExistsLT(h, n)
+}
+
+public func Nat_decidableBallLT(_ h: @escaping (Nat) -> Decidable, _ n: Nat) -> Decidable {
+  var i: Nat = 0
+  while i < n {
+    switch h(i) { case .isFalse: return .isFalse; case .isTrue: break }
+    i = i + 1
+  }
+  return .isTrue
+}
+
+// MARK: - Std_Rxo_Iterator extensions
+
+extension Std_Rxo_Iterator where A == Nat {
+  public var next: Nat { pos + 1 }
+  public var upperBound: Nat { stop }
+}
+
 // MARK: - String.Slice.Pos operations
 
 public func String_Slice_Pos_prevn(_ pos: String_Slice_Pos, _ n: Nat) -> String_Slice_Pos {
