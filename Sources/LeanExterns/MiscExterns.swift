@@ -470,6 +470,38 @@ extension UInt16 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 extension UInt32 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 extension UInt64 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 
+// MARK: - String.Slice operations
+
+public func String_Slice_toString(_ s: String_Slice) -> String {
+  let start = s.str.utf8.index(s.str.startIndex, offsetBy: Int(UInt.of(s.start)))
+  let end = s.str.utf8.index(s.str.startIndex, offsetBy: Int(UInt.of(s.stop)))
+  return String(s.str[start..<end])
+}
+
+public func `String_Slice_toNat?`(_ s: String_Slice) -> Nat? {
+  if let n = UInt(String_Slice_toString(s)) { return Nat(n) }
+  return nil
+}
+
+public func `String_Slice_toNat!`(_ s: String_Slice) -> Nat {
+  `String_Slice_toNat?`(s) ?? 0
+}
+
+public func `String_Slice_toInt?`(_ s: String_Slice) -> SignedNat? {
+  if let n = Int(String_Slice_toString(s)) { return SignedNat(n) }
+  return nil
+}
+
+public func String_Slice_isInt(_ s: String_Slice) -> Bool {
+  `String_Slice_toInt?`(s) != nil
+}
+
+// MARK: - WellFounded
+
+public func `WellFounded_opaqueFix₃`<A, B, C>(_ f: @escaping (A, B, @escaping (A, B) -> C) -> C, _ a: A, _ b: B) -> C {
+  f(a, b) { a2, b2 in `WellFounded_opaqueFix₃`(f, a2, b2) }
+}
+
 // MARK: - ByteArray.data (identity — ByteArray is already Array<UInt8>)
 
 extension Array where Element == UInt8 {
