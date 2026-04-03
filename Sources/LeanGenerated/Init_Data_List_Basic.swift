@@ -227,7 +227,7 @@ public extension List {
 }
 
 /// List.eraseRepsBy.loop
-public func List_eraseRepsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _ x_1: A, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
+public func List_eraseRepsBy_loop<A: Equatable>(_ x_1: A, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
   switch x_2 {
   case .`nil`:
     let _x_4: List<A> = .cons(x_1, x_3)
@@ -235,10 +235,10 @@ public func List_eraseRepsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _
   case .cons(let head_6, let tail_7):
     let _x_8: Bool = r(x_1, head_6)
     if _x_8 {
-      return List_eraseRepsBy_loop(r, x_1, tail_7, x_3)
+      return List_eraseRepsBy_loop(x_1, tail_7, x_3)
     } else {
       let _x_9: List<A> = .cons(x_1, x_3)
-      return List_eraseRepsBy_loop(r, head_6, tail_7, _x_9)
+      return List_eraseRepsBy_loop(head_6, tail_7, _x_9)
     }
   default:
     fatalError("unreachable")
@@ -483,7 +483,7 @@ public extension List {
 
 /// List.lex
 public extension List where A: Equatable, A: Equatable {
-  func lex(_ `l₂`: List<A>, _ lt: @escaping (A, A) -> Bool) -> Bool {
+  func lex(_ `l₂`: List<A>) -> Bool {
     switch self {
     case .`nil`:
       switch `l₂` {
@@ -505,7 +505,7 @@ public extension List where A: Equatable, A: Equatable {
         } else {
           let _x_13: Bool = head_6 == head_9
           if _x_13 {
-            return tail_7.lex(tail_10, lt)
+            return tail_7.lex(tail_10)
           } else {
             return _x_13
           }
@@ -519,8 +519,8 @@ public extension List where A: Equatable, A: Equatable {
   }
 }
 
-@inline(__always) public func List_lex<A>(_ `l₁`: List<A>, _ `l₂`: List<A>, _ lt: @escaping (A, A) -> Bool) -> Bool {
-  `l₁`.lex(`l₂`, lt)
+@inline(__always) public func List_lex<A>(_ `l₁`: List<A>, _ `l₂`: List<A>) -> Bool {
+  `l₁`.lex(`l₂`)
 }
 
 /// List.intercalate
@@ -790,14 +790,14 @@ public extension List {
 
 /// List.eraseDupsBy
 public extension List where A: Equatable {
-  func eraseDupsBy(_ r: @escaping (A, A) -> Bool) -> List<A> {
+  var eraseDupsBy: List<A> {
     let _x_1: List<A> = .`nil`
-    return List_eraseDupsBy_loop(r, self, _x_1)
+    return List_eraseDupsBy_loop(self, _x_1)
   }
 }
 
-@inline(__always) public func List_eraseDupsBy<A>(_ r: @escaping (A, A) -> Bool, _ `as`: List<A>) -> List<A> {
-  `as`.eraseDupsBy(r)
+@inline(__always) public func List_eraseDupsBy<A>(_ `as`: List<A>) -> List<A> {
+  `as`.eraseDupsBy
 }
 
 /// List.tail?
@@ -989,21 +989,21 @@ public extension List {
 
 /// List.eraseRepsBy
 public extension List where A: Equatable {
-  func eraseRepsBy(_ r: @escaping (A, A) -> Bool) -> List<A> {
+  var eraseRepsBy: List<A> {
     switch self {
     case .`nil`:
       return self
     case .cons(let head_2, let tail_3):
       let _x_4: List<A> = .`nil`
-      return List_eraseRepsBy_loop(r, head_2, tail_3, _x_4)
+      return List_eraseRepsBy_loop(head_2, tail_3, _x_4)
     default:
       fatalError("unreachable")
     }
   }
 }
 
-@inline(__always) public func List_eraseRepsBy<A>(_ r: @escaping (A, A) -> Bool, _ x_1: List<A>) -> List<A> {
-  x_1.eraseRepsBy(r)
+@inline(__always) public func List_eraseRepsBy<A>(_ x_1: List<A>) -> List<A> {
+  x_1.eraseRepsBy
 }
 
 /// List.nodupDecidable
@@ -1325,7 +1325,7 @@ public extension List where A: Equatable {
 
 /// List.isEqv
 public extension List where A: Equatable {
-  func isEqv(_ x_2: List<A>, _ x_3: @escaping (A, A) -> Bool) -> Bool {
+  func isEqv(_ x_2: List<A>) -> Bool {
     switch self {
     case .`nil`:
       switch x_2 {
@@ -1343,7 +1343,7 @@ public extension List where A: Equatable {
       case .cons(let head_11, let tail_12):
         let _x_13: Bool = x_3(head_8, head_11)
         if _x_13 {
-          return tail_9.isEqv(tail_12, x_3)
+          return tail_9.isEqv(tail_12)
         } else {
           return _x_13
         }
@@ -1356,8 +1356,8 @@ public extension List where A: Equatable {
   }
 }
 
-@inline(__always) public func List_isEqv<A>(_ x_1: List<A>, _ x_2: List<A>, _ x_3: @escaping (A, A) -> Bool) -> Bool {
-  x_1.isEqv(x_2, x_3)
+@inline(__always) public func List_isEqv<A>(_ x_1: List<A>, _ x_2: List<A>) -> Bool {
+  x_1.isEqv(x_2)
 }
 
 /// List.replicate
@@ -1383,7 +1383,7 @@ public func List_range_loop(_ x_1: Nat, _ x_2: List<Nat>) -> List<Nat> {
 }
 
 /// List.splitBy.loop
-public func List_splitBy_loop<A: Equatable>(_ R: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: A, _ x_3: List<A>, _ x_4: List<List<A>>) -> List<List<A>> {
+public func List_splitBy_loop<A: Equatable>(_ x_1: List<A>, _ x_2: A, _ x_3: List<A>, _ x_4: List<List<A>>) -> List<List<A>> {
   switch x_1 {
   case .`nil`:
     let _x_5: List<A> = .cons(x_2, x_3)
@@ -1394,13 +1394,13 @@ public func List_splitBy_loop<A: Equatable>(_ R: @escaping (A, A) -> Bool, _ x_1
     let _x_11: Bool = R(x_2, head_9)
     if _x_11 {
       let _x_17: List<A> = .cons(x_2, x_3)
-      return List_splitBy_loop(R, tail_10, head_9, _x_17, x_4)
+      return List_splitBy_loop(tail_10, head_9, _x_17, x_4)
     } else {
       let _x_12: List<A> = .`nil`
       let _x_13: List<A> = .cons(x_2, x_3)
       let _x_14: List<A> = _x_13.reverse
       let _x_15: List<List<A>> = .cons(_x_14, x_4)
-      return List_splitBy_loop(R, tail_10, head_9, _x_12, _x_15)
+      return List_splitBy_loop(tail_10, head_9, _x_12, _x_15)
     }
   default:
     fatalError("unreachable")
@@ -1623,22 +1623,22 @@ public extension List {
 
 /// List.splitBy
 public extension List where A: Equatable {
-  func splitBy(_ R: @escaping (A, A) -> Bool) -> List<List<A>> {
+  var splitBy: List<List<A>> {
     switch self {
     case .`nil`:
       return List<List<A>>.`nil`
     case .cons(let head_3, let tail_4):
       let _x_5: List<A> = .`nil`
       let _x_6: List<List<A>> = .`nil`
-      return List_splitBy_loop(R, tail_4, head_3, _x_5, _x_6)
+      return List_splitBy_loop(tail_4, head_3, _x_5, _x_6)
     default:
       fatalError("unreachable")
     }
   }
 }
 
-@inline(__always) public func List_splitBy<A>(_ R: @escaping (A, A) -> Bool, _ x_1: List<A>) -> List<List<A>> {
-  x_1.splitBy(R)
+@inline(__always) public func List_splitBy<A>(_ x_1: List<A>) -> List<List<A>> {
+  x_1.splitBy
 }
 
 /// List.leftpadTR
@@ -1739,7 +1739,7 @@ public extension List {
 }
 
 /// List.eraseDupsBy.loop
-public func List_eraseDupsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: List<A>) -> List<A> {
+public func List_eraseDupsBy_loop<A: Equatable>(_ x_1: List<A>, _ x_2: List<A>) -> List<A> {
   switch x_1 {
   case .`nil`:
     return x_2.reverse
@@ -1747,10 +1747,10 @@ public func List_eraseDupsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _
     let _x_6: (A) -> Bool = r(head_4)
     let _x_7: Bool = x_2.any(_x_6)
     if _x_7 {
-      return List_eraseDupsBy_loop(r, tail_5, x_2)
+      return List_eraseDupsBy_loop(tail_5, x_2)
     } else {
       let _x_8: List<A> = .cons(head_4, x_2)
-      return List_eraseDupsBy_loop(r, tail_5, _x_8)
+      return List_eraseDupsBy_loop(tail_5, _x_8)
     }
   default:
     fatalError("unreachable")

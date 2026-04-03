@@ -9,7 +9,7 @@ import LeanRuntime
 import LeanExterns
 
 /// Array.lex
-public func Array_lex<A: Equatable & Equatable>(_ `as`: Array<A>, _ bs: Array<A>, _ lt: @escaping (A, A) -> Bool) -> Bool {
+public func Array_lex<A: Equatable & Equatable>(_ `as`: Array<A>, _ bs: Array<A>) -> Bool {
   let _x_2: Nat = 0
   let _x_3: Nat = Array_size(`as`)
   let _x_4: Nat = Array_size(bs)
