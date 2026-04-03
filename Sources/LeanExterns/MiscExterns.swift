@@ -348,21 +348,21 @@ public func Sum_isLeft<A, B>(_ x_1: Sum<A, B>) -> Bool {
 
 
 /// @[extern] Decidable.decide
-public func Decidable_decide<A>(_ d: Decidable<A>) -> Bool {
+public func Decidable_decide(_ d: Decidable) -> Bool {
   switch d { case .isTrue: return true; case .isFalse: return false }
 }
 
 /// @[extern] instDecidableEqNat
-public func instDecidableEqNat(_ a: Nat, _ b: Nat) -> Decidable<()> {
+public func instDecidableEqNat(_ a: Nat, _ b: Nat) -> Decidable {
   a == b ? .isTrue : .isFalse
 }
 
 /// @[extern] instDecidableEqString
-public func instDecidableEqString(_ a: String, _ b: String) -> Decidable<()> {
+public func instDecidableEqString(_ a: String, _ b: String) -> Decidable {
   a == b ? .isTrue : .isFalse
 }
 
 /// @[extern] instDecidableEqBool
-public func instDecidableEqBool(_ a: Bool, _ b: Bool) -> Decidable<()> {
+public func instDecidableEqBool(_ a: Bool, _ b: Bool) -> Decidable {
   a == b ? .isTrue : .isFalse
 }
