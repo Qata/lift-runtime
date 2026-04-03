@@ -12,10 +12,12 @@ import LeanExterns
 public struct Sigma<A>: @unchecked Sendable {
   let `β`: (Any) -> ()
   let fst: Any
+  let snd: Any
 
-  public init(_ `β`: @escaping (Any) -> (), _ fst: Any) {
+  public init(_ `β`: @escaping (Any) -> (), _ fst: Any, _ snd: Any) {
     self.`β` = `β`
     self.fst = fst
+    self.snd = snd
   }
 }
 
