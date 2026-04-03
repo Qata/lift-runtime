@@ -23,21 +23,27 @@ public struct Std_Format_SpaceResult: @unchecked Sendable {
 
 /// _private.src.Init.Data.Format.Basic.0.Std.Format.WorkGroup
 public struct Std_Format_WorkGroup: @unchecked Sendable {
-  let fla: List<Std_Format_WorkItem>
+  let fla: Any
+  let flb: Any
+  let items: List<Std_Format_WorkItem>
 
-  public init(_ fla: List<Std_Format_WorkItem>) {
+  public init(_ fla: Any, _ flb: Any, _ items: List<Std_Format_WorkItem>) {
     self.fla = fla
+    self.flb = flb
+    self.items = items
   }
 }
 
 /// _private.src.Init.Data.Format.Basic.0.Std.Format.WorkItem
 public struct Std_Format_WorkItem: @unchecked Sendable {
-  let f: SignedNat
-  let indent: Nat
+  let f: Any
+  let indent: SignedNat
+  let activeTags: Nat
 
-  public init(_ f: SignedNat, _ indent: Nat) {
+  public init(_ f: Any, _ indent: SignedNat, _ activeTags: Nat) {
     self.f = f
     self.indent = indent
+    self.activeTags = activeTags
   }
 }
 
