@@ -10,13 +10,13 @@ import LeanExterns
 
 /// FloatSpec
 public struct FloatSpec: @unchecked Sendable {
-  let float: ()
-  let val: ()
-  let lt: ()
+  let float: Any
+  let val: Any
+  let lt: Any
   let le: Any
   let decLt: Any
 
-  public init(_ float: (), _ val: (), _ lt: (), _ le: Any, _ decLt: Any) {
+  public init(_ float: Any, _ val: Any, _ lt: Any, _ le: Any, _ decLt: Any) {
     self.float = float
     self.val = val
     self.lt = lt
