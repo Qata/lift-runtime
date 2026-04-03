@@ -3,7 +3,7 @@
 
 /// Lean's Decidable type — essentially a Bool carrying a proof.
 /// Since proofs are erased in Swift, this is just true/false.
-public enum Decidable<A>: @unchecked Sendable {
+public enum Decidable: @unchecked Sendable {
   case isFalse
   case isTrue
 }

@@ -1,0 +1,10 @@
+// Swift v3 compiler output
+// Module: src.Init.Data.List.Int.Sum
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
+import LeanRuntime
+import LeanExterns
+

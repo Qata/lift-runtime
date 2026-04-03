@@ -502,6 +502,39 @@ public func `WellFounded_opaqueFix₃`<A, B, C>(_ f: @escaping (A, B, @escaping 
   f(a, b) { a2, b2 in `WellFounded_opaqueFix₃`(f, a2, b2) }
 }
 
+// MARK: - Iterator types
+
+public struct Std_Rxo_Iterator<A>: @unchecked Sendable {
+  public var pos: A
+  public var stop: A
+  public init(_ pos: A, _ stop: A) { self.pos = pos; self.stop = stop }
+}
+
+public struct Std_Iter<I, A>: @unchecked Sendable {
+  public var inner: I
+  public init(_ inner: I) { self.inner = inner }
+}
+
+public struct Std_IterM<I, A>: @unchecked Sendable {
+  public var internalState: I
+  public init(_ internalState: I) { self.internalState = internalState }
+}
+
+public func Std_Iter_toIterM<I, A>(_ iter: Std_Iter<I, A>) -> Std_IterM<I, A> {
+  Std_IterM<I, A>(iter.inner)
+}
+
+public struct String_Slice_Pos: @unchecked Sendable {
+  public var raw: Nat
+  public var valid: Any
+  public init(_ raw: Nat, _ valid: Any) { self.raw = raw; self.valid = valid }
+}
+
+public struct Subtype<A>: @unchecked Sendable {
+  public var val: A
+  public init(_ val: A) { self.val = val }
+}
+
 // MARK: - ByteArray.data (identity — ByteArray is already Array<UInt8>)
 
 extension Array where Element == UInt8 {
