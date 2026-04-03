@@ -11,8 +11,8 @@ import LeanExterns
 /// Nat.lcm
 public extension Nat {
   func lcm(_ n: Nat) -> Nat {
-    let _x_1: Nat = self * n
-    let _x_2: Nat = Nat_gcd(self, n)
+    let _x_1 = self * n
+    let _x_2 = Nat_gcd(self, n)
     return _x_1 / _x_2
   }
 }

@@ -11,7 +11,7 @@ import LeanExterns
 /// UInt32.ofNatTruncate
 public func UInt32_ofNatTruncate(_ n: Nat) -> UInt32 {
   let _x_1: Nat = 4294967296
-  let _x_2: Bool = n < _x_1
+  let _x_2 = n < _x_1
   if _x_2 {
     return UInt32_ofNatLT(n)
   } else {
@@ -23,7 +23,7 @@ public func UInt32_ofNatTruncate(_ n: Nat) -> UInt32 {
 /// UInt8.ofNatTruncate
 public func UInt8_ofNatTruncate(_ n: Nat) -> UInt8 {
   let _x_1: Nat = 256
-  let _x_2: Bool = n < _x_1
+  let _x_2 = n < _x_1
   if _x_2 {
     return UInt8_ofNatLT(n)
   } else {
@@ -35,7 +35,7 @@ public func UInt8_ofNatTruncate(_ n: Nat) -> UInt8 {
 /// UInt64.ofNatTruncate
 public func UInt64_ofNatTruncate(_ n: Nat) -> UInt64 {
   let _x_1: Nat = 18446744073709551616
-  let _x_2: Bool = n < _x_1
+  let _x_2 = n < _x_1
   if _x_2 {
     return UInt64_ofNatLT(n)
   } else {
@@ -47,7 +47,7 @@ public func UInt64_ofNatTruncate(_ n: Nat) -> UInt64 {
 /// UInt16.ofNatTruncate
 public func UInt16_ofNatTruncate(_ n: Nat) -> UInt16 {
   let _x_1: Nat = 65536
-  let _x_2: Bool = n < _x_1
+  let _x_2 = n < _x_1
   if _x_2 {
     return UInt16_ofNatLT(n)
   } else {

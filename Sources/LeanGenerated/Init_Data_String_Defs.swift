@@ -35,8 +35,8 @@ public func String_intercalate_go(_ acc: String, _ s: String, _ x_1: List<String
   case .`nil`:
     return acc
   case .cons(let head_2, let tail_3):
-    let _x_4: String = acc + s
-    let _x_5: String = _x_4 + head_2
+    let _x_4 = acc + s
+    let _x_5 = _x_4 + head_2
     return String_intercalate_go(_x_5, s, tail_3)
   default:
     fatalError("unreachable")
@@ -45,7 +45,7 @@ public func String_intercalate_go(_ acc: String, _ s: String, _ x_1: List<String
 
 /// String.isEmpty
 @inline(__always) public func String_isEmpty(_ s: String) -> Bool {
-  let _x_1: Nat = String_utf8ByteSize(s)
+  let _x_1 = String_utf8ByteSize(s)
   let _x_2: Nat = 0
   return _x_1 == _x_2
 }

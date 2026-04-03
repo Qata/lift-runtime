@@ -457,6 +457,387 @@ struct NatExtendedTests {
   }
 }
 
+// MARK: - Generated Init module functions (runtime correctness)
+
+@Suite("Generated Array functions")
+struct GeneratedArrayTests {
+  @Test func singleton() {
+    let a: Array<Nat> = Array_singleton(42)
+    #expect(Array_size(a) == 1)
+    #expect(Array_getInternal(a, 0) == 42)
+  }
+  @Test func isEmpty() {
+    let empty: Array<Nat> = Array_mkEmpty(0)
+    #expect(Array_isEmpty(empty))
+    #expect(!Array_isEmpty(Array_singleton(1 as Nat)))
+  }
+  @Test func take() {
+    let a: Array<Nat> = [1, 2, 3, 4, 5]
+    let t = Array_take(a, 3)
+    #expect(Array_size(t) == 3)
+    #expect(Array_getInternal(t, 0) == 1)
+    #expect(Array_getInternal(t, 2) == 3)
+  }
+  @Test func drop() {
+    let a: Array<Nat> = [1, 2, 3, 4, 5]
+    let d = Array_drop(a, 2)
+    #expect(Array_size(d) == 3)
+    #expect(Array_getInternal(d, 0) == 3)
+  }
+  @Test func back() {
+    let a: Array<Nat> = [10, 20, 30]
+    #expect(Array_back(a) == 30)
+  }
+  @Test func backOpt() {
+    let a: Array<Nat> = [10, 20, 30]
+    #expect(`Array_back?`(a) == .some(30))
+    let empty: Array<Nat> = []
+    #expect(`Array_back?`(empty) == nil)
+  }
+  @Test func eraseIdx() {
+    let a: Array<Nat> = [1, 2, 3, 4]
+    let r = Array_eraseIdx(a, 1)
+    #expect(Array_size(r) == 3)
+    #expect(Array_getInternal(r, 0) == 1)
+    #expect(Array_getInternal(r, 1) == 3)
+  }
+  @Test func modify() {
+    let a: Array<Nat> = [10, 20, 30]
+    let m = Array_modify(a, 1, { (x: Nat) in x + 5 })
+    #expect(Array_getInternal(m, 1) == 25)
+    #expect(Array_getInternal(m, 0) == 10)
+  }
+  @Test func modifyOp() {
+    let a: Array<Nat> = [10, 20, 30]
+    let m = Array_modifyOp(a, 1, { (x: Nat) in x * 2 })
+    #expect(Array_getInternal(m, 1) == 40)
+  }
+  @Test func shrink() {
+    let a: Array<Nat> = [1, 2, 3, 4, 5]
+    let s = Array_shrink(a, 3)
+    #expect(Array_size(s) == 3)
+  }
+  @Test func findIdx() {
+    let a: Array<Nat> = [10, 20, 30, 40]
+    let idx = Array_findIdx({ (x: Nat) in x == 30 }, a)
+    #expect(idx == 2)
+    let notFound = Array_findIdx({ (x: Nat) in x == 99 }, a)
+    #expect(notFound == 4) // returns size when not found
+  }
+  @Test func takeWhile() {
+    let a: Array<Nat> = [1, 2, 3, 10, 20]
+    let t = Array_takeWhile({ (x: Nat) in x < 5 }, a)
+    #expect(Array_size(t) == 3)
+  }
+  @Test func allDiff() {
+    let a: Array<Nat> = [1, 2, 3, 4]
+    #expect(Array_allDiff(a))
+    let b: Array<Nat> = [1, 2, 3, 2]
+    #expect(!Array_allDiff(b))
+  }
+  @Test func isPrefixOf() {
+    let a: Array<Nat> = [1, 2, 3]
+    let b: Array<Nat> = [1, 2, 3, 4, 5]
+    #expect(Array_isPrefixOf(a, b))
+    #expect(!Array_isPrefixOf(b, a))
+  }
+  @Test func popWhile() {
+    let a: Array<Nat> = [1, 2, 10, 20]
+    let r = Array_popWhile({ (x: Nat) in x > 5 }, a)
+    #expect(Array_size(r) == 2)
+  }
+  @Test func appendList() {
+    let a: Array<Nat> = [1, 2]
+    let l: List<Nat> = .cons(3, .cons(4, .nil))
+    let r: Array<Nat> = Array_appendList(a, l)
+    #expect(r.count == 4)
+    #expect(r[2] == 3)
+    #expect(r[3] == 4)
+  }
+}
+
+@Suite("Generated List functions")
+struct GeneratedListTests {
+  static func list(_ arr: [Nat]) -> List<Nat> { .fromArray(arr) }
+
+  @Test func map() {
+    let xs = Self.list([1, 2, 3])
+    let ys = List_mapTR({ (x: Nat) in x * 2 }, xs)
+    #expect(ys.toArray() == [2, 4, 6])
+  }
+  @Test func foldl() {
+    let xs = Self.list([1, 2, 3, 4])
+    let sum = List_foldl({ (acc: Nat, x: Nat) in acc + x }, 0, xs)
+    #expect(sum == 10)
+  }
+  @Test func isPrefixOf() {
+    let a = Self.list([1, 2])
+    let b = Self.list([1, 2, 3])
+    #expect(List_isPrefixOf(a, b))
+    #expect(!List_isPrefixOf(b, a))
+  }
+}
+
+@Suite("Generated Bool/Option/Nat functions")
+struct GeneratedMiscTests {
+  @Test func boolNot() {
+    #expect(Bool_not(true) == false)
+    #expect(Bool_not(false) == true)
+  }
+  @Test func natFoldTR() {
+    // Nat.foldTR.loop: fold f over 0..<n
+    let result = Nat_foldTR_loop(5 as Nat, { (i: Nat, acc: Nat) in acc + i }, 5 as Nat, 0 as Nat)
+    #expect(result == 10) // 0+1+2+3+4 = 10
+  }
+}
+
+// MARK: - User program (compiled from Lean to Swift)
+
+@Suite("User program functions")
+struct UserProgramTests {
+  @Test func double() {
+    #expect(LeanGenerated.double(5) == 10)
+    #expect(LeanGenerated.double(0) == 0)
+  }
+  @Test func factorial() {
+    #expect(LeanGenerated.factorial(0) == 1)
+    #expect(LeanGenerated.factorial(5) == 120)
+    #expect(LeanGenerated.factorial(10) == 3628800)
+  }
+  @Test func sumList() {
+    let xs: List<Nat> = .fromArray([1, 2, 3, 4, 5])
+    #expect(sum_list(xs) == 15)
+  }
+  @Test func mapDouble() {
+    let xs: List<Nat> = .fromArray([1, 2, 3])
+    let result = map_double(xs).toArray()
+    #expect(result == [2, 4, 6])
+  }
+  @Test func arraySum() {
+    let xs: Array<Nat> = [10, 20, 30]
+    #expect(array_sum(xs) == 60)
+  }
+  @Test func containsNat() {
+    let xs: Array<Nat> = [1, 2, 3, 4, 5]
+    #expect(contains_nat(xs, 3))
+    #expect(!contains_nat(xs, 99))
+  }
+  @Test func filterEven() {
+    let xs: List<Nat> = .fromArray([1, 2, 3, 4, 5, 6])
+    let result = filter_even(xs).toArray()
+    #expect(result == [2, 4, 6])
+  }
+}
+
+@Suite("User program 2 — custom types")
+struct UserProgram2Tests {
+  static func sampleTree() -> Tree<Nat> {
+    .node(.node(.leaf(1), .leaf(2)), .node(.leaf(3), .node(.leaf(4), .leaf(5))))
+  }
+
+  @Test func treeSize() {
+    #expect(Self.sampleTree().size == 5)
+    #expect(Tree<Nat>.leaf(42).size == 1)
+  }
+  @Test func treeDepth() {
+    #expect(Tree<Nat>.leaf(1).depth == 0)
+    #expect(Self.sampleTree().depth == 3)
+  }
+  @Test func treeMap() {
+    let t: Tree<Nat> = .node(.leaf(1), .leaf(2))
+    let mapped = t.map({ (n: Nat) in n * 10 })
+    #expect(mapped.size == 2) // structure preserved
+    // Check values via flatten
+    #expect(mapped.flatten.toArray() == [10, 20])
+  }
+  @Test func treeFlatten() {
+    let vals = Self.sampleTree().flatten.toArray()
+    #expect(vals == [1, 2, 3, 4, 5])
+  }
+  @Test func treeFold() {
+    // Sum all leaves
+    let sum = Self.sampleTree().fold({ (a: Nat, b: Nat) in a + b }, { (x: Nat) in x })
+    #expect(sum == 15)
+  }
+  @Test func compose() {
+    let f = { (n: Nat) in n * 2 }
+    let g = { (n: Nat) in n + 1 }
+    #expect(LeanGenerated.compose(f, g, 5) == 12) // (5+1)*2
+  }
+  @Test func iterate() {
+    #expect(LeanGenerated.iterate({ (n: Nat) in n * 2 }, 4, 1) == 16) // 1*2*2*2*2
+  }
+  @Test func collatz() {
+    #expect(collatz_step(6) == 3)  // even: 6/2 = 3
+    #expect(collatz_step(3) == 10) // odd: 3*3+1 = 10
+    #expect(collatz_length(1) == 0)
+    #expect(collatz_length(6) == 8) // 6→3→10→5→16→8→4→2→1
+  }
+}
+
+@Suite("User program 3 — algorithms")
+struct UserProgram3AlgoTests {
+  @Test func quicksortTest() {
+    let xs: List<Nat> = .fromArray([3, 1, 4, 1, 5, 9, 2, 6])
+    let sorted = quicksort(xs).toArray()
+    #expect(sorted == [1, 1, 2, 3, 4, 5, 6, 9])
+    #expect(quicksort(List<Nat>.nil).toArray() == [])
+  }
+  @Test func fibonacciTest() {
+    #expect(fibonacci(0) == 0)
+    #expect(fibonacci(1) == 1)
+    #expect(fibonacci(10) == 55)
+  }
+  @Test func isPalindromeTest() {
+    #expect(isPalindrome(.fromArray([1, 2, 3, 2, 1] as [Nat])))
+    #expect(!isPalindrome(.fromArray([1, 2, 3] as [Nat])))
+    #expect(isPalindrome(List<Nat>.nil))
+  }
+}
+
+@Suite("User program 4 — structs, enums, expression evaluator")
+struct UserProgram4Tests {
+  @Test func pointAdd() {
+    let p = Point(3, 4)
+    let q = Point(1, 2)
+    let r = Point_add(p, q)
+    #expect(r.x == 4)
+    #expect(r.y == 6)
+  }
+  @Test func pointScale() {
+    let p = Point(3, 4)
+    let s = Point_scale(p, 10)
+    #expect(s.x == 30)
+    #expect(s.y == 40)
+  }
+  @Test func pointDist() {
+    #expect(Point_dist(Point(0, 0), Point(3, 4)) == 7)
+    #expect(Point_dist(Point(5, 5), Point(5, 5)) == 0)
+  }
+  @Test func exprEval() {
+    // (2 + 3) * 4 = 20
+    let e: Expr = .mul(.add(.lit(2), .lit(3)), .lit(4))
+    #expect(Expr_eval(e) == 20)
+  }
+  @Test func exprDepth() {
+    let e: Expr = .mul(.add(.lit(1), .lit(2)), .lit(3))
+    #expect(Expr_depth(e) == 2)
+    #expect(Expr_depth(.lit(42)) == 0)
+  }
+  @Test func exprSimplify() {
+    // 0 + x → x, x * 1 → x
+    let e: Expr = .add(.lit(0), .mul(.lit(5), .lit(1)))
+    let s = Expr_simplify(e)
+    #expect(Expr_eval(s) == 5)
+  }
+  @Test func pointBEq() {
+    #expect(instBEqPoint_beq(Point(1, 2), Point(1, 2)))
+    #expect(!instBEqPoint_beq(Point(1, 2), Point(3, 4)))
+  }
+}
+
+@Suite("User program 5 — Prod / tuples")
+struct UserProgram5ProdTests {
+  @Test func mkPairAndFst() {
+    let p = mkPair(10, 20)
+    #expect(getFst(p) == 10)
+    #expect(p.snd == 20)
+  }
+  @Test func swapPair() {
+    let p = swap(Prod<Nat, Nat>(3, 7))
+    #expect(p.fst == 7)
+    #expect(p.snd == 3)
+  }
+  @Test func sumAndProduct() {
+    let xs: List<Nat> = .fromArray([1, 2, 3, 4])
+    let r = LeanGenerated.sumAndProduct(xs)
+    #expect(r.fst == 10)
+    #expect(r.snd == 24)
+  }
+}
+
+@Suite("User program 6 — structs, generics, zipWithIndex")
+struct UserProgram6Tests {
+  @Test func configArea() {
+    let c = Config(10, 20, "screen")
+    #expect(c.area == 200)
+  }
+  @Test func configDescribe() {
+    let c = Config(800, 600, "display")
+    #expect(c.describe == "display (800x600)")
+  }
+  @Test func zipWithIndexTest() {
+    let xs: List<String> = .fromArray(["a", "b", "c"])
+    let zipped = zipWithIndex(xs).toArray()
+    #expect(zipped.count == 3)
+    #expect(zipped[0].fst == 0)
+    #expect(zipped[0].snd == "a")
+    #expect(zipped[2].fst == 2)
+    #expect(zipped[2].snd == "c")
+  }
+  @Test func unzipTest() {
+    let pairs: List<Prod<Nat, String>> = .fromArray([
+      Prod<Nat, String>(1, "a"), Prod<Nat, String>(2, "b"), Prod<Nat, String>(3, "c")
+    ])
+    let r = unzip(pairs)
+    #expect(r.fst.toArray() == [1, 2, 3])
+    #expect(r.snd.toArray() == ["a", "b", "c"])
+  }
+}
+
+@Suite("User program 7 — groupBy, mapAccum")
+struct UserProgram7GroupByTests {
+  @Test func groupByTest() {
+    let xs: List<Nat> = .fromArray([1, 2, 3, 4, 5, 6])
+    // Group by even/odd
+    let groups = groupBy({ (n: Nat) in n % 2 }, xs).toArray()
+    #expect(groups.count == 2)
+    // First group: remainder 1 (odd numbers)
+    #expect(groups[0].fst == 1)
+    #expect(groups[0].snd.toArray() == [1, 3, 5])
+    // Second group: remainder 0 (even numbers)
+    #expect(groups[1].fst == 0)
+    #expect(groups[1].snd.toArray() == [2, 4, 6])
+  }
+}
+
+@Suite("User program 7b — mapAccum with Prod")
+struct UserProgram7Tests {
+  @Test func runningSum() {
+    let xs: List<Nat> = .fromArray([1, 2, 3, 4])
+    let r = mapAccum({ (s: Nat, x: Nat) in Prod<Nat, Nat>(s + x, s + x) }, 0, xs)
+    #expect(r.fst == 10)
+    #expect(r.snd.toArray() == [1, 3, 6, 10])
+  }
+}
+
+@Suite("User program 8 — Array iteration patterns")
+struct UserProgram8Tests {
+  @Test func sortNats() {
+    let xs: Array<Nat> = [5, 2, 8, 1, 9, 3]
+    let sorted = LeanGenerated.sortNats(xs)
+    #expect(Array(sorted) == [1, 2, 3, 5, 8, 9])
+  }
+  @Test func findFirstTest() {
+    let xs: Array<Nat> = [2, 4, 7, 10, 15]
+    #expect(findFirst(xs, { (n: Nat) in n > 5 }) == .some(7))
+    #expect(findFirst(xs, { (n: Nat) in n > 100 }) == nil)
+  }
+}
+
+@Suite("User program 9 — toString / string ops")
+struct UserProgram3Tests {
+  @Test func describeNat() {
+    #expect(describe_nat(0) == "zero")
+    #expect(describe_nat(5) == "small: 5")
+    #expect(describe_nat(42) == "big: 42")
+  }
+  @Test func listToString() {
+    let xs: List<Nat> = .fromArray([1, 2, 3])
+    #expect(list_to_string(xs) == "1, 2, 3")
+  }
+}
+
 // MARK: - ByteArray Iterator
 
 @Suite("ByteArray.Iterator operations")

@@ -22,10 +22,10 @@ public extension Nat {
 
 /// _private.src.Init.Data.Nat.Power2.Basic.0.Nat.nextPowerOfTwo.go
 public func Nat_nextPowerOfTwo_go(_ n: Nat, _ power: Nat) -> Nat {
-  let _x_1: Bool = power < n
+  let _x_1 = power < n
   if _x_1 {
     let _x_4: Nat = 2
-    let _x_5: Nat = power * _x_4
+    let _x_5 = power * _x_4
     return Nat_nextPowerOfTwo_go(n, _x_5)
   } else {
     return power

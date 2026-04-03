@@ -12,7 +12,7 @@ import LeanExterns
 public extension List {
   func intersperseTR(_ sep: A) -> List<A> {
     func _f_2(_ a: A, _ r: List<A>) -> List<A> {
-      let _x_3: List<A> = .cons(a, r)
+      let _x_3: List<A> = List<A>.cons(a, r)
       return List<A>.cons(sep, _x_3)
     }
     switch self {
@@ -23,10 +23,10 @@ public extension List {
       case .`nil`:
         return self
       case .cons(let head_7, let tail_8):
-        let _x_9: List<A> = .`nil`
-        let _x_10: List<A> = tail_8.foldr(_f_2, _x_9)
-        let _x_11: List<A> = .cons(head_7, _x_10)
-        let _x_12: List<A> = .cons(sep, _x_11)
+        let _x_9: List<A> = List<A>.`nil`
+        let _x_10 = tail_8.foldr(_f_2, _x_9)
+        let _x_11: List<A> = List<A>.cons(head_7, _x_10)
+        let _x_12: List<A> = List<A>.cons(sep, _x_11)
         return List<A>.cons(head_5, _x_12)
       default:
         fatalError("unreachable")
@@ -41,10 +41,24 @@ public extension List {
   x_1.intersperseTR(sep)
 }
 
+/// List.zip
+public extension List {
+  func zip<B>(_ ys: List<B>) -> List<Prod<A, B>> {
+    func _f_1(_ fst: A, _ snd: B) -> Prod<A, B> {
+      Prod<A, B>(fst, snd)
+    }
+    return self.zipWith(_f_1, ys)
+  }
+}
+
+@inline(__always) public func List_zip<A, B>(_ xs: List<A>, _ ys: List<B>) -> List<Prod<A, B>> {
+  xs.zip(ys)
+}
+
 /// List.appendTR
 public extension List {
   func appendTR(_ bs: List<A>) -> List<A> {
-    let _x_1: List<A> = self.reverse
+    let _x_1 = self.reverse
     return _x_1.reverseAux(bs)
   }
 }
@@ -64,7 +78,7 @@ public func List_or(_ bs: List<Bool>) -> Bool {
 /// List.reverse
 public extension List {
   var reverse: List<A> {
-    let _x_1: List<A> = .`nil`
+    let _x_1: List<A> = List<A>.`nil`
     return self.reverseAux(_x_1)
   }
 }
@@ -74,7 +88,7 @@ public extension List {
 }
 
 /// List.instDecidableRelSubsetOfDecidableEq_src
-public extension List {
+public extension List where A: Equatable {
   func instDecidableRelSubsetOfDecidableEq_src(_ inst_1: @escaping (A, A) -> Decidable, _ x_3: List<A>) -> Decidable {
     func _f_5(_ a: A) -> Decidable {
       x_3.instDecidableMemOfLawfulBEq_src(a)
@@ -83,7 +97,7 @@ public extension List {
   }
 }
 
-@inline(__always) public func List_instDecidableRelSubsetOfDecidableEq_src<A>(_ inst_1: @escaping (A, A) -> Decidable, _ x_2: List<A>, _ x_3: List<A>) -> Decidable {
+@inline(__always) public func List_instDecidableRelSubsetOfDecidableEq_src<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ x_2: List<A>, _ x_3: List<A>) -> Decidable {
   x_2.instDecidableRelSubsetOfDecidableEq_src(inst_1, x_3)
 }
 
@@ -93,7 +107,7 @@ public func List_replicateTR_loop<A>(_ a: A, _ x_1: Nat, _ x_2: List<A>) -> List
     return x_2
   } else {
     let n_3: Nat = x_1 - 1
-    let _x_4: List<A> = .cons(a, x_2)
+    let _x_4: List<A> = List<A>.cons(a, x_2)
     return List_replicateTR_loop(a, n_3, _x_4)
   }
 }
@@ -104,12 +118,12 @@ public func `List_findIdx?_go`<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ 
   case .`nil`:
     return nil
   case .cons(let head_4, let tail_5):
-    let _x_6: Bool = p(head_4)
+    let _x_6 = p(head_4)
     if _x_6 {
       return Nat?.some(x_2)
     } else {
       let _x_7: Nat = 1
-      let _x_8: Nat = x_2 + _x_7
+      let _x_8 = x_2 + _x_7
       return `List_findIdx?_go`(p, tail_5, _x_8)
     }
   default:
@@ -120,11 +134,11 @@ public func `List_findIdx?_go`<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ 
 /// List.isSuffixOf?
 public extension List where A: Equatable {
   func `isSuffixOf?`(_ `l₂`: List<A>) -> List<A>? {
-    let _x_2: List<A> = self.reverse
-    let _x_3: List<A> = `l₂`.reverse
-    let _x_4: List<A>? = _x_2.`isPrefixOf?`(_x_3)
+    let _x_2 = self.reverse
+    let _x_3 = `l₂`.reverse
+    let _x_4 = _x_2.`isPrefixOf?`(_x_3)
     if let val_5 = _x_4 {
-      let _x_6: List<A> = val_5.reverse
+      let _x_6 = val_5.reverse
       return List<A>?.some(_x_6)
     } else {
       return _x_4
@@ -143,9 +157,9 @@ public extension List {
     case .`nil`:
       return self
     case .cons(let head_2, let tail_3):
-      let _x_4: Bool = p(head_2)
+      let _x_4 = p(head_2)
       if _x_4 {
-        let _x_6: List<A> = tail_3.filter(p)
+        let _x_6 = tail_3.filter(p)
         return List<A>.cons(head_2, _x_6)
       } else {
         return tail_3.filter(p)
@@ -181,7 +195,7 @@ public extension List {
 /// List.insert
 public extension List where A: Equatable {
   func insert(_ a: A) -> List<A> {
-    let _x_2: Bool = self.elem(a)
+    let _x_2 = self.elem(a)
     if _x_2 {
       return self
     } else {
@@ -200,8 +214,8 @@ public func `List_range'`(_ x_1: Nat, _ x_2: Nat, _ x_3: Nat) -> List<Nat> {
     return List<Nat>.`nil`
   } else {
     let n_5: Nat = x_2 - 1
-    let _x_6: Nat = x_1 + x_3
-    let _x_7: List<Nat> = `List_range'`(_x_6, n_5, x_3)
+    let _x_6 = x_1 + x_3
+    let _x_7 = `List_range'`(_x_6, n_5, x_3)
     return List<Nat>.cons(x_1, _x_7)
   }
 }
@@ -209,8 +223,8 @@ public func `List_range'`(_ x_1: Nat, _ x_2: Nat, _ x_3: Nat) -> List<Nat> {
 /// List.leftpad
 public extension List {
   func leftpad(_ n: Nat, _ a: A) -> List<A> {
-    let _x_1: Nat = List_length(self)
-    let _x_2: Nat = n - _x_1
+    let _x_1 = List_length(self)
+    let _x_2 = n - _x_1
     let _x_3: List<A> = List_replicate(_x_2, a)
     return _x_3.appendTR(self)
   }
@@ -224,14 +238,14 @@ public extension List {
 public func List_eraseRepsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _ x_1: A, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
   switch x_2 {
   case .`nil`:
-    let _x_4: List<A> = .cons(x_1, x_3)
+    let _x_4: List<A> = List<A>.cons(x_1, x_3)
     return _x_4.reverse
   case .cons(let head_6, let tail_7):
-    let _x_8: Bool = r(x_1, head_6)
+    let _x_8 = r(x_1, head_6)
     if _x_8 {
       return List_eraseRepsBy_loop(r, x_1, tail_7, x_3)
     } else {
-      let _x_9: List<A> = .cons(x_1, x_3)
+      let _x_9: List<A> = List<A>.cons(x_1, x_3)
       return List_eraseRepsBy_loop(r, head_6, tail_7, _x_9)
     }
   default:
@@ -246,7 +260,7 @@ public extension List where A: Equatable {
     case .`nil`:
       return x_3.isEmpty
     case .cons(let head_5, let tail_6):
-      let _x_7: Bool = x_3.elem(head_5)
+      let _x_7 = x_3.elem(head_5)
       if _x_7 {
         let _x_8 = x_3.erase(head_5)
         return tail_6.isPerm(_x_8)
@@ -270,22 +284,16 @@ public extension List {
     case .`nil`:
       return Decidable.isFalse
     case .cons(let head_4, let tail_5):
-      let _x_6: Decidable = inst_1(head_4)
-      switch _x_6 {
-      case .isFalse:
-        let _x_7: Decidable = tail_5.decidableBEx(inst_1)
-        switch _x_7 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
-          return Decidable.isTrue
-        default:
-          fatalError("unreachable")
-        }
-      case .isTrue:
+      let _x_6 = inst_1(head_4)
+      if Decidable_decide(_x_6) {
         return Decidable.isTrue
-      default:
-        fatalError("unreachable")
+      } else {
+        let _x_7 = tail_5.decidableBEx(inst_1)
+        if Decidable_decide(_x_7) {
+          return Decidable.isTrue
+        } else {
+          return Decidable.isFalse
+        }
       }
     default:
       fatalError("unreachable")
@@ -303,9 +311,9 @@ public func List_filterTR_loop<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ 
   case .`nil`:
     return x_2.reverse
   case .cons(let head_4, let tail_5):
-    let _x_6: Bool = p(head_4)
+    let _x_6 = p(head_4)
     if _x_6 {
-      let _x_8: List<A> = .cons(head_4, x_2)
+      let _x_8: List<A> = List<A>.cons(head_4, x_2)
       return List_filterTR_loop(p, tail_5, _x_8)
     } else {
       return List_filterTR_loop(p, tail_5, x_2)
@@ -326,7 +334,7 @@ public extension List where A: Equatable {
       case .`nil`:
         return false
       case .cons(let head_8, let tail_9):
-        let _x_11: Bool = head_5 == head_8
+        let _x_11 = head_5 == head_8
         if _x_11 {
           return tail_6.isPrefixOf(tail_9)
         } else {
@@ -356,7 +364,7 @@ public extension List {
         return tail_4
       } else {
         let n_5: Nat = x_2 - 1
-        let _x_6: List<A> = tail_4.eraseIdx(n_5)
+        let _x_6 = tail_4.eraseIdx(n_5)
         return List<A>.cons(head_3, _x_6)
       }
     default:
@@ -375,12 +383,12 @@ public func List_findIdx_go<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ x_2
   case .`nil`:
     return x_2
   case .cons(let head_3, let tail_4):
-    let _x_5: Bool = p(head_3)
+    let _x_5 = p(head_3)
     if _x_5 {
       return x_2
     } else {
       let _x_6: Nat = 1
-      let _x_7: Nat = x_2 + _x_6
+      let _x_7 = x_2 + _x_6
       return List_findIdx_go(p, tail_4, _x_7)
     }
   default:
@@ -395,7 +403,7 @@ public extension List {
     case .`nil`:
       return true
     case .cons(let head_4, let tail_5):
-      let _x_6: Bool = x_2(head_4)
+      let _x_6 = x_2(head_4)
       if _x_6 {
         return tail_5.all(x_2)
       } else {
@@ -459,8 +467,8 @@ public extension List {
       case .`nil`:
         return self
       case .cons:
-        let _x_6: List<A> = tail_3.intersperse(sep)
-        let _x_7: List<A> = .cons(sep, _x_6)
+        let _x_6 = tail_3.intersperse(sep)
+        let _x_7: List<A> = List<A>.cons(sep, _x_6)
         return List<A>.cons(head_2, _x_7)
       default:
         fatalError("unreachable")
@@ -493,11 +501,11 @@ public extension List where A: Equatable, A: Equatable {
       case .`nil`:
         return false
       case .cons(let head_9, let tail_10):
-        let _x_11: Bool = lt(head_6, head_9)
+        let _x_11 = lt(head_6, head_9)
         if _x_11 {
           return _x_11
         } else {
-          let _x_13: Bool = head_6 == head_9
+          let _x_13 = head_6 == head_9
           if _x_13 {
             return tail_7.lex(tail_10, lt)
           } else {
@@ -520,7 +528,7 @@ public extension List where A: Equatable, A: Equatable {
 /// List.intercalate
 public extension List {
   func intercalate(_ xs: List<List<A>>) -> List<A> {
-    let _x_1: List<List<A>> = xs.intersperse(self)
+    let _x_1 = xs.intersperse(self)
     return List_flatten(_x_1)
   }
 }
@@ -587,7 +595,7 @@ public extension List {
 }
 
 /// List.decidableLex
-public extension List {
+public extension List where A: Equatable, A: Equatable {
   func decidableLex(_ inst_1: @escaping (A, A) -> Decidable, _ h: @escaping (A, A) -> Decidable, _ x_3: List<A>) -> Decidable {
     switch self {
     case .`nil`:
@@ -605,30 +613,21 @@ public extension List {
       case .`nil`:
         return _x_10
       case .cons(let head_11, let tail_12):
-        let _x_13: Decidable = inst_1(head_8, head_11)
-        let _x_14: Decidable = h(head_8, head_11)
-        switch _x_14 {
-        case .isFalse:
-          switch _x_13 {
-          case .isFalse:
-            return Decidable.isFalse
-          case .isTrue:
-            let _x_17: Decidable = tail_9.decidableLex(inst_1, h, tail_12)
-            switch _x_17 {
-            case .isFalse:
-              return Decidable.isFalse
-            case .isTrue:
-              return Decidable.isTrue
-            default:
-              fatalError("unreachable")
-            }
-          default:
-            fatalError("unreachable")
-          }
-        case .isTrue:
+        let _x_13 = inst_1(head_8, head_11)
+        let _x_14 = h(head_8, head_11)
+        if Decidable_decide(_x_14) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          if Decidable_decide(_x_13) {
+            let _x_17 = tail_9.decidableLex(inst_1, h, tail_12)
+            if Decidable_decide(_x_17) {
+              return Decidable.isTrue
+            } else {
+              return Decidable.isFalse
+            }
+          } else {
+            return Decidable.isFalse
+          }
         }
       default:
         fatalError("unreachable")
@@ -639,8 +638,20 @@ public extension List {
   }
 }
 
-@inline(__always) public func List_decidableLex<A>(_ inst_1: @escaping (A, A) -> Decidable, _ h: @escaping (A, A) -> Decidable, _ x_2: List<A>, _ x_3: List<A>) -> Decidable {
+@inline(__always) public func List_decidableLex<A: Equatable & Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ h: @escaping (A, A) -> Decidable, _ x_2: List<A>, _ x_3: List<A>) -> Decidable {
   x_2.decidableLex(inst_1, h, x_3)
+}
+
+/// List.splitAt
+public extension List {
+  func splitAt(_ n: Nat) -> Prod<List<A>, List<A>> {
+    let _x_1: List<A> = List<A>.`nil`
+    return List_splitAt_go(self, self, n, _x_1)
+  }
+}
+
+@inline(__always) public func List_splitAt<A>(_ n: Nat, _ l: List<A>) -> Prod<List<A>, List<A>> {
+  l.splitAt(n)
 }
 
 /// List.findSomeRev?
@@ -650,7 +661,7 @@ public extension List {
     case .`nil`:
       return nil
     case .cons(let head_3, let tail_4):
-      let _x_5: B? = tail_4.`findSomeRev?`(f)
+      let _x_5 = tail_4.`findSomeRev?`(f)
       if _x_5 != nil {
         return _x_5
       } else {
@@ -673,7 +684,7 @@ public extension List where A: Equatable {
     case .`nil`:
       return false
     case .cons(let head_4, let tail_5):
-      let _x_7: Bool = a == head_4
+      let _x_7 = a == head_4
       if _x_7 {
         return _x_7
       } else {
@@ -707,7 +718,7 @@ public extension List where A: Equatable {
       case .`nil`:
         return false
       case .cons(let head_11, let tail_12):
-        let _x_14: Bool = head_8 == head_11
+        let _x_14 = head_8 == head_11
         if _x_14 {
           return tail_9.beq(tail_12)
         } else {
@@ -745,10 +756,10 @@ public func List_countP_go<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ x_2:
   case .`nil`:
     return x_2
   case .cons(let head_3, let tail_4):
-    let _x_5: Bool = p(head_3)
+    let _x_5 = p(head_3)
     if _x_5 {
       let _x_7: Nat = 1
-      let _x_8: Nat = x_2 + _x_7
+      let _x_8 = x_2 + _x_7
       return List_countP_go(p, tail_4, _x_8)
     } else {
       return List_countP_go(p, tail_4, x_2)
@@ -769,7 +780,7 @@ public extension List {
       case .`nil`:
         return self
       case .cons(let head_5, let tail_6):
-        let _x_7: List<A> = tail_6.take(n_4)
+        let _x_7 = tail_6.take(n_4)
         return List<A>.cons(head_5, _x_7)
       default:
         fatalError("unreachable")
@@ -785,7 +796,7 @@ public extension List {
 /// List.eraseDupsBy
 public extension List where A: Equatable {
   func eraseDupsBy(_ r: @escaping (A, A) -> Bool) -> List<A> {
-    let _x_1: List<A> = .`nil`
+    let _x_1: List<A> = List<A>.`nil`
     return List_eraseDupsBy_loop(r, self, _x_1)
   }
 }
@@ -823,7 +834,7 @@ public extension List where A: Equatable {
       case .`nil`:
         return false
       case .cons(let head_8, let tail_9):
-        let _x_11: Bool = head_5 == head_8
+        let _x_11 = head_5 == head_8
         if _x_11 {
           return tail_6.isSublist(tail_9)
         } else {
@@ -849,11 +860,11 @@ public extension List where A: Equatable {
     case .`nil`:
       return self
     case .cons(let head_4, let tail_5):
-      let _x_7: Bool = head_4 == x_3
+      let _x_7 = head_4 == x_3
       if _x_7 {
         return tail_5
       } else {
-        let _x_8: List<A> = tail_5.erase(x_3)
+        let _x_8 = tail_5.erase(x_3)
         return List<A>.cons(head_4, _x_8)
       }
     default:
@@ -877,7 +888,7 @@ public extension List where A: Equatable {
       case .`nil`:
         return nil
       case .cons(let head_8, let tail_9):
-        let _x_11: Bool = head_5 == head_8
+        let _x_11 = head_5 == head_8
         if _x_11 {
           return tail_6.`isPrefixOf?`(tail_9)
         } else {
@@ -894,6 +905,47 @@ public extension List where A: Equatable {
 
 @inline(__always) public func `List_isPrefixOf?`<A: Equatable>(_ x_2: List<A>, _ x_3: List<A>) -> List<A>? {
   x_2.`isPrefixOf?`(x_3)
+}
+
+/// List.unzip
+public func List_unzip<A, B>(_ x_1: List<Prod<A, B>>) -> Prod<List<A>, List<B>> {
+  switch x_1 {
+  case .`nil`:
+    let _x_2: List<A> = List<A>.`nil`
+    let _x_3: List<B> = List<B>.`nil`
+    return Prod<List<A>, List<B>>(_x_2, _x_3)
+  case .cons(let head_5, let tail_6):
+    let fst_7 = head_5.fst
+    let snd_8 = head_5.snd
+    let _x_9 = List_unzip(tail_6)
+    let fst_10 = _x_9.fst
+    let snd_11 = _x_9.snd
+    let _x_12: List<A> = List<A>.cons(fst_7, fst_10)
+    let _x_13: List<B> = List<B>.cons(snd_8, snd_11)
+    return Prod<List<A>, List<B>>(_x_12, _x_13)
+  default:
+    fatalError("unreachable")
+  }
+}
+
+/// List.span.loop
+public func List_span_loop<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ x_2: List<A>) -> Prod<List<A>, List<A>> {
+  switch x_1 {
+  case .`nil`:
+    let _x_3 = x_2.reverse
+    return Prod<List<A>, List<A>>(_x_3, x_1)
+  case .cons(let head_5, let tail_6):
+    let _x_7 = p(head_5)
+    if _x_7 {
+      let _x_10: List<A> = List<A>.cons(head_5, x_2)
+      return List_span_loop(p, tail_6, _x_10)
+    } else {
+      let _x_8 = x_2.reverse
+      return Prod<List<A>, List<A>>(_x_8, x_1)
+    }
+  default:
+    fatalError("unreachable")
+  }
 }
 
 /// List.tail
@@ -917,15 +969,15 @@ public extension List {
 /// List.rotateLeft
 public extension List {
   func rotateLeft(_ i: Nat) -> List<A> {
-    let len: Nat = List_length(self)
+    let len = List_length(self)
     let _x_1: Nat = 1
-    let _x_2: Bool = len <= _x_1
+    let _x_2 = len <= _x_1
     if _x_2 {
       return self
     } else {
-      let i: Nat = i % len
-      let ys: List<A> = self.take(i)
-      let zs: List<A> = self.drop(i)
+      let i = i % len
+      let ys = self.take(i)
+      let zs = self.drop(i)
       return zs.appendTR(ys)
     }
   }
@@ -960,11 +1012,11 @@ public extension List {
     case .`nil`:
       return nil
     case .cons(let head_3, let tail_4):
-      let _x_5: A? = tail_4.`findRev?`(p)
+      let _x_5 = tail_4.`findRev?`(p)
       if _x_5 != nil {
         return _x_5
       } else {
-        let _x_6: Bool = p(head_3)
+        let _x_6 = p(head_3)
         if _x_6 {
           return A?.some(head_3)
         } else {
@@ -988,7 +1040,7 @@ public extension List where A: Equatable {
     case .`nil`:
       return self
     case .cons(let head_2, let tail_3):
-      let _x_4: List<A> = .`nil`
+      let _x_4: List<A> = List<A>.`nil`
       return List_eraseRepsBy_loop(r, head_2, tail_3, _x_4)
     default:
       fatalError("unreachable")
@@ -1001,17 +1053,17 @@ public extension List where A: Equatable {
 }
 
 /// List.nodupDecidable
-public extension List {
+public extension List where A: Equatable {
   func nodupDecidable(_ inst_1: @escaping (A, A) -> Decidable) -> Decidable {
     func _f_2(_ a: A, _ b: A) -> Decidable {
-      let _x_3: Decidable = inst_1(a, b)
+      let _x_3 = inst_1(a, b)
       return instDecidableNot(_x_3)
     }
     return self.instDecidablePairwise(_f_2)
   }
 }
 
-@inline(__always) public func List_nodupDecidable<A>(_ inst_1: @escaping (A, A) -> Decidable, _ l: List<A>) -> Decidable {
+@inline(__always) public func List_nodupDecidable<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ l: List<A>) -> Decidable {
   l.nodupDecidable(inst_1)
 }
 
@@ -1022,7 +1074,7 @@ public func List_mapTR_loop<A, B>(_ f: @escaping (A) -> B, _ x_1: List<A>, _ x_2
     return x_2.reverse
   case .cons(let head_4, let tail_5):
     let _x_6 = f(head_4)
-    let _x_7: List<B> = .cons(_x_6, x_2)
+    let _x_7: List<B> = List<B>.cons(_x_6, x_2)
     return List_mapTR_loop(f, tail_5, _x_7)
   default:
     fatalError("unreachable")
@@ -1036,7 +1088,7 @@ public extension List {
     case .`nil`:
       return nil
     case .cons(let head_3, let tail_4):
-      let _x_5: Bool = p(head_3)
+      let _x_5 = p(head_3)
       if _x_5 {
         return A?.some(head_3)
       } else {
@@ -1076,7 +1128,7 @@ public func `List_range'TR_go`(_ step: Nat, _ x_1: Nat, _ x_2: Nat, _ x_3: List<
     return x_3
   } else {
     let n_4: Nat = x_1 - 1
-    let _x_5: Nat = x_2 - step
+    let _x_5 = x_2 - step
     let _x_6: List<Nat> = List<Nat>.cons(_x_5, x_3)
     return `List_range'TR_go`(step, n_4, _x_5, _x_6)
   }
@@ -1089,11 +1141,11 @@ public extension List {
     case .`nil`:
       return self
     case .cons(let head_2, let tail_3):
-      let _x_4: Bool = p(head_2)
+      let _x_4 = p(head_2)
       if _x_4 {
         return tail_3
       } else {
-        let _x_5: List<A> = tail_3.eraseP(p)
+        let _x_5 = tail_3.eraseP(p)
         return List<A>.cons(head_2, _x_5)
       }
     default:
@@ -1104,6 +1156,18 @@ public extension List {
 
 @inline(__always) public func List_eraseP<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>) -> List<A> {
   x_1.eraseP(p)
+}
+
+/// List.span
+public extension List {
+  func span(_ p: @escaping (A) -> Bool) -> Prod<List<A>, List<A>> {
+    let _x_1: List<A> = List<A>.`nil`
+    return List_span_loop(p, self, _x_1)
+  }
+}
+
+@inline(__always) public func List_span<A>(_ p: @escaping (A) -> Bool, _ `as`: List<A>) -> Prod<List<A>, List<A>> {
+  `as`.span(p)
 }
 
 /// List.getLastD
@@ -1127,8 +1191,8 @@ public extension List {
 /// List.extract
 public extension List {
   func extract(_ start: Nat, _ stop: Nat) -> List<A> {
-    let _x_1: Nat = stop - start
-    let _x_2: List<A> = self.drop(start)
+    let _x_1 = stop - start
+    let _x_2 = self.drop(start)
     return _x_2.take(_x_1)
   }
 }
@@ -1147,7 +1211,7 @@ public func List_modifyTailIdx_go<A>(_ f: @escaping (List<A>) -> List<A>, _ x_1:
     case .`nil`:
       return x_2
     case .cons(let head_5, let tail_6):
-      let _x_7: List<A> = List_modifyTailIdx_go(f, n_4, tail_6)
+      let _x_7 = List_modifyTailIdx_go(f, n_4, tail_6)
       return List<A>.cons(head_5, _x_7)
     default:
       fatalError("unreachable")
@@ -1191,22 +1255,16 @@ public extension List {
     case .`nil`:
       return Decidable.isTrue
     case .cons(let head_4, let tail_5):
-      let _x_6: Decidable = inst_1(head_4)
-      switch _x_6 {
-      case .isFalse:
-        return Decidable.isFalse
-      case .isTrue:
-        let _x_8: Decidable = tail_5.decidableBAll(inst_1)
-        switch _x_8 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+      let _x_6 = inst_1(head_4)
+      if Decidable_decide(_x_6) {
+        let _x_8 = tail_5.decidableBAll(inst_1)
+        if Decidable_decide(_x_8) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
-      default:
-        fatalError("unreachable")
+      } else {
+        return Decidable.isFalse
       }
     default:
       fatalError("unreachable")
@@ -1221,7 +1279,7 @@ public extension List {
 /// List.mapTR
 public extension List {
   func mapTR<B>(_ f: @escaping (A) -> B) -> List<B> {
-    let _x_1: List<B> = .`nil`
+    let _x_1: List<B> = List<B>.`nil`
     return List_mapTR_loop(f, self, _x_1)
   }
 }
@@ -1233,13 +1291,40 @@ public extension List {
 /// List.filterTR
 public extension List {
   func filterTR(_ p: @escaping (A) -> Bool) -> List<A> {
-    let _x_1: List<A> = .`nil`
+    let _x_1: List<A> = List<A>.`nil`
     return List_filterTR_loop(p, self, _x_1)
   }
 }
 
 @inline(__always) public func List_filterTR<A>(_ p: @escaping (A) -> Bool, _ `as`: List<A>) -> List<A> {
   `as`.filterTR(p)
+}
+
+/// List.partition.loop
+public func List_partition_loop<A>(_ p: @escaping (A) -> Bool, _ x_1: List<A>, _ x_2: Prod<List<A>, List<A>>) -> Prod<List<A>, List<A>> {
+  switch x_1 {
+  case .`nil`:
+    let fst_3 = x_2.fst
+    let snd_4 = x_2.snd
+    let _x_5 = fst_3.reverse
+    let _x_6 = snd_4.reverse
+    return Prod<List<A>, List<A>>(_x_5, _x_6)
+  case .cons(let head_8, let tail_9):
+    let fst_10 = x_2.fst
+    let snd_11 = x_2.snd
+    let _x_12 = p(head_8)
+    if _x_12 {
+      let _x_16: List<A> = List<A>.cons(head_8, fst_10)
+      let _x_17: Prod<List<A>, List<A>> = Prod<List<A>, List<A>>(_x_16, snd_11)
+      return List_partition_loop(p, tail_9, _x_17)
+    } else {
+      let _x_13: List<A> = List<A>.cons(head_8, snd_11)
+      let _x_14: Prod<List<A>, List<A>> = Prod<List<A>, List<A>>(fst_10, _x_13)
+      return List_partition_loop(p, tail_9, _x_14)
+    }
+  default:
+    fatalError("unreachable")
+  }
 }
 
 /// List.dropLast
@@ -1253,7 +1338,7 @@ public extension List {
       case .`nil`:
         return tail_3
       case .cons:
-        let _x_6: List<A> = tail_3.dropLast
+        let _x_6 = tail_3.dropLast
         return List<A>.cons(head_2, _x_6)
       default:
         fatalError("unreachable")
@@ -1289,7 +1374,7 @@ public extension List {
 
 /// List.singleton
 @inline(__always) public func List_singleton<A>(_ a: A) -> List<A> {
-  let _x_1: List<A> = .`nil`
+  let _x_1: List<A> = List<A>.`nil`
   return List<A>.cons(a, _x_1)
 }
 
@@ -1300,11 +1385,11 @@ public extension List where A: Equatable {
     case .`nil`:
       return self
     case .cons(let head_5, let tail_6):
-      let _x_8: Bool = x_3 == head_5
+      let _x_8 = x_3 == head_5
       if _x_8 {
         return List<A>.cons(x_4, tail_6)
       } else {
-        let _x_9: List<A> = tail_6.replace(x_3, x_4)
+        let _x_9 = tail_6.replace(x_3, x_4)
         return List<A>.cons(head_5, _x_9)
       }
     default:
@@ -1315,6 +1400,23 @@ public extension List where A: Equatable {
 
 @inline(__always) public func List_replace<A: Equatable>(_ x_2: List<A>, _ x_3: A, _ x_4: A) -> List<A> {
   x_2.replace(x_3, x_4)
+}
+
+/// List.unzipTR
+public func List_unzipTR<A, B>(_ l: List<Prod<A, B>>) -> Prod<List<A>, List<B>> {
+  func _f_1(_ x_2: Prod<A, B>, _ x_3: Prod<List<A>, List<B>>) -> Prod<List<A>, List<B>> {
+    let fst_4 = x_2.fst
+    let snd_5 = x_2.snd
+    let fst_6 = x_3.fst
+    let snd_7 = x_3.snd
+    let _x_8: List<A> = List<A>.cons(fst_4, fst_6)
+    let _x_9: List<B> = List<B>.cons(snd_5, snd_7)
+    return Prod<List<A>, List<B>>(_x_8, _x_9)
+  }
+  let _x_11: List<A> = List<A>.`nil`
+  let _x_12: List<B> = List<B>.`nil`
+  let _x_13: Prod<List<A>, List<B>> = Prod<List<A>, List<B>>(_x_11, _x_12)
+  return l.foldr(_f_1, _x_13)
 }
 
 /// List.isEqv
@@ -1335,7 +1437,7 @@ public extension List where A: Equatable {
       case .`nil`:
         return false
       case .cons(let head_11, let tail_12):
-        let _x_13: Bool = x_3(head_8, head_11)
+        let _x_13 = x_3(head_8, head_11)
         if _x_13 {
           return tail_9.isEqv(tail_12, x_3)
         } else {
@@ -1376,24 +1478,43 @@ public func List_range_loop(_ x_1: Nat, _ x_2: List<Nat>) -> List<Nat> {
   }
 }
 
+/// List.lookup
+public func List_lookup<A: Equatable, B>(_ x_2: A, _ x_3: List<Prod<A, B>>) -> B? {
+  switch x_3 {
+  case .`nil`:
+    return nil
+  case .cons(let head_5, let tail_6):
+    let fst_7 = head_5.fst
+    let snd_8 = head_5.snd
+    let _x_10 = x_2 == fst_7
+    if _x_10 {
+      return B?.some(snd_8)
+    } else {
+      return List_lookup(x_2, tail_6)
+    }
+  default:
+    fatalError("unreachable")
+  }
+}
+
 /// List.splitBy.loop
 public func List_splitBy_loop<A: Equatable>(_ R: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: A, _ x_3: List<A>, _ x_4: List<List<A>>) -> List<List<A>> {
   switch x_1 {
   case .`nil`:
-    let _x_5: List<A> = .cons(x_2, x_3)
-    let _x_6: List<A> = _x_5.reverse
-    let _x_7: List<List<A>> = .cons(_x_6, x_4)
+    let _x_5: List<A> = List<A>.cons(x_2, x_3)
+    let _x_6 = _x_5.reverse
+    let _x_7: List<List<A>> = List<List<A>>.cons(_x_6, x_4)
     return _x_7.reverse
   case .cons(let head_9, let tail_10):
-    let _x_11: Bool = R(x_2, head_9)
+    let _x_11 = R(x_2, head_9)
     if _x_11 {
-      let _x_17: List<A> = .cons(x_2, x_3)
+      let _x_17: List<A> = List<A>.cons(x_2, x_3)
       return List_splitBy_loop(R, tail_10, head_9, _x_17, x_4)
     } else {
-      let _x_12: List<A> = .`nil`
-      let _x_13: List<A> = .cons(x_2, x_3)
-      let _x_14: List<A> = _x_13.reverse
-      let _x_15: List<List<A>> = .cons(_x_14, x_4)
+      let _x_12: List<A> = List<A>.`nil`
+      let _x_13: List<A> = List<A>.cons(x_2, x_3)
+      let _x_14 = _x_13.reverse
+      let _x_15: List<List<A>> = List<List<A>>.cons(_x_14, x_4)
       return List_splitBy_loop(R, tail_10, head_9, _x_12, _x_15)
     }
   default:
@@ -1408,7 +1529,7 @@ public extension List {
     case .`nil`:
       return self
     case .cons(let head_2, let tail_3):
-      let _x_4: Bool = p(head_2)
+      let _x_4 = p(head_2)
       if _x_4 {
         return tail_3.dropWhile(p)
       } else {
@@ -1425,29 +1546,23 @@ public extension List {
 }
 
 /// List.instDecidablePairwise
-public extension List {
+public extension List where A: Equatable {
   func instDecidablePairwise(_ inst_1: @escaping (A, A) -> Decidable) -> Decidable {
     switch self {
     case .`nil`:
       return Decidable.isTrue
     case .cons(let head_4, let tail_5):
-      let _x_6: Decidable = tail_5.instDecidablePairwise(inst_1)
-      switch _x_6 {
-      case .isFalse:
-        return Decidable.isFalse
-      case .isTrue:
-        let _x_10 = inst_1(head_4)
-        let _x_11: Decidable = tail_5.decidableBAll(_x_10)
-        switch _x_11 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+      let _x_6 = tail_5.instDecidablePairwise(inst_1)
+      if Decidable_decide(_x_6) {
+        let _x_10: (A) -> Decidable = { _pa0 in inst_1(head_4, _pa0) }
+        let _x_11 = tail_5.decidableBAll(_x_10)
+        if Decidable_decide(_x_11) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
-      default:
-        fatalError("unreachable")
+      } else {
+        return Decidable.isFalse
       }
     default:
       fatalError("unreachable")
@@ -1455,13 +1570,13 @@ public extension List {
   }
 }
 
-@inline(__always) public func List_instDecidablePairwise<A>(_ inst_1: @escaping (A, A) -> Decidable, _ x_2: List<A>) -> Decidable {
+@inline(__always) public func List_instDecidablePairwise<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ x_2: List<A>) -> Decidable {
   x_2.instDecidablePairwise(inst_1)
 }
 
 /// List.replicateTR
 public func List_replicateTR<A>(_ n: Nat, _ a: A) -> List<A> {
-  let _x_1: List<A> = .`nil`
+  let _x_1: List<A> = List<A>.`nil`
   return List_replicateTR_loop(a, n, _x_1)
 }
 
@@ -1509,6 +1624,19 @@ public extension List {
   x_1.`getLast?`
 }
 
+/// List.partition
+public extension List {
+  func partition(_ p: @escaping (A) -> Bool) -> Prod<List<A>, List<A>> {
+    let _x_1: List<A> = List<A>.`nil`
+    let _x_2: Prod<List<A>, List<A>> = Prod<List<A>, List<A>>(_x_1, _x_1)
+    return List_partition_loop(p, self, _x_2)
+  }
+}
+
+@inline(__always) public func List_partition<A>(_ p: @escaping (A) -> Bool, _ `as`: List<A>) -> Prod<List<A>, List<A>> {
+  `as`.partition(p)
+}
+
 /// List.countP
 public extension List {
   func countP(_ p: @escaping (A) -> Bool) -> Nat {
@@ -1542,9 +1670,9 @@ public extension List {
     case .`nil`:
       return self
     case .cons(let head_2, let tail_3):
-      let _x_4: Bool = p(head_2)
+      let _x_4 = p(head_2)
       if _x_4 {
-        let _x_6: List<A> = tail_3.takeWhile(p)
+        let _x_6 = tail_3.takeWhile(p)
         return List<A>.cons(head_2, _x_6)
       } else {
         return List<A>.`nil`
@@ -1574,7 +1702,7 @@ public extension List {
     case .`nil`:
       return nil
     case .cons(let head_3, let tail_4):
-      let _x_5: B? = f(head_3)
+      let _x_5 = f(head_3)
       if _x_5 != nil {
         return _x_5
       } else {
@@ -1597,7 +1725,7 @@ public extension List {
     case .`nil`:
       return x_2
     case .cons(let head_3, let tail_4):
-      let _x_5: List<A> = .cons(head_3, x_2)
+      let _x_5: List<A> = List<A>.cons(head_3, x_2)
       return tail_4.reverseAux(_x_5)
     default:
       fatalError("unreachable")
@@ -1616,8 +1744,8 @@ public extension List where A: Equatable {
     case .`nil`:
       return List<List<A>>.`nil`
     case .cons(let head_3, let tail_4):
-      let _x_5: List<A> = .`nil`
-      let _x_6: List<List<A>> = .`nil`
+      let _x_5: List<A> = List<A>.`nil`
+      let _x_6: List<List<A>> = List<List<A>>.`nil`
       return List_splitBy_loop(R, tail_4, head_3, _x_5, _x_6)
     default:
       fatalError("unreachable")
@@ -1629,11 +1757,33 @@ public extension List where A: Equatable {
   x_1.splitBy(R)
 }
 
+/// List.zipIdx
+public extension List {
+  func zipIdx(_ x_2: Nat) -> List<Prod<A, Nat>> {
+    switch self {
+    case .`nil`:
+      return List<Prod<A, Nat>>.`nil`
+    case .cons(let head_4, let tail_5):
+      let _x_6: Prod<A, Nat> = Prod<A, Nat>(head_4, x_2)
+      let _x_7: Nat = 1
+      let _x_8 = x_2 + _x_7
+      let _x_9 = tail_5.zipIdx(_x_8)
+      return List<Prod<A, Nat>>.cons(_x_6, _x_9)
+    default:
+      fatalError("unreachable")
+    }
+  }
+}
+
+@inline(__always) public func List_zipIdx<A>(_ x_1: List<A>, _ x_2: Nat) -> List<Prod<A, Nat>> {
+  x_1.zipIdx(x_2)
+}
+
 /// List.leftpadTR
 public extension List {
   func leftpadTR(_ n: Nat, _ a: A) -> List<A> {
-    let _x_1: Nat = List_lengthTR(self)
-    let _x_2: Nat = n - _x_1
+    let _x_1 = List_lengthTR(self)
+    let _x_2 = n - _x_1
     return List_replicateTR_loop(a, _x_2, self)
   }
 }
@@ -1645,14 +1795,14 @@ public extension List {
 /// List.zipWithAll
 public extension List {
   func zipWithAll<B, C>(_ f: @escaping (A?, B?) -> C, _ x_2: List<B>) -> List<C> {
-    func _f_3(_ b: Any) -> Any {
-      let _x_4: C? = nil
-      let _x_5: C? = .some(b)
+    func _f_3(_ b: B) -> C {
+      let _x_4: A? = nil
+      let _x_5: B? = B?.some(b)
       return f(_x_4, _x_5)
     }
-    func _f_7(_ a: Any) -> Any {
-      let _x_8: C? = .some(a)
-      let _x_9: C? = nil
+    func _f_7(_ a: A) -> C {
+      let _x_8: A? = A?.some(a)
+      let _x_9: B? = nil
       return f(_x_8, _x_9)
     }
     switch self {
@@ -1663,10 +1813,10 @@ public extension List {
       case .`nil`:
         return List_map(_f_7, self)
       case .cons(let head_15, let tail_16):
-        let _x_17: C? = .some(head_12)
-        let _x_18: C? = .some(head_15)
+        let _x_17: A? = A?.some(head_12)
+        let _x_18: B? = B?.some(head_15)
         let _x_19 = f(_x_17, _x_18)
-        let _x_20: List<C> = tail_13.zipWithAll(f, tail_16)
+        let _x_20 = tail_13.zipWithAll(f, tail_16)
         return List<C>.cons(_x_19, _x_20)
       default:
         fatalError("unreachable")
@@ -1688,7 +1838,7 @@ public extension List {
     case .`nil`:
       return false
     case .cons(let head_4, let tail_5):
-      let _x_6: Bool = x_2(head_4)
+      let _x_6 = x_2(head_4)
       if _x_6 {
         return _x_6
       } else {
@@ -1704,19 +1854,38 @@ public extension List {
   x_1.any(x_2)
 }
 
+/// List.splitAt.go
+public func List_splitAt_go<A>(_ l: List<A>, _ x_1: List<A>, _ x_2: Nat, _ x_3: List<A>) -> Prod<List<A>, List<A>> {
+  switch x_1 {
+  case .`nil`:
+    return Prod<List<A>, List<A>>(l, x_1)
+  case .cons(let head_5, let tail_6):
+    if x_2 == 0 {
+      let _x_7 = x_3.reverse
+      return Prod<List<A>, List<A>>(_x_7, x_1)
+    } else {
+      let n_9: Nat = x_2 - 1
+      let _x_10: List<A> = List<A>.cons(head_5, x_3)
+      return List_splitAt_go(l, tail_6, n_9, _x_10)
+    }
+  default:
+    fatalError("unreachable")
+  }
+}
+
 /// List.rotateRight
 public extension List {
   func rotateRight(_ i: Nat) -> List<A> {
-    let len: Nat = List_length(self)
+    let len = List_length(self)
     let _x_1: Nat = 1
-    let _x_2: Bool = len <= _x_1
+    let _x_2 = len <= _x_1
     if _x_2 {
       return self
     } else {
-      let _x_4: Nat = i % len
-      let i: Nat = len - _x_4
-      let ys: List<A> = self.take(i)
-      let zs: List<A> = self.drop(i)
+      let _x_4 = i % len
+      let i = len - _x_4
+      let ys = self.take(i)
+      let zs = self.drop(i)
       return zs.appendTR(ys)
     }
   }
@@ -1732,12 +1901,12 @@ public func List_eraseDupsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _
   case .`nil`:
     return x_2.reverse
   case .cons(let head_4, let tail_5):
-    let _x_6: (A) -> Bool = r(head_4)
-    let _x_7: Bool = x_2.any(_x_6)
+    let _x_6: (A) -> Bool = { _pa0 in r(head_4, _pa0) }
+    let _x_7 = x_2.any(_x_6)
     if _x_7 {
       return List_eraseDupsBy_loop(r, tail_5, x_2)
     } else {
-      let _x_8: List<A> = .cons(head_4, x_2)
+      let _x_8: List<A> = List<A>.cons(head_4, x_2)
       return List_eraseDupsBy_loop(r, tail_5, _x_8)
     }
   default:
@@ -1757,7 +1926,7 @@ public extension List {
         return List<C>.`nil`
       case .cons(let head_7, let tail_8):
         let _x_9 = f(head_4, head_7)
-        let _x_10: List<C> = tail_5.zipWith(f, tail_8)
+        let _x_10 = tail_5.zipWith(f, tail_8)
         return List<C>.cons(_x_9, _x_10)
       default:
         fatalError("unreachable")
@@ -1787,8 +1956,8 @@ public extension List {
 /// List.rightpad
 public extension List {
   func rightpad(_ n: Nat, _ a: A) -> List<A> {
-    let _x_1: Nat = List_length(self)
-    let _x_2: Nat = n - _x_1
+    let _x_1 = List_length(self)
+    let _x_2 = n - _x_1
     let _x_3: List<A> = List_replicate(_x_2, a)
     return self.appendTR(_x_3)
   }
@@ -1801,7 +1970,7 @@ public extension List {
 /// List.instDecidableMemOfLawfulBEq_src
 public extension List where A: Equatable {
   func instDecidableMemOfLawfulBEq_src(_ a: A) -> Decidable {
-    let _x_3: Bool = self.elem(a)
+    let _x_3 = self.elem(a)
     if _x_3 {
       return Decidable.isTrue
     } else {

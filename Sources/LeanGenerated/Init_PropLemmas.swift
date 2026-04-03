@@ -10,53 +10,38 @@ import LeanExterns
 
 /// exists_prop_decidable
 @inline(__always) public func exists_prop_decidable(_ inst_1: Decidable, _ inst_2: Decidable) -> Decidable {
-  switch inst_1 {
-  case .isFalse:
-    return Decidable.isFalse
-  case .isTrue:
-    let _x_4: Decidable = inst_2
-    switch _x_4 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+  if Decidable_decide(inst_1) {
+    let _x_4 = inst_2
+    if Decidable_decide(_x_4) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
-  default:
-    fatalError("unreachable")
+  } else {
+    return Decidable.isFalse
   }
 }
 
 /// decidable_of_iff'
 @inline(__always) public func `decidable_of_iff'`(_ inst_1: Decidable) -> Decidable {
-  switch inst_1 {
-  case .isFalse:
-    return Decidable.isFalse
-  case .isTrue:
+  if Decidable_decide(inst_1) {
     return Decidable.isTrue
-  default:
-    fatalError("unreachable")
+  } else {
+    return Decidable.isFalse
   }
 }
 
 /// forall_prop_decidable
 @inline(__always) public func forall_prop_decidable(_ inst_1: Decidable, _ inst_2: Decidable) -> Decidable {
-  switch inst_1 {
-  case .isFalse:
-    return Decidable.isTrue
-  case .isTrue:
-    let _x_4: Decidable = inst_2
-    switch _x_4 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+  if Decidable_decide(inst_1) {
+    let _x_4 = inst_2
+    if Decidable_decide(_x_4) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
-  default:
-    fatalError("unreachable")
+  } else {
+    return Decidable.isTrue
   }
 }
 
@@ -68,13 +53,10 @@ public func instDecidablePredComp__aux_1<A, B>(_ f: @escaping (B) -> A, _ inst_3
 
 /// decidable_of_iff
 @inline(__always) public func decidable_of_iff(_ inst_1: Decidable) -> Decidable {
-  switch inst_1 {
-  case .isFalse:
-    return Decidable.isFalse
-  case .isTrue:
+  if Decidable_decide(inst_1) {
     return Decidable.isTrue
-  default:
-    fatalError("unreachable")
+  } else {
+    return Decidable.isFalse
   }
 }
 

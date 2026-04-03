@@ -19,3 +19,9 @@ public struct StdGen: @unchecked Sendable {
   }
 }
 
+public let stdRange: Prod<Nat, Nat> = {
+  let _x_1: Nat = 1
+  let _x_2: Nat = 2147483562
+  return Prod<Nat, Nat>(_x_1, _x_2)
+}()
+

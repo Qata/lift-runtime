@@ -10,7 +10,7 @@ import LeanExterns
 
 /// Int8.toNatClampNeg
 @inline(__always) public func Int8_toNatClampNeg(_ i: Int8) -> Nat {
-  let _x_1: SignedNat = Int8_toInt(i)
+  let _x_1 = Int8_toInt(i)
   return Int_toNat(_x_1)
 }
 
@@ -24,7 +24,7 @@ public let Int64_size: Nat = {
 
 /// ISize.toNatClampNeg
 @inline(__always) public func ISize_toNatClampNeg(_ i: Int) -> Nat {
-  let _x_1: SignedNat = ISize_toInt(i)
+  let _x_1 = ISize_toInt(i)
   return Int_toNat(_x_1)
 }
 
@@ -73,7 +73,7 @@ public let Int16_maxValue: Int16 = {
 
 /// Int32.toNatClampNeg
 @inline(__always) public func Int32_toNatClampNeg(_ i: Int32) -> Nat {
-  let _x_1: SignedNat = Int32_toInt(i)
+  let _x_1 = Int32_toInt(i)
   return Int_toNat(_x_1)
 }
 
@@ -83,7 +83,7 @@ public let Int16_minValue: Int16 = {
 
 /// Int64.toNatClampNeg
 @inline(__always) public func Int64_toNatClampNeg(_ i: Int64) -> Nat {
-  let _x_1: SignedNat = Int64_toInt(i)
+  let _x_1 = Int64_toInt(i)
   return Int_toNat(_x_1)
 }
 
@@ -93,7 +93,7 @@ public let Int32_minValue: Int32 = {
 
 /// Int16.toNatClampNeg
 @inline(__always) public func Int16_toNatClampNeg(_ i: Int16) -> Nat {
-  let _x_1: SignedNat = Int16_toInt(i)
+  let _x_1 = Int16_toInt(i)
   return Int_toNat(_x_1)
 }
 

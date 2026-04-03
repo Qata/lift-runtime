@@ -28,11 +28,6 @@ public func String_toUTF8(_ a: String) -> Array<UInt8> {
   return Array(a.utf8)
 }
 
-/// @[extern] String.intercalate
-public func String_intercalate(_ s: String, _ x_1: List<String>) -> String {
-  return x_1.toArray().joined(separator: s)
-}
-
 /// @[extern] String.append
 public func String_append(_ s: String, _ t: String) -> String {
   return s + t

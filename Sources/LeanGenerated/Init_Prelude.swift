@@ -10,24 +10,24 @@ import LeanExterns
 
 /// EStateM.Result
 public enum EStateM_Result<A, B, C>: @unchecked Sendable {
-  case ok(Any, Any)
-  case error(Any, Any)
+  case ok(C, B)
+  case error(A, B)
 }
 
 /// PULift
 public struct PULift<A>: @unchecked Sendable {
-  let down: Any
+  let down: A
 
-  public init(_ down: Any) {
+  public init(_ down: A) {
     self.down = down
   }
 }
 
 /// ULift
 public struct ULift<A>: @unchecked Sendable {
-  let down: Any
+  let down: A
 
-  public init(_ down: Any) {
+  public init(_ down: A) {
     self.down = down
   }
 }
@@ -38,19 +38,19 @@ public enum PEmpty: @unchecked Sendable {
 
 /// PLift
 public struct PLift<A>: @unchecked Sendable {
-  let down: Any
+  let down: A
 
-  public init(_ down: Any) {
+  public init(_ down: A) {
     self.down = down
   }
 }
 
 /// MProd
 public struct MProd<A, B>: @unchecked Sendable {
-  let fst: Any
-  let snd: Any
+  let fst: A
+  let snd: B
 
-  public init(_ fst: Any, _ snd: Any) {
+  public init(_ fst: A, _ snd: B) {
     self.fst = fst
     self.snd = snd
   }
@@ -103,7 +103,7 @@ public extension List {
     case .`nil`:
       return x_2
     case .cons(let head_3, let tail_4):
-      let _x_5: List<A> = tail_4.append(x_2)
+      let _x_5 = tail_4.append(x_2)
       return List<A>.cons(head_3, _x_5)
     default:
       fatalError("unreachable")
@@ -119,7 +119,7 @@ public extension List {
 public func Array_mkArray2<A>(_ `a₁`: A, _ `a₂`: A) -> Array<A> {
   let _x_1: Nat = 2
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
+  let _x_3 = Array_push(_x_2, `a₁`)
   return Array_push(_x_3, `a₂`)
 }
 
@@ -143,17 +143,17 @@ public extension List {
 public func Array_mkArray7<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A, _ `a₅`: A, _ `a₆`: A, _ `a₇`: A) -> Array<A> {
   let _x_1: Nat = 7
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
-  let _x_4: Array<A> = Array_push(_x_3, `a₂`)
-  let _x_5: Array<A> = Array_push(_x_4, `a₃`)
-  let _x_6: Array<A> = Array_push(_x_5, `a₄`)
-  let _x_7: Array<A> = Array_push(_x_6, `a₅`)
-  let _x_8: Array<A> = Array_push(_x_7, `a₆`)
+  let _x_3 = Array_push(_x_2, `a₁`)
+  let _x_4 = Array_push(_x_3, `a₂`)
+  let _x_5 = Array_push(_x_4, `a₃`)
+  let _x_6 = Array_push(_x_5, `a₄`)
+  let _x_7 = Array_push(_x_6, `a₅`)
+  let _x_8 = Array_push(_x_7, `a₆`)
   return Array_push(_x_8, `a₇`)
 }
 
 /// instDecidableEqList
-public func instDecidableEqList<A>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: List<A>, _ ys: List<A>) -> Decidable {
+public func instDecidableEqList<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: List<A>, _ ys: List<A>) -> Decidable {
   switch xs {
   case .`nil`:
     switch ys {
@@ -169,22 +169,16 @@ public func instDecidableEqList<A>(_ inst_1: @escaping (A, A) -> Decidable, _ xs
     case .`nil`:
       return Decidable.isFalse
     case .cons(let head_9, let tail_10):
-      let _x_11: Decidable = tail_7.hasDecEq(inst_1, tail_10)
-      let _x_12: Decidable = inst_1(head_6, head_9)
-      switch _x_12 {
-      case .isFalse:
-        return Decidable.isFalse
-      case .isTrue:
-        switch _x_11 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+      let _x_11 = tail_7.hasDecEq(inst_1, tail_10)
+      let _x_12 = inst_1(head_6, head_9)
+      if Decidable_decide(_x_12) {
+        if Decidable_decide(_x_11) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
-      default:
-        fatalError("unreachable")
+      } else {
+        return Decidable.isFalse
       }
     default:
       fatalError("unreachable")
@@ -215,7 +209,7 @@ public let UInt16_size: Nat = {
 
 /// Array.appendCore
 public func Array_appendCore<A>(_ `as`: Array<A>, _ bs: Array<A>) -> Array<A> {
-  let _x_1: Nat = Array_size(bs)
+  let _x_1 = Array_size(bs)
   let _x_2: Nat = 0
   return Array_appendCore_loop(bs, _x_1, _x_2, `as`)
 }
@@ -248,7 +242,7 @@ public let instInhabitedBool_default: Bool = {
 }()
 
 /// decEq
-public func decEq<A>(_ inst: @escaping (A, A) -> Decidable, _ a: A, _ b: A) -> Decidable {
+public func decEq<A: Equatable>(_ inst: @escaping (A, A) -> Decidable, _ a: A, _ b: A) -> Decidable {
   inst(a, b)
 }
 
@@ -258,7 +252,7 @@ public func List_toByteArray_loop(_ x_1: List<UInt8>, _ x_2: Array<UInt8>) -> Ar
   case .`nil`:
     return x_2
   case .cons(let head_3, let tail_4):
-    let _x_5: Array<UInt8> = ByteArray_push(x_2, head_3)
+    let _x_5 = ByteArray_push(x_2, head_3)
     return List_toByteArray_loop(tail_4, _x_5)
   default:
     fatalError("unreachable")
@@ -290,7 +284,7 @@ public func List_flatten<A>(_ x_1: List<List<A>>) -> List<A> {
   case .`nil`:
     return List<A>.`nil`
   case .cons(let head_3, let tail_4):
-    let _x_5: List<A> = List_flatten(tail_4)
+    let _x_5 = List_flatten(tail_4)
     return head_3.append(_x_5)
   default:
     fatalError("unreachable")
@@ -301,11 +295,11 @@ public func List_flatten<A>(_ x_1: List<List<A>>) -> List<A> {
 public func Array_mkArray6<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A, _ `a₅`: A, _ `a₆`: A) -> Array<A> {
   let _x_1: Nat = 6
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
-  let _x_4: Array<A> = Array_push(_x_3, `a₂`)
-  let _x_5: Array<A> = Array_push(_x_4, `a₃`)
-  let _x_6: Array<A> = Array_push(_x_5, `a₄`)
-  let _x_7: Array<A> = Array_push(_x_6, `a₅`)
+  let _x_3 = Array_push(_x_2, `a₁`)
+  let _x_4 = Array_push(_x_3, `a₂`)
+  let _x_5 = Array_push(_x_4, `a₃`)
+  let _x_6 = Array_push(_x_5, `a₄`)
+  let _x_7 = Array_push(_x_6, `a₅`)
   return Array_push(_x_7, `a₆`)
 }
 
@@ -313,9 +307,9 @@ public func Array_mkArray6<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A
 public func Array_mkArray4<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A) -> Array<A> {
   let _x_1: Nat = 4
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
-  let _x_4: Array<A> = Array_push(_x_3, `a₂`)
-  let _x_5: Array<A> = Array_push(_x_4, `a₃`)
+  let _x_3 = Array_push(_x_2, `a₁`)
+  let _x_4 = Array_push(_x_3, `a₂`)
+  let _x_5 = Array_push(_x_4, `a₃`)
   return Array_push(_x_5, `a₄`)
 }
 
@@ -339,8 +333,8 @@ public func Bool_ctorIdx(_ x: Bool) -> Nat {
 
 /// Array.getD
 @inline(__always) public func Array_getD<A>(_ a: Array<A>, _ i: Nat, _ `v₀`: A) -> A {
-  let _x_1: Nat = Array_size(a)
-  let _x_2: Bool = i < _x_1
+  let _x_1 = Array_size(a)
+  let _x_2 = i < _x_1
   if _x_2 {
     return Array_getInternal(a, i)
   } else {
@@ -351,13 +345,10 @@ public func Bool_ctorIdx(_ x: Bool) -> Nat {
 /// Decidable.decide
 public extension Decidable {
   var decide: Bool {
-    switch self {
-    case .isFalse:
-      return false
-    case .isTrue:
+    if Decidable_decide(self) {
       return true
-    default:
-      fatalError("unreachable")
+    } else {
+      return false
     }
   }
 }
@@ -397,24 +388,24 @@ public extension List {
 public func Array_mkArray3<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A) -> Array<A> {
   let _x_1: Nat = 3
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
-  let _x_4: Array<A> = Array_push(_x_3, `a₂`)
+  let _x_3 = Array_push(_x_2, `a₁`)
+  let _x_4 = Array_push(_x_3, `a₂`)
   return Array_push(_x_4, `a₃`)
 }
 
 /// Array.appendCore.loop
 public func Array_appendCore_loop<A>(_ bs: Array<A>, _ i: Nat, _ j: Nat, _ `as`: Array<A>) -> Array<A> {
-  let _x_1: Nat = Array_size(bs)
-  let _x_2: Bool = j < _x_1
+  let _x_1 = Array_size(bs)
+  let _x_2 = j < _x_1
   if _x_2 {
     if i == 0 {
       return `as`
     } else {
       let n_4: Nat = i - 1
       let _x_5: Nat = 1
-      let _x_6: Nat = j + _x_5
+      let _x_6 = j + _x_5
       let _x_7 = Array_getInternal(bs, j)
-      let _x_8: Array<A> = Array_push(`as`, _x_7)
+      let _x_8 = Array_push(`as`, _x_7)
       return Array_appendCore_loop(bs, n_4, _x_6, _x_8)
     }
   } else {
@@ -452,34 +443,28 @@ public extension Except {
 
 /// Nat.div.go
 public func Nat_div_go(_ y: Nat, _ fuel: Nat, _ x: Nat) -> Nat {
-  let _x_1: Decidable = Nat_decLe(y, x)
+  let _x_1 = Nat_decLe(y, x)
   if fuel == 0 {
     fatalError("unreachable")
   } else {
     let n_2: Nat = fuel - 1
-    switch _x_1 {
-    case .isFalse:
-      return 0
-    case .isTrue:
-      let _x_5: Nat = x - y
-      let _x_6: Nat = Nat_div_go(y, n_2, _x_5)
+    if Decidable_decide(_x_1) {
+      let _x_5 = x - y
+      let _x_6 = Nat_div_go(y, n_2, _x_5)
       let _x_7: Nat = 1
       return _x_6 + _x_7
-    default:
-      fatalError("unreachable")
+    } else {
+      return 0
     }
   }
 }
 
 /// instDecidableNot
 @inline(__always) public func instDecidableNot(_ dp: Decidable) -> Decidable {
-  switch dp {
-  case .isFalse:
-    return Decidable.isTrue
-  case .isTrue:
+  if Decidable_decide(dp) {
     return Decidable.isFalse
-  default:
-    fatalError("unreachable")
+  } else {
+    return Decidable.isTrue
   }
 }
 
@@ -494,7 +479,7 @@ public extension List {
         return List<A>.cons(x_3, tail_5)
       } else {
         let n_7: Nat = x_2 - 1
-        let _x_8: List<A> = tail_5.set(n_7, x_3)
+        let _x_8 = tail_5.set(n_7, x_3)
         return List<A>.cons(head_4, _x_8)
       }
     default:
@@ -513,17 +498,17 @@ public extension List {
 
 /// Array.extract.loop
 public func Array_extract_loop<A>(_ `as`: Array<A>, _ i: Nat, _ j: Nat, _ bs: Array<A>) -> Array<A> {
-  let _x_1: Nat = Array_size(`as`)
-  let _x_2: Bool = j < _x_1
+  let _x_1 = Array_size(`as`)
+  let _x_2 = j < _x_1
   if _x_2 {
     if i == 0 {
       return bs
     } else {
       let n_4: Nat = i - 1
       let _x_5: Nat = 1
-      let _x_6: Nat = j + _x_5
+      let _x_6 = j + _x_5
       let _x_7 = Array_getInternal(`as`, j)
-      let _x_8: Array<A> = Array_push(bs, _x_7)
+      let _x_8 = Array_push(bs, _x_7)
       return Array_extract_loop(`as`, n_4, _x_6, _x_8)
     }
   } else {
@@ -546,7 +531,7 @@ public extension List {
     case .`nil`:
       return List<A>.cons(x_2, self)
     case .cons(let head_4, let tail_5):
-      let _x_6: List<A> = tail_5.concat(x_2)
+      let _x_6 = tail_5.concat(x_2)
       return List<A>.cons(head_4, _x_6)
     default:
       fatalError("unreachable")
@@ -616,7 +601,7 @@ public extension List {
       return List<B>.`nil`
     case .cons(let head_3, let tail_4):
       let _x_5 = f(head_3)
-      let _x_6: List<B> = tail_4.map(f)
+      let _x_6 = tail_4.map(f)
       return List<B>.cons(_x_5, _x_6)
     default:
       fatalError("unreachable")
@@ -648,13 +633,13 @@ public extension Nat {
 public func Array_mkArray8<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A, _ `a₅`: A, _ `a₆`: A, _ `a₇`: A, _ `a₈`: A) -> Array<A> {
   let _x_1: Nat = 8
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
-  let _x_4: Array<A> = Array_push(_x_3, `a₂`)
-  let _x_5: Array<A> = Array_push(_x_4, `a₃`)
-  let _x_6: Array<A> = Array_push(_x_5, `a₄`)
-  let _x_7: Array<A> = Array_push(_x_6, `a₅`)
-  let _x_8: Array<A> = Array_push(_x_7, `a₆`)
-  let _x_9: Array<A> = Array_push(_x_8, `a₇`)
+  let _x_3 = Array_push(_x_2, `a₁`)
+  let _x_4 = Array_push(_x_3, `a₂`)
+  let _x_5 = Array_push(_x_4, `a₃`)
+  let _x_6 = Array_push(_x_5, `a₄`)
+  let _x_7 = Array_push(_x_6, `a₅`)
+  let _x_8 = Array_push(_x_7, `a₆`)
+  let _x_9 = Array_push(_x_8, `a₇`)
   return Array_push(_x_9, `a₈`)
 }
 
@@ -666,16 +651,16 @@ public let UInt32_size: Nat = {
 public func Array_mkArray5<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A, _ `a₅`: A) -> Array<A> {
   let _x_1: Nat = 5
   let _x_2: Array<A> = Array_emptyWithCapacity(_x_1)
-  let _x_3: Array<A> = Array_push(_x_2, `a₁`)
-  let _x_4: Array<A> = Array_push(_x_3, `a₂`)
-  let _x_5: Array<A> = Array_push(_x_4, `a₃`)
-  let _x_6: Array<A> = Array_push(_x_5, `a₄`)
+  let _x_3 = Array_push(_x_2, `a₁`)
+  let _x_4 = Array_push(_x_3, `a₂`)
+  let _x_5 = Array_push(_x_4, `a₃`)
+  let _x_6 = Array_push(_x_5, `a₄`)
   return Array_push(_x_6, `a₅`)
 }
 
 /// List.toByteArray
 public func List_toByteArray(_ bs: List<UInt8>) -> Array<UInt8> {
-  let _x_1: Array<UInt8> = ByteArray_empty
+  let _x_1 = ByteArray_empty
   return List_toByteArray_loop(bs, _x_1)
 }
 
@@ -699,12 +684,12 @@ public func List_toByteArray(_ bs: List<UInt8>) -> Array<UInt8> {
 /// Array.extract
 public func Array_extract<A>(_ `as`: Array<A>, _ start: Nat, _ stop: Nat) -> Array<A> {
   func _jp_1(_ _y_2: Nat) -> Array<A> {
-    let `sz'`: Nat = _y_2 - start
+    let `sz'` = _y_2 - start
     let _x_3: Array<A> = Array_emptyWithCapacity(`sz'`)
     return Array_extract_loop(`as`, `sz'`, start, _x_3)
   }
-  let _x_5: Nat = Array_size(`as`)
-  let _x_6: Bool = stop <= _x_5
+  let _x_5 = Array_size(`as`)
+  let _x_6 = stop <= _x_5
   if _x_6 {
     return _jp_1(stop    )
   } else {
@@ -713,7 +698,7 @@ public func Array_extract<A>(_ `as`: Array<A>, _ start: Nat, _ stop: Nat) -> Arr
 }
 
 /// List.hasDecEq
-public extension List {
+public extension List where A: Equatable {
   func hasDecEq(_ inst_1: @escaping (A, A) -> Decidable, _ x_3: List<A>) -> Decidable {
     switch self {
     case .`nil`:
@@ -731,22 +716,16 @@ public extension List {
       case .`nil`:
         return _x_10
       case .cons(let head_11, let tail_12):
-        let _x_13: Decidable = tail_9.hasDecEq(inst_1, tail_12)
-        let _x_14: Decidable = inst_1(head_8, head_11)
-        switch _x_14 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
-          switch _x_13 {
-          case .isFalse:
-            return Decidable.isFalse
-          case .isTrue:
+        let _x_13 = tail_9.hasDecEq(inst_1, tail_12)
+        let _x_14 = inst_1(head_8, head_11)
+        if Decidable_decide(_x_14) {
+          if Decidable_decide(_x_13) {
             return Decidable.isTrue
-          default:
-            fatalError("unreachable")
+          } else {
+            return Decidable.isFalse
           }
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
       default:
         fatalError("unreachable")
@@ -757,7 +736,7 @@ public extension List {
   }
 }
 
-@inline(__always) public func List_hasDecEq<A>(_ inst_1: @escaping (A, A) -> Decidable, _ x_2: List<A>, _ x_3: List<A>) -> Decidable {
+@inline(__always) public func List_hasDecEq<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ x_2: List<A>, _ x_3: List<A>) -> Decidable {
   x_2.hasDecEq(inst_1, x_3)
 }
 
@@ -775,7 +754,7 @@ public extension List {
 /// List.flatMap
 public extension List {
   func flatMap<B>(_ b: @escaping (A) -> List<B>) -> List<B> {
-    let _x_1: List<List<B>> = self.map(b)
+    let _x_1 = self.map(b)
     return List_flatten(_x_1)
   }
 }

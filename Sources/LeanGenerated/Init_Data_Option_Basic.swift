@@ -89,7 +89,7 @@ public func Option_decidableNoneEq<A>(_ o: A?) -> Decidable {
 /// Option.filter
 @inline(__always) public func Option_filter<A>(_ p: @escaping (A) -> Bool, _ x_1: A?) -> A? {
   if let val_2 = x_1 {
-    let _x_3: Bool = p(val_2)
+    let _x_3 = p(val_2)
     if _x_3 {
       return x_1
     } else {
@@ -118,17 +118,14 @@ public func Option_instBEq_beq<A: Equatable>(_ x_3: A?, _ x_4: A?) -> Bool {
 }
 
 /// Option.instDecidableEq
-public func Option_instDecidableEq<A>(_ inst: @escaping (A, A) -> Decidable, _ a: A?, _ b: A?) -> Decidable {
+public func Option_instDecidableEq<A: Equatable>(_ inst: @escaping (A, A) -> Decidable, _ a: A?, _ b: A?) -> Decidable {
   if let val_4 = a {
     if let val_6 = b {
-      let _x_7: Decidable = inst(val_4, val_6)
-      switch _x_7 {
-      case .isFalse:
-        return Decidable.isFalse
-      case .isTrue:
+      let _x_7 = inst(val_4, val_6)
+      if Decidable_decide(_x_7) {
         return Decidable.isTrue
-      default:
-        fatalError("unreachable")
+      } else {
+        return Decidable.isFalse
       }
     } else {
       return Decidable.isFalse

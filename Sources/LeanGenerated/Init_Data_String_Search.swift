@@ -13,7 +13,7 @@ import LeanExterns
   let _x_1: Nat = 0
   let _x_2: Nat = _x_1
   let _x_3: Nat = _x_2
-  let _x_4: Nat = String_utf8ByteSize(s)
+  let _x_4 = String_utf8ByteSize(s)
   let _x_5: Nat = _x_4
   let _x_6: Nat = _x_5
   let _x_7: String_Slice = String_Slice(s, _x_3, _x_6)
@@ -25,7 +25,7 @@ import LeanExterns
   let _x_1: Nat = 0
   let _x_2: Nat = _x_1
   let _x_3: Nat = _x_2
-  let _x_4: Nat = String_utf8ByteSize(s)
+  let _x_4 = String_utf8ByteSize(s)
   let _x_5: Nat = _x_4
   let _x_6: Nat = _x_5
   let _x_7: String_Slice = String_Slice(s, _x_3, _x_6)
@@ -37,11 +37,11 @@ import LeanExterns
   let _x_1: Nat = 0
   let _x_2: Nat = _x_1
   let _x_3: Nat = _x_2
-  let _x_4: Nat = String_utf8ByteSize(s)
+  let _x_4 = String_utf8ByteSize(s)
   let _x_5: Nat = _x_4
   let _x_6: Nat = _x_5
   let _x_7: String_Slice = String_Slice(s, _x_3, _x_6)
-  let _x_9: SignedNat? = `String_Slice_toInt?`(_x_7)
+  let _x_9 = `String_Slice_toInt?`(_x_7)
   if let val_12 = _x_9 {
     return val_12
   } else {
@@ -55,7 +55,7 @@ import LeanExterns
   let _x_1: Nat = 0
   let _x_2: Nat = _x_1
   let _x_3: Nat = _x_2
-  let _x_4: Nat = String_utf8ByteSize(s)
+  let _x_4 = String_utf8ByteSize(s)
   let _x_5: Nat = _x_4
   let _x_6: Nat = _x_5
   let _x_7: String_Slice = String_Slice(s, _x_3, _x_6)
@@ -67,7 +67,7 @@ import LeanExterns
   let _x_1: Nat = 0
   let _x_2: Nat = _x_1
   let _x_3: Nat = _x_2
-  let _x_4: Nat = String_utf8ByteSize(s)
+  let _x_4 = String_utf8ByteSize(s)
   let _x_5: Nat = _x_4
   let _x_6: Nat = _x_5
   let _x_7: String_Slice = String_Slice(s, _x_3, _x_6)

@@ -11,9 +11,9 @@ import LeanExterns
 /// Nat.decidable_dvd
 public extension Nat {
   func decidable_dvd(_ x_2: Nat) -> Decidable {
-    let _x_3: Nat = x_2 % self
+    let _x_3 = x_2 % self
     let _x_4: Nat = 0
-    let _x_5: Bool = _x_3 == _x_4
+    let _x_5 = _x_3 == _x_4
     if _x_5 {
       return Decidable.isTrue
     } else {

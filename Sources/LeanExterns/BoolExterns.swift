@@ -8,21 +8,6 @@ import Darwin
 import Glibc
 #endif
 
-/// @[extern] Bool.ctorIdx
-public func Bool_ctorIdx(_ x: Bool) -> Nat {
-  return x ? 1 : 0
-}
-
-/// @[extern] Bool.toNat
-public func Bool_toNat(_ b: Bool) -> Nat {
-  return b ? 1 : 0
-}
-
-/// @[extern] Bool.toInt
-public func Bool_toInt(_ b: Bool) -> SignedNat {
-  return SignedNat(b ? 1 : 0)
-}
-
 /// @[extern] Bool.toUInt32
 public func Bool_toUInt32(_ b: Bool) -> UInt32 {
   return b ? 1 : 0

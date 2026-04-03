@@ -10,7 +10,7 @@ import LeanExterns
 
 /// Array.instDecidableEmpEqImpl
 @inline(__always) public func Array_instDecidableEmpEqImpl<A>(_ xs: Array<A>) -> Decidable {
-  let _x_1: Bool = Array_isEmpty(xs)
+  let _x_1 = Array_isEmpty(xs)
   if _x_1 {
     return Decidable.isTrue
   } else {
@@ -20,7 +20,7 @@ import LeanExterns
 
 /// Array.instDecidableEqEmpImpl
 @inline(__always) public func Array_instDecidableEqEmpImpl<A>(_ xs: Array<A>) -> Decidable {
-  let _x_1: Bool = Array_isEmpty(xs)
+  let _x_1 = Array_isEmpty(xs)
   if _x_1 {
     return Decidable.isTrue
   } else {
@@ -30,7 +30,7 @@ import LeanExterns
 
 /// Array.instDecidableEmpEq
 public func Array_instDecidableEmpEq<A>(_ ys: Array<A>) -> Decidable {
-  let toList_1: List<A> = ys.toList
+  let toList_1 = ys.toList
   switch toList_1 {
   case .`nil`:
     return Decidable.isTrue
@@ -42,16 +42,16 @@ public func Array_instDecidableEmpEq<A>(_ ys: Array<A>) -> Decidable {
 }
 
 /// Array.instDecidableEqImpl
-public func Array_instDecidableEqImpl<A>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: Array<A>, _ ys: Array<A>) -> Decidable {
+public func Array_instDecidableEqImpl<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: Array<A>, _ ys: Array<A>) -> Decidable {
   func _f_2(_ a: A, _ b: A) -> Bool {
-    let _x_3: Decidable = inst_1(a, b)
+    let _x_3 = inst_1(a, b)
     return Decidable_decide(_x_3)
   }
-  let _x_5: Nat = Array_size(xs)
-  let _x_6: Nat = Array_size(ys)
-  let _x_7: Bool = _x_5 == _x_6
+  let _x_5 = Array_size(xs)
+  let _x_6 = Array_size(ys)
+  let _x_7 = _x_5 == _x_6
   if _x_7 {
-    let _x_9: Bool = Array_isEqvAux(xs, ys, _f_2, _x_5)
+    let _x_9 = Array_isEqvAux(xs, ys, _f_2, _x_5)
     if _x_9 {
       return Decidable.isTrue
     } else {
@@ -64,7 +64,7 @@ public func Array_instDecidableEqImpl<A>(_ inst_1: @escaping (A, A) -> Decidable
 
 /// Array.instDecidableEqEmp
 public func Array_instDecidableEqEmp<A>(_ xs: Array<A>) -> Decidable {
-  let toList_1: List<A> = xs.toList
+  let toList_1 = xs.toList
   switch toList_1 {
   case .`nil`:
     return Decidable.isTrue
@@ -76,11 +76,11 @@ public func Array_instDecidableEqEmp<A>(_ xs: Array<A>) -> Decidable {
 }
 
 /// Array.instDecidableEq
-public func Array_instDecidableEq<A>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: Array<A>, _ ys: Array<A>) -> Decidable {
-  let toList_2: List<A> = xs.toList
+public func Array_instDecidableEq<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ xs: Array<A>, _ ys: Array<A>) -> Decidable {
+  let toList_2 = xs.toList
   switch toList_2 {
   case .`nil`:
-    let toList_3: List<A> = ys.toList
+    let toList_3 = ys.toList
     switch toList_3 {
     case .`nil`:
       return Decidable.isTrue
@@ -90,7 +90,7 @@ public func Array_instDecidableEq<A>(_ inst_1: @escaping (A, A) -> Decidable, _ 
       fatalError("unreachable")
     }
   case .cons:
-    let toList_10: List<A> = ys.toList
+    let toList_10 = ys.toList
     switch toList_10 {
     case .`nil`:
       return Decidable.isFalse

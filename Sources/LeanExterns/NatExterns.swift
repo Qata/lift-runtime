@@ -78,11 +78,6 @@ public func Nat_xor(_ a___u64___internal__hyg_1: Nat, _ a___u64___internal__hyg_
   return a___u64___internal__hyg_1 ^ a___u64___internal__hyg_2
 }
 
-/// @[extern] Nat.testBit
-public func Nat_testBit(_ m: Nat, _ n: Nat) -> Bool {
-  return (m >> n) % 2 != 0
-}
-
 /// @[extern] Nat.shiftLeft
 public func Nat_shiftLeft(_ a___u64___internal__hyg_1: Nat, _ a___u64___internal__hyg_2: Nat) -> Nat {
   return a___u64___internal__hyg_1 << a___u64___internal__hyg_2
@@ -113,8 +108,4 @@ public func Nat_nextPowerOfTwo(_ n: Nat) -> Nat {
   var p: Nat = 1; while p < n { p = p << 1 }; return p
 }
 
-/// @[extern] Nat.lcm
-public func Nat_lcm(_ m: Nat, _ n: Nat) -> Nat {
-  let g = Nat_gcd(m, n); return g == 0 ? 0 : m / g * n
-}
 

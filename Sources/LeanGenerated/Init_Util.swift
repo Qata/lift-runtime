@@ -10,9 +10,9 @@ import LeanExterns
 
 /// withPtrEqUnsafe
 @inline(__always) public func withPtrEqUnsafe<A>(_ a: A, _ b: A, _ k: @escaping (()) -> Bool) -> Bool {
-  let _x_1: UInt = ptrAddrUnsafe(a)
-  let _x_2: UInt = ptrAddrUnsafe(b)
-  let _x_4: Bool = _x_1 == _x_2
+  let _x_1 = ptrAddrUnsafe(a)
+  let _x_2 = ptrAddrUnsafe(b)
+  let _x_4 = _x_1 == _x_2
   if _x_4 {
     return _x_4
   } else {
@@ -30,23 +30,23 @@ import LeanExterns
       return Decidable.isFalse
     }
   }
-  let _x_5: UInt = ptrAddrUnsafe(a)
-  let _x_6: UInt = ptrAddrUnsafe(b)
-  let _x_8: Bool = _x_5 == _x_6
+  let _x_5 = ptrAddrUnsafe(a)
+  let _x_6 = ptrAddrUnsafe(b)
+  let _x_8 = _x_5 == _x_6
   if _x_8 {
     return _jp_1(_x_8    )
   } else {
     let _x_9: () = ()
-    let _x_10: Decidable = k(_x_9)
-    let _x_11: Bool = Decidable_decide(_x_10)
+    let _x_10 = k(_x_9)
+    let _x_11 = Decidable_decide(_x_10)
     return _jp_1(_x_11    )
   }
 }
 
 /// ptrEq
 @inline(__always) public func ptrEq<A>(_ a: A, _ b: A) -> Bool {
-  let _x_1: UInt = ptrAddrUnsafe(a)
-  let _x_2: UInt = ptrAddrUnsafe(b)
+  let _x_1 = ptrAddrUnsafe(a)
+  let _x_2 = ptrAddrUnsafe(b)
   return _x_1 == _x_2
 }
 
@@ -63,9 +63,9 @@ public func ptrEqList<A>(_ x_1: List<A>, _ x_2: List<A>) -> Bool {
   case .cons(let head_5, let tail_6):
     switch x_2 {
     case .cons(let head_7, let tail_8):
-      let _x_9: UInt = ptrAddrUnsafe(head_5)
-      let _x_10: UInt = ptrAddrUnsafe(head_7)
-      let _x_12: Bool = _x_9 == _x_10
+      let _x_9 = ptrAddrUnsafe(head_5)
+      let _x_10 = ptrAddrUnsafe(head_7)
+      let _x_12 = _x_9 == _x_10
       if _x_12 {
         return ptrEqList(tail_6, tail_8)
       } else {
@@ -91,7 +91,7 @@ public func dbgStackTraceIf<A>(_ cond: Bool, _ f: @escaping (()) -> A) -> A {
 
 /// withPtrAddrUnsafe
 @inline(__always) public func withPtrAddrUnsafe<A, B>(_ a: A, _ k: @escaping (UInt) -> B) -> B {
-  let _x_1: UInt = ptrAddrUnsafe(a)
+  let _x_1 = ptrAddrUnsafe(a)
   return k(_x_1)
 }
 

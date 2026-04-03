@@ -13,11 +13,6 @@ public func mixHash(_ u_u8321_: UInt64, _ u_u8322_: UInt64) -> UInt64 {
   return u_u8321_ ^ u_u8322_
 }
 
-/// @[extern] Option.ctorIdx
-public func Option_ctorIdx<A>(_ x: A?) -> Nat {
-  return x == nil ? 0 : 1
-}
-
 /// @[extern] sorryAx
 public func sorryAx<A>(_ synthetic: Bool) -> A {
   fatalError("sorry")
@@ -26,11 +21,6 @@ public func sorryAx<A>(_ synthetic: Bool) -> A {
 /// @[extern] isScalarObj
 public func isScalarObj<A>(_ x: A) -> Bool {
   return true
-}
-
-/// @[extern] Except.ctorIdx
-public func Except_ctorIdx<A, B>(_ x: Except<A, B>) -> Nat {
-  switch x { case .error: return 0; case .ok: return 1 }
 }
 
 /// @[extern] DoResultBC.ctorIdx
@@ -352,6 +342,11 @@ public func Decidable_decide(_ d: Decidable) -> Bool {
   switch d { case .isTrue: return true; case .isFalse: return false }
 }
 
+/// Overload: Decidable_decide on Bool is identity.
+/// Handles cases where LCNF type says Decidable but Swift comparison returns Bool.
+@inline(__always)
+public func Decidable_decide(_ b: Bool) -> Bool { b }
+
 /// @[extern] instDecidableEqNat
 public func instDecidableEqNat(_ a: Nat, _ b: Nat) -> Decidable {
   a == b ? .isTrue : .isFalse
@@ -417,8 +412,31 @@ public func Array_mapMUnsafe_map<A, B>(_ f: @escaping (A) -> B, _ sz: UInt, _ i:
   return result
 }
 
+public func List_decidableLT<A>(_ decEq: @escaping (A, A) -> Decidable, _ decLt: @escaping (A, A) -> Decidable, _ xs: List<A>, _ ys: List<A>) -> Decidable {
+  let a = xs.toArray(), b = ys.toArray()
+  for i in 0..<min(a.count, b.count) {
+    if Decidable_decide(decLt(a[i], b[i])) { return .isTrue }
+    if !Decidable_decide(decEq(a[i], b[i])) { return .isFalse }
+  }
+  return a.count < b.count ? .isTrue : .isFalse
+}
+
 public func Array_contains<A: Equatable>(_ `as`: Array<A>, _ a: A) -> Bool {
   `as`.contains(a)
+}
+
+public func Array_anyMUnsafe_any<A>(_ f: @escaping (A) -> Bool, _ `as`: Array<A>, _ i: UInt, _ stop: UInt) -> Bool {
+  for idx in Int(i)..<Int(stop) {
+    if f(`as`[idx]) { return true }
+  }
+  return false
+}
+
+public func Array_allMUnsafe_all<A>(_ f: @escaping (A) -> Bool, _ `as`: Array<A>, _ i: UInt, _ stop: UInt) -> Bool {
+  for idx in Int(i)..<Int(stop) {
+    if !f(`as`[idx]) { return false }
+  }
+  return true
 }
 
 // MARK: - Ord / comparison
@@ -501,9 +519,9 @@ public func `WellFounded_opaqueFix₃`<A, B, C>(_ f: @escaping (A, B, @escaping 
 // MARK: - Iterator types
 
 public struct Std_Rxo_Iterator<A>: @unchecked Sendable {
-  public var pos: A
-  public var stop: A
-  public init(_ pos: A, _ stop: A) { self.pos = pos; self.stop = stop }
+  public var next: A?
+  public var upperBound: A
+  public init(_ next: A?, _ upperBound: A) { self.next = next; self.upperBound = upperBound }
 }
 
 public struct Std_Iter<I, A>: @unchecked Sendable {
@@ -520,11 +538,29 @@ public func Std_Iter_toIterM<I, A>(_ iter: Std_Iter<I, A>) -> Std_IterM<I, A> {
   Std_IterM<I, A>(iter.inner)
 }
 
+// MARK: - ForInStep (iteration control)
+
+public enum ForInStep<A>: @unchecked Sendable {
+  case yield(A)
+  case done(A)
+}
+
+public func `Array_forIn'Unsafe_loop`<A, B>(_ xs: Array<A>, _ f: @escaping (A, B) -> ForInStep<B>, _ sz: UInt, _ i: UInt, _ b: B) -> B {
+  var acc = b
+  for idx in Int(i)..<Int(sz) {
+    switch f(xs[idx], acc) {
+    case .yield(let next): acc = next
+    case .done(let final): return final
+    }
+  }
+  return acc
+}
+
 public struct String_Slice_Pos: @unchecked Sendable {
+  public var slice: String_Slice
   public var raw: Nat
   public var offset: Nat { raw }
-  public var valid: Any
-  public init(_ raw: Nat, _ valid: Any) { self.raw = raw; self.valid = valid }
+  public init(_ slice: String_Slice, _ raw: Nat) { self.slice = slice; self.raw = raw }
 }
 
 public struct Subtype<A>: @unchecked Sendable {
@@ -564,11 +600,7 @@ public func Nat_decidableBallLT(_ h: @escaping (Nat) -> Decidable, _ n: Nat) -> 
 }
 
 // MARK: - Std_Rxo_Iterator extensions
-
-extension Std_Rxo_Iterator where A == Nat {
-  public var next: Nat { pos + 1 }
-  public var upperBound: Nat { stop }
-}
+// (fields next/upperBound now built into struct)
 
 // MARK: - Sigma extension (dependent snd field not emitted by code gen)
 
@@ -580,10 +612,10 @@ extension Std_Rxo_Iterator where A == Nat {
 
 // MARK: - String.Slice.Pos operations
 
-public func String_Slice_Pos_prevn(_ pos: String_Slice_Pos, _ n: Nat) -> String_Slice_Pos {
-  // Subtract n from the raw position (clamped at 0)
-  let newRaw = pos.raw - n
-  return String_Slice_Pos(newRaw, pos.valid)
+public func String_Slice_Pos_prevn(_ slice: String_Slice, _ pos: String_Slice_Pos, _ n: Nat) -> String_Slice_Pos {
+  // Subtract n from the raw position (clamped at slice start)
+  let newRaw = pos.raw >= n ? pos.raw - n : 0
+  return String_Slice_Pos(slice, newRaw)
 }
 
 // MARK: - String.mk (from List<Character>)

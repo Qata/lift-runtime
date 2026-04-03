@@ -21,16 +21,16 @@ public struct ST_Ref<A, B>: @unchecked Sendable {
 
 /// EST.Out
 public enum EST_Out<A, B, C>: @unchecked Sendable {
-  case ok(Any, Any)
-  case error(Any, Any)
+  case ok(C, Any)
+  case error(A, Any)
 }
 
 /// ST.Out
 public struct ST_Out<A, B>: @unchecked Sendable {
-  let val: Any
+  let val: B
   let state: Any
 
-  public init(_ val: Any, _ state: Any) {
+  public init(_ val: B, _ state: Any) {
     self.val = val
     self.state = state
   }

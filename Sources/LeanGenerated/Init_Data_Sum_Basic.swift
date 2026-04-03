@@ -9,20 +9,17 @@ import LeanRuntime
 import LeanExterns
 
 /// Sum.instDecidableRelSumLex
-public extension Sum {
+public extension Sum where A: Equatable, B: Equatable {
   func instDecidableRelSumLex(_ inst_3: @escaping (A, A) -> Decidable, _ inst_4: @escaping (B, B) -> Decidable, _ x_6: Sum<A, B>) -> Decidable {
     switch self {
     case .inl(let val_7):
       switch x_6 {
       case .inl(let val_8):
-        let _x_9: Decidable = inst_3(val_7, val_8)
-        switch _x_9 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+        let _x_9 = inst_3(val_7, val_8)
+        if Decidable_decide(_x_9) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
       case .inr:
         return Decidable.isTrue
@@ -34,14 +31,11 @@ public extension Sum {
       case .inl:
         return Decidable.isFalse
       case .inr(let val_17):
-        let _x_18: Decidable = inst_4(val_14, val_17)
-        switch _x_18 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+        let _x_18 = inst_4(val_14, val_17)
+        if Decidable_decide(_x_18) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
       default:
         fatalError("unreachable")
@@ -52,7 +46,7 @@ public extension Sum {
   }
 }
 
-@inline(__always) public func Sum_instDecidableRelSumLex<A, B>(_ inst_3: @escaping (A, A) -> Decidable, _ inst_4: @escaping (B, B) -> Decidable, _ x_5: Sum<A, B>, _ x_6: Sum<A, B>) -> Decidable {
+@inline(__always) public func Sum_instDecidableRelSumLex<A: Equatable, B: Equatable>(_ inst_3: @escaping (A, A) -> Decidable, _ inst_4: @escaping (B, B) -> Decidable, _ x_5: Sum<A, B>, _ x_6: Sum<A, B>) -> Decidable {
   x_5.instDecidableRelSumLex(inst_3, inst_4, x_6)
 }
 
@@ -193,14 +187,11 @@ public extension Sum {
     case .inl(let val_5):
       switch x_4 {
       case .inl(let val_6):
-        let _x_7: Decidable = inst_1(val_5, val_6)
-        switch _x_7 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+        let _x_7 = inst_1(val_5, val_6)
+        if Decidable_decide(_x_7) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
       case .inr:
         return Decidable.isFalse
@@ -212,14 +203,11 @@ public extension Sum {
       case .inl:
         return Decidable.isFalse
       case .inr(let val_15):
-        let _x_16: Decidable = inst_2(val_12, val_15)
-        switch _x_16 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+        let _x_16 = inst_2(val_12, val_15)
+        if Decidable_decide(_x_16) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
       default:
         fatalError("unreachable")

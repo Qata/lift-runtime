@@ -11,9 +11,9 @@ import LeanExterns
 /// Nat.instDecidableCoprime
 public extension Nat {
   func instDecidableCoprime(_ n: Nat) -> Decidable {
-    let _x_1: Nat = Nat_gcd(self, n)
+    let _x_1 = Nat_gcd(self, n)
     let _x_2: Nat = 1
-    let _x_3: Bool = _x_1 == _x_2
+    let _x_3 = _x_1 == _x_2
     if _x_3 {
       return Decidable.isTrue
     } else {

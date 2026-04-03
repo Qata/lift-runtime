@@ -11,14 +11,11 @@ import LeanExterns
 /// Option.decidableForallMem
 public func Option_decidableForallMem<A>(_ inst_1: @escaping (A) -> Decidable, _ x_2: A?) -> Decidable {
   if let val_4 = x_2 {
-    let _x_5: Decidable = inst_1(val_4)
-    switch _x_5 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+    let _x_5 = inst_1(val_4)
+    if Decidable_decide(_x_5) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
   } else {
     return Decidable.isTrue
@@ -36,16 +33,13 @@ public func Option_decidableForallMem<A>(_ inst_1: @escaping (A) -> Decidable, _
 }
 
 /// Option.instDecidableMemOfDecidableEq_src
-public func Option_instDecidableMemOfDecidableEq_src<A>(_ inst_1: @escaping (A, A) -> Decidable, _ j: A, _ o: A?) -> Decidable {
+public func Option_instDecidableMemOfDecidableEq_src<A: Equatable>(_ inst_1: @escaping (A, A) -> Decidable, _ j: A, _ o: A?) -> Decidable {
   if let val_3 = o {
-    let _x_4: Decidable = inst_1(val_3, j)
-    switch _x_4 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+    let _x_4 = inst_1(val_3, j)
+    if Decidable_decide(_x_4) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
   } else {
     return Decidable.isFalse
@@ -64,14 +58,11 @@ public func Option_instDecidableMemOfDecidableEq_src<A>(_ inst_1: @escaping (A, 
 /// Option.decidableExistsMem
 public func Option_decidableExistsMem<A>(_ inst_1: @escaping (A) -> Decidable, _ x_2: A?) -> Decidable {
   if let val_4 = x_2 {
-    let _x_5: Decidable = inst_1(val_4)
-    switch _x_5 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+    let _x_5 = inst_1(val_4)
+    if Decidable_decide(_x_5) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
   } else {
     return Decidable.isFalse
@@ -81,7 +72,7 @@ public func Option_decidableExistsMem<A>(_ inst_1: @escaping (A) -> Decidable, _
 /// Option.pfilter
 @inline(__always) public func Option_pfilter<A>(_ o: A?, _ p: @escaping (A) -> Bool) -> A? {
   if let val_1 = o {
-    let _x_2: Bool = p(val_1)
+    let _x_2 = p(val_1)
     if _x_2 {
       return o
     } else {

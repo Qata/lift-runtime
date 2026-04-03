@@ -14,7 +14,7 @@ public func Array_shrink_loop<A>(_ x_1: Nat, _ x_2: Array<A>) -> Array<A> {
     return x_2
   } else {
     let n_3: Nat = x_1 - 1
-    let _x_4: Array<A> = Array_pop(x_2)
+    let _x_4 = Array_pop(x_2)
     return Array_shrink_loop(n_3, _x_4)
   }
 }
@@ -34,16 +34,16 @@ public func Array_shrink_loop<A>(_ x_1: Nat, _ x_2: Array<A>) -> Array<A> {
 
 /// Array.findIdx?.loop
 public func `Array_findIdx?_loop`<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>, _ j: Nat) -> Nat? {
-  let _x_1: Nat = Array_size(`as`)
-  let _x_2: Bool = j < _x_1
+  let _x_1 = Array_size(`as`)
+  let _x_2 = j < _x_1
   if _x_2 {
     let _x_4 = Array_getInternal(`as`, j)
-    let _x_5: Bool = p(_x_4)
+    let _x_5 = p(_x_4)
     if _x_5 {
       return Nat?.some(j)
     } else {
       let _x_6: Nat = 1
-      let _x_7: Nat = j + _x_6
+      let _x_7 = j + _x_6
       return `Array_findIdx?_loop`(p, `as`, _x_7)
     }
   } else {
@@ -53,14 +53,14 @@ public func `Array_findIdx?_loop`<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A
 
 /// _private.src.Init.Data.Array.Basic.0.Array.allDiffAux
 public func Array_allDiffAux<A: Equatable>(_ `as`: Array<A>, _ i: Nat) -> Bool {
-  let _x_2: Nat = Array_size(`as`)
-  let _x_3: Bool = i < _x_2
+  let _x_2 = Array_size(`as`)
+  let _x_3 = i < _x_2
   if _x_3 {
     let _x_5 = Array_getInternal(`as`, i)
-    let _x_6: Bool = Array_allDiffAuxAux(`as`, _x_5, i)
+    let _x_6 = Array_allDiffAuxAux(`as`, _x_5, i)
     if _x_6 {
       let _x_7: Nat = 1
-      let _x_8: Nat = i + _x_7
+      let _x_8 = i + _x_7
       return Array_allDiffAux(`as`, _x_8)
     } else {
       return _x_6
@@ -72,12 +72,12 @@ public func Array_allDiffAux<A: Equatable>(_ `as`: Array<A>, _ i: Nat) -> Bool {
 
 /// Array.modifyOp
 @inline(__always) public func Array_modifyOp<A>(_ xs: Array<A>, _ idx: Nat, _ f: @escaping (A) -> A) -> Array<A> {
-  let _x_1: Nat = Array_size(xs)
-  let _x_2: Bool = idx < _x_1
+  let _x_1 = Array_size(xs)
+  let _x_2 = idx < _x_1
   if _x_2 {
     let v = Array_getInternal(xs, idx)
     let _x_3: () = ()
-    let `xs'`: Array<A> = Array_set(xs, idx, _x_3)
+    let `xs'` = Array_set(xs, idx, _x_3)
     let _x_4 = f(v)
     return Array_set(`xs'`, idx, _x_4)
   } else {
@@ -87,9 +87,16 @@ public func Array_allDiffAux<A: Equatable>(_ `as`: Array<A>, _ i: Nat) -> Bool {
 
 /// Array.isEmpty
 public func Array_isEmpty<A>(_ xs: Array<A>) -> Bool {
-  let _x_1: Nat = Array_size(xs)
+  let _x_1 = Array_size(xs)
   let _x_2: Nat = 0
   return _x_1 == _x_2
+}
+
+/// Array.swapAt
+@inline(__always) public func Array_swapAt<A>(_ xs: Array<A>, _ i: Nat, _ v: A) -> Prod<A, Array<A>> {
+  let e = Array_getInternal(xs, i)
+  let `xs'` = Array_set(xs, i, v)
+  return Prod<A, Array<A>>(e, `xs'`)
 }
 
 /// Array.takeWhile
@@ -102,8 +109,8 @@ public func Array_takeWhile<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>) -> 
 
 /// Array.eraseIdxIfInBounds
 public func Array_eraseIdxIfInBounds<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
-  let _x_1: Nat = Array_size(xs)
-  let _x_2: Bool = i < _x_1
+  let _x_1 = Array_size(xs)
+  let _x_2 = i < _x_1
   if _x_2 {
     return Array_eraseIdx(xs, i)
   } else {
@@ -113,9 +120,9 @@ public func Array_eraseIdxIfInBounds<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
 
 /// Array.isEqv
 @inline(__always) public func Array_isEqv<A: Equatable>(_ xs: Array<A>, _ ys: Array<A>, _ p: @escaping (A, A) -> Bool) -> Bool {
-  let _x_1: Nat = Array_size(xs)
-  let _x_2: Nat = Array_size(ys)
-  let _x_3: Bool = _x_1 == _x_2
+  let _x_1 = Array_size(xs)
+  let _x_2 = Array_size(ys)
+  let _x_3 = _x_1 == _x_2
   if _x_3 {
     return Array_isEqvAux(xs, ys, p, _x_1)
   } else {
@@ -125,15 +132,15 @@ public func Array_eraseIdxIfInBounds<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
 
 /// Array.isPrefixOfAux
 public func Array_isPrefixOfAux<A: Equatable>(_ `as`: Array<A>, _ bs: Array<A>, _ i: Nat) -> Bool {
-  let _x_2: Nat = Array_size(`as`)
-  let _x_3: Bool = i < _x_2
+  let _x_2 = Array_size(`as`)
+  let _x_3 = i < _x_2
   if _x_3 {
     let a = Array_getInternal(`as`, i)
     let b = Array_getInternal(bs, i)
-    let _x_6: Bool = a == b
+    let _x_6 = a == b
     if _x_6 {
       let _x_7: Nat = 1
-      let _x_8: Nat = i + _x_7
+      let _x_8 = i + _x_7
       return Array_isPrefixOfAux(`as`, bs, _x_8)
     } else {
       return _x_6
@@ -146,15 +153,15 @@ public func Array_isPrefixOfAux<A: Equatable>(_ `as`: Array<A>, _ bs: Array<A>, 
 /// Array.popWhile
 public func Array_popWhile<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>) -> Array<A> {
   let _x_1: Nat = 0
-  let _x_2: Nat = Array_size(`as`)
-  let _x_3: Bool = _x_1 < _x_2
+  let _x_2 = Array_size(`as`)
+  let _x_3 = _x_1 < _x_2
   if _x_3 {
     let _x_4: Nat = 1
-    let _x_5: Nat = _x_2 - _x_4
+    let _x_5 = _x_2 - _x_4
     let _x_6 = Array_getInternal(`as`, _x_5)
-    let _x_7: Bool = p(_x_6)
+    let _x_7 = p(_x_6)
     if _x_7 {
-      let _x_8: Array<A> = Array_pop(`as`)
+      let _x_8 = Array_pop(`as`)
       return Array_popWhile(p, _x_8)
     } else {
       return `as`
@@ -171,7 +178,7 @@ public func Array_allDiffAuxAux<A: Equatable>(_ `as`: Array<A>, _ a: A, _ x_2: N
   } else {
     let n_5: Nat = x_2 - 1
     let _x_6 = Array_getInternal(`as`, n_5)
-    let _x_8: Bool = a == _x_6
+    let _x_8 = a == _x_6
     if _x_8 {
       return false
     } else {
@@ -190,27 +197,27 @@ public func Array_zipWithAll<A, B, C>(_ f: @escaping (A?, B?) -> C, _ `as`: Arra
 
 /// Array.back
 public func Array_back<A>(_ xs: Array<A>) -> A {
-  let _x_1: Nat = Array_size(xs)
+  let _x_1 = Array_size(xs)
   let _x_2: Nat = 1
-  let _x_3: Nat = _x_1 - _x_2
+  let _x_3 = _x_1 - _x_2
   return Array_getInternal(xs, _x_3)
 }
 
 /// Array.shrink
 public func Array_shrink<A>(_ xs: Array<A>, _ n: Nat) -> Array<A> {
-  let _x_1: Nat = Array_size(xs)
-  let _x_2: Nat = _x_1 - n
+  let _x_1 = Array_size(xs)
+  let _x_2 = _x_1 - n
   return Array_shrink_loop(_x_2, xs)
 }
 
 /// Array.eraseIdx
 public func Array_eraseIdx<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
   let _x_1: Nat = 1
-  let _x_2: Nat = i + _x_1
-  let _x_3: Nat = Array_size(xs)
-  let _x_4: Bool = _x_2 < _x_3
+  let _x_2 = i + _x_1
+  let _x_3 = Array_size(xs)
+  let _x_4 = _x_2 < _x_3
   if _x_4 {
-    let `xs'`: Array<A> = Array_swap(xs, _x_2, i)
+    let `xs'` = Array_swap(xs, _x_2, i)
     return Array_eraseIdx(`xs'`, _x_2)
   } else {
     return Array_pop(xs)
@@ -219,9 +226,9 @@ public func Array_eraseIdx<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
 
 /// Array.isPrefixOf
 public func Array_isPrefixOf<A: Equatable>(_ `as`: Array<A>, _ bs: Array<A>) -> Bool {
-  let _x_2: Nat = Array_size(`as`)
-  let _x_3: Nat = Array_size(bs)
-  let _x_4: Bool = _x_2 <= _x_3
+  let _x_2 = Array_size(`as`)
+  let _x_3 = Array_size(bs)
+  let _x_4 = _x_2 <= _x_3
   if _x_4 {
     let _x_6: Nat = 0
     return Array_isPrefixOfAux(`as`, bs, _x_6)
@@ -258,7 +265,7 @@ public func Array_isEqvAux<A: Equatable>(_ xs: Array<A>, _ ys: Array<A>, _ p: @e
     let n_4: Nat = x_1 - 1
     let _x_5 = Array_getInternal(xs, n_4)
     let _x_6 = Array_getInternal(ys, n_4)
-    let _x_7: Bool = p(_x_5, _x_6)
+    let _x_7 = p(_x_5, _x_6)
     if _x_7 {
       return Array_isEqvAux(xs, ys, p, n_4)
     } else {
@@ -269,45 +276,45 @@ public func Array_isEqvAux<A: Equatable>(_ xs: Array<A>, _ ys: Array<A>, _ p: @e
 
 /// _private.src.Init.Data.Array.Basic.0.Array.zipWithAll.go
 public func Array_zipWithAll_go<A, B, C>(_ f: @escaping (A?, B?) -> C, _ `as`: Array<A>, _ bs: Array<B>, _ i: Nat, _ cs: Array<C>) -> Array<C> {
-  func _jp_1(_ _y_2: C?) -> Array<C> {
-    func _jp_3(_ _y_4: C?) -> Array<C> {
+  func _jp_1(_ _y_2: A?) -> Array<C> {
+    func _jp_3(_ _y_4: B?) -> Array<C> {
       let _x_5: Nat = 1
-      let _x_6: Nat = i + _x_5
+      let _x_6 = i + _x_5
       let _x_7 = f(_y_2, _y_4)
-      let _x_8: Array<C> = Array_push(cs, _x_7)
+      let _x_8 = Array_push(cs, _x_7)
       return Array_zipWithAll_go(f, `as`, bs, _x_6, _x_8)
     }
-    let _x_10: Nat = Array_size(bs)
-    let _x_11: Bool = i < _x_10
+    let _x_10 = Array_size(bs)
+    let _x_11 = i < _x_10
     if _x_11 {
       let _x_13 = Array_getInternal(bs, i)
-      let _x_14: C? = .some(_x_13)
+      let _x_14: B? = B?.some(_x_13)
       return _jp_3(_x_14      )
     } else {
-      let _x_12: C? = nil
+      let _x_12: B? = nil
       return _jp_3(_x_12      )
     }
   }
   func _jp_15(_ _y_16: Nat) -> Array<C> {
-    let _x_17: Bool = i < _y_16
+    let _x_17 = i < _y_16
     if _x_17 {
-      let _x_20: Nat = Array_size(`as`)
-      let _x_21: Bool = i < _x_20
+      let _x_20 = Array_size(`as`)
+      let _x_21 = i < _x_20
       if _x_21 {
         let _x_23 = Array_getInternal(`as`, i)
-        let _x_24: C? = .some(_x_23)
+        let _x_24: A? = A?.some(_x_23)
         return _jp_1(_x_24        )
       } else {
-        let _x_22: C? = nil
+        let _x_22: A? = nil
         return _jp_1(_x_22        )
       }
     } else {
       return cs
     }
   }
-  let _x_25: Nat = Array_size(`as`)
-  let _x_26: Nat = Array_size(bs)
-  let _x_27: Bool = _x_25 <= _x_26
+  let _x_25 = Array_size(`as`)
+  let _x_26 = Array_size(bs)
+  let _x_27 = _x_25 <= _x_26
   if _x_27 {
     return _jp_15(_x_26    )
   } else {
@@ -317,11 +324,11 @@ public func Array_zipWithAll_go<A, B, C>(_ f: @escaping (A?, B?) -> C, _ `as`: A
 
 /// Array.back?
 public func `Array_back?`<A>(_ xs: Array<A>) -> A? {
-  let _x_1: Nat = Array_size(xs)
+  let _x_1 = Array_size(xs)
   let _x_2: Nat = 1
-  let _x_3: Nat = _x_1 - _x_2
-  let _x_4: Nat = Array_size(xs)
-  let _x_5: Bool = _x_3 < _x_4
+  let _x_3 = _x_1 - _x_2
+  let _x_4 = Array_size(xs)
+  let _x_5 = _x_3 < _x_4
   if _x_5 {
     let _x_7 = Array_getInternal(xs, _x_3)
     return A?.some(_x_7)
@@ -332,12 +339,12 @@ public func `Array_back?`<A>(_ xs: Array<A>) -> A? {
 
 /// Array.modify
 @inline(__always) public func Array_modify<A>(_ xs: Array<A>, _ i: Nat, _ f: @escaping (A) -> A) -> Array<A> {
-  let _x_1: Nat = Array_size(xs)
-  let _x_2: Bool = i < _x_1
+  let _x_1 = Array_size(xs)
+  let _x_2 = i < _x_1
   if _x_2 {
     let v = Array_getInternal(xs, i)
     let _x_3: () = ()
-    let `xs'`: Array<A> = Array_set(xs, i, _x_3)
+    let `xs'` = Array_set(xs, i, _x_3)
     let _x_4 = f(v)
     return Array_set(`xs'`, i, _x_4)
   } else {
@@ -348,7 +355,7 @@ public func `Array_back?`<A>(_ xs: Array<A>) -> A? {
 /// Array.findIdx
 @inline(__always) public func Array_findIdx<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>) -> Nat {
   let _x_1: Nat = 0
-  let _x_2: Nat? = `Array_findIdx?_loop`(p, `as`, _x_1)
+  let _x_2 = `Array_findIdx?_loop`(p, `as`, _x_1)
   if let val_4 = _x_2 {
     return val_4
   } else {
@@ -358,15 +365,15 @@ public func `Array_back?`<A>(_ xs: Array<A>) -> A? {
 
 /// _private.src.Init.Data.Array.Basic.0.Array.takeWhile.go
 public func Array_takeWhile_go<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>, _ i: Nat, _ acc: Array<A>) -> Array<A> {
-  let _x_1: Nat = Array_size(`as`)
-  let _x_2: Bool = i < _x_1
+  let _x_1 = Array_size(`as`)
+  let _x_2 = i < _x_1
   if _x_2 {
     let a = Array_getInternal(`as`, i)
-    let _x_3: Bool = p(a)
+    let _x_3 = p(a)
     if _x_3 {
       let _x_4: Nat = 1
-      let _x_5: Nat = i + _x_4
-      let _x_6: Array<A> = Array_push(acc, a)
+      let _x_5 = i + _x_4
+      let _x_6 = Array_push(acc, a)
       return Array_takeWhile_go(p, `as`, _x_5, _x_6)
     } else {
       return acc
@@ -378,7 +385,7 @@ public func Array_takeWhile_go<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>, 
 
 /// Array.drop
 @inline(__always) public func Array_drop<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
-  let _x_1: Nat = Array_size(xs)
+  let _x_1 = Array_size(xs)
   return Array_extract(xs, i, _x_1)
 }
 

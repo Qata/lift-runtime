@@ -38,24 +38,9 @@ public func Array_mkArray0<A>() -> Array<A> {
   return []
 }
 
-/// @[extern] Array.extract
-public func Array_extract<A>(_ `as`: Array<A>, _ start: Nat, _ stop: Nat) -> Array<A> {
-  return Array(`as`[Int(UInt.of(start))..<min(Int(UInt.of(stop)), `as`.count)])
-}
-
-/// @[extern] Array.mkArray5
-public func Array_mkArray5<A>(_ a_u8321_: A, _ a_u8322_: A, _ a_u8323_: A, _ a_u8324_: A, _ a_u8325_: A) -> Array<A> {
-  return [a_u8321_, a_u8322_, a_u8323_, a_u8324_, a_u8325_]
-}
-
 /// @[extern] Array.mkArray6
 public func Array_mkArray6<A>(_ a_u8321_: A, _ a_u8322_: A, _ a_u8323_: A, _ a_u8324_: A, _ a_u8325_: A, _ a_u8326_: A) -> Array<A> {
   return [a_u8321_, a_u8322_, a_u8323_, a_u8324_, a_u8325_, a_u8326_]
-}
-
-/// @[extern] Array.mkArray1
-public func Array_mkArray1<A>(_ a_u8321_: A) -> Array<A> {
-  return [a_u8321_]
 }
 
 /// @[extern] Array.getInternal
@@ -78,11 +63,6 @@ public func Array_size<A>(_ a: Array<A>) -> Nat {
   return Nat(UInt(a.count))
 }
 
-/// @[extern] Array.mkArray3
-public func Array_mkArray3<A>(_ a_u8321_: A, _ a_u8322_: A, _ a_u8323_: A) -> Array<A> {
-  return [a_u8321_, a_u8322_, a_u8323_]
-}
-
 /// @[extern] Array.emptyWithCapacity
 public func Array_emptyWithCapacity<A>(_ c: Nat) -> Array<A> {
   return []
@@ -93,14 +73,25 @@ public func Array_set<A>(_ xs: Array<A>, _ i: Nat, _ v: A) -> Array<A> {
   var a = xs; let i = Int(UInt.of(i)); if i < a.count { a[i] = v }; return a
 }
 
+/// Overload for Lean's borrow pattern: Array.set with erased placeholder ().
+/// Lean temporarily sets array slots to Unit.unit (lean_box(0)) during in-place
+/// modification. This overload accepts () and fills the slot with a bitcast placeholder
+/// that will be overwritten before being read.
+public func Array_set<A>(_ xs: Array<A>, _ i: Nat, _ v: ()) -> Array<A> {
+  var a = xs; let i = Int(UInt.of(i))
+  // Placeholder slot — value will be overwritten before being read.
+  // Use withUnsafeTemporaryAllocation to get a zero-initialized value of any size.
+  if i < a.count {
+    withUnsafeTemporaryAllocation(byteCount: MemoryLayout<A>.stride, alignment: MemoryLayout<A>.alignment) { buf in
+      buf.baseAddress!.initializeMemory(as: UInt8.self, repeating: 0, count: MemoryLayout<A>.stride)
+      a[i] = buf.baseAddress!.assumingMemoryBound(to: A.self).pointee
+    }
+  }; return a
+}
+
 /// @[extern] Array.set!
 public func `Array_set!`<A>(_ xs: Array<A>, _ i: Nat, _ v: A) -> Array<A> {
   var a = xs; a[Int(UInt.of(i))] = v; return a
-}
-
-/// @[extern] Array.takeWhile
-public func Array_takeWhile<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>) -> Array<A> {
-  return Array(`as`.prefix(while: p))
 }
 
 /// @[extern] Array.ugetBorrowed
@@ -123,11 +114,6 @@ public func Array_swap<A>(_ xs: Array<A>, _ i: Nat, _ j: Nat) -> Array<A> {
   var a = xs; a.swapAt(Int(UInt.of(i)), Int(UInt.of(j))); return a
 }
 
-/// @[extern] Array.popWhile
-public func Array_popWhile<A>(_ p: @escaping (A) -> Bool, _ `as`: Array<A>) -> Array<A> {
-  var arr = `as`; while let last = arr.last, p(last) { arr.removeLast() }; return arr
-}
-
 /// @[extern] Array.reverse
 public func Array_reverse<A>(_ `as`: Array<A>) -> Array<A> {
   return Array(`as`.reversed())
@@ -143,19 +129,9 @@ public func Array_swapIfInBounds<A>(_ xs: Array<A>, _ i: Nat, _ j: Nat) -> Array
   var a = xs; let i = Int(UInt.of(i)); let j = Int(UInt.of(j)); if i < a.count && j < a.count { a.swapAt(i, j) }; return a
 }
 
-/// @[extern] Array.shrink
-public func Array_shrink<A>(_ xs: Array<A>, _ n: Nat) -> Array<A> {
-  return Array(xs.prefix(Int(UInt.of(n))))
-}
-
 /// @[extern] Array.eraseIdxIfInBounds
 public func Array_eraseIdxIfInBounds<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
   var a = xs; let i = Int(UInt.of(i)); if i < a.count { a.remove(at: i) }; return a
-}
-
-/// @[extern] Array.appendList
-public func Array_appendList<A>(_ `as`: Array<A>, _ bs: List<A>) -> Array<A> {
-  var a = `as`; var cur = bs; while case .cons(let h, let t) = cur { a.append(h); cur = t }; return a
 }
 
 /// @[extern] Array.pop
@@ -201,11 +177,6 @@ public func Array_usize<A>(_ xs: Array<A>) -> UInt {
 /// @[extern] Array.uset
 public func Array_uset<A>(_ xs: Array<A>, _ i: UInt, _ v: A) -> Array<A> {
   var a = xs; a[Int(i)] = v; return a
-}
-
-/// @[extern] Array.eraseIdx
-public func Array_eraseIdx<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
-  var a = xs; a.remove(at: Int(UInt.of(i))); return a
 }
 
 /// @[extern] Array.findIdx?.loop

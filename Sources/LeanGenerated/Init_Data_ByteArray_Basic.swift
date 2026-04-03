@@ -11,8 +11,8 @@ import LeanExterns
 /// ByteArray.Iterator.hasPrev
 public extension ByteArray_Iterator {
   var hasPrev: Bool {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
+    let array_2 = self.array
+    let idx_3 = self.idx
     let _x_4: Nat = 0
     return _x_4 < idx_3
   }
@@ -42,16 +42,16 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.findIdx?.loop
 public func `ByteArray_findIdx?_loop`(_ a: Array<UInt8>, _ p: @escaping (UInt8) -> Bool, _ i: Nat) -> Nat? {
-  let _x_1: Nat = ByteArray_size(a)
-  let _x_2: Bool = i < _x_1
+  let _x_1 = ByteArray_size(a)
+  let _x_2 = i < _x_1
   if _x_2 {
-    let _x_4: UInt8 = ByteArray_get(a, i)
-    let _x_5: Bool = p(_x_4)
+    let _x_4 = ByteArray_get(a, i)
+    let _x_5 = p(_x_4)
     if _x_5 {
       return Nat?.some(i)
     } else {
       let _x_6: Nat = 1
-      let _x_7: Nat = i + _x_6
+      let _x_7 = i + _x_6
       return `ByteArray_findIdx?_loop`(a, p, _x_7)
     }
   } else {
@@ -62,9 +62,9 @@ public func `ByteArray_findIdx?_loop`(_ a: Array<UInt8>, _ p: @escaping (UInt8) 
 /// ByteArray.Iterator.hasNext
 public extension ByteArray_Iterator {
   var hasNext: Bool {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
-    let _x_4: Nat = ByteArray_size(array_2)
+    let array_2 = self.array
+    let idx_3 = self.idx
+    let _x_4 = ByteArray_size(array_2)
     return idx_3 < _x_4
   }
 }
@@ -74,7 +74,7 @@ public extension ByteArray_Iterator {
 }
 
 public let ByteArray_instInhabitedIterator_default: ByteArray_Iterator = {
-  let _x_1: Array<UInt8> = ByteArray_empty
+  let _x_1 = ByteArray_empty
   let _x_2: Nat = 0
   return ByteArray_Iterator(_x_1, _x_2)
 }()
@@ -82,10 +82,10 @@ public let ByteArray_instInhabitedIterator_default: ByteArray_Iterator = {
 /// ByteArray.Iterator.next
 public extension ByteArray_Iterator {
   var next: ByteArray_Iterator {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
+    let array_2 = self.array
+    let idx_3 = self.idx
     let _x_4: Nat = 1
-    let _x_5: Nat = idx_3 + _x_4
+    let _x_5 = idx_3 + _x_4
     return ByteArray_Iterator(array_2, _x_5)
   }
 }
@@ -97,9 +97,9 @@ public extension ByteArray_Iterator {
 /// ByteArray.Iterator.nextn
 public extension ByteArray_Iterator {
   func nextn(_ a_2: Nat) -> ByteArray_Iterator {
-    let array_3: Array<UInt8> = self.array
-    let idx_4: Nat = self.idx
-    let _x_5: Nat = idx_4 + a_2
+    let array_3 = self.array
+    let idx_4 = self.idx
+    let _x_5 = idx_4 + a_2
     return ByteArray_Iterator(array_3, _x_5)
   }
 }
@@ -110,12 +110,12 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.toList.loop
 public func ByteArray_toList_loop(_ bs: Array<UInt8>, _ i: Nat, _ r: List<UInt8>) -> List<UInt8> {
-  let _x_1: Nat = ByteArray_size(bs)
-  let _x_2: Bool = i < _x_1
+  let _x_1 = ByteArray_size(bs)
+  let _x_2 = i < _x_1
   if _x_2 {
     let _x_6: Nat = 1
-    let _x_7: Nat = i + _x_6
-    let _x_8: UInt8 = `ByteArray_get!`(bs, i)
+    let _x_7 = i + _x_6
+    let _x_8 = `ByteArray_get!`(bs, i)
     let _x_9: List<UInt8> = List<UInt8>.cons(_x_8, r)
     return ByteArray_toList_loop(bs, _x_7, _x_9)
   } else {
@@ -126,10 +126,10 @@ public func ByteArray_toList_loop(_ bs: Array<UInt8>, _ i: Nat, _ r: List<UInt8>
 /// ByteArray.Iterator.prev
 public extension ByteArray_Iterator {
   var prev: ByteArray_Iterator {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
+    let array_2 = self.array
+    let idx_3 = self.idx
     let _x_4: Nat = 1
-    let _x_5: Nat = idx_3 - _x_4
+    let _x_5 = idx_3 - _x_4
     return ByteArray_Iterator(array_2, _x_5)
   }
 }
@@ -141,9 +141,9 @@ public extension ByteArray_Iterator {
 /// ByteArray.Iterator.forward
 public extension ByteArray_Iterator {
   func forward(_ x_2: Nat) -> ByteArray_Iterator {
-    let array_3: Array<UInt8> = self.array
-    let idx_4: Nat = self.idx
-    let _x_5: Nat = idx_4 + x_2
+    let array_3 = self.array
+    let idx_4 = self.idx
+    let _x_5 = idx_4 + x_2
     return ByteArray_Iterator(array_3, _x_5)
   }
 }
@@ -155,9 +155,9 @@ public extension ByteArray_Iterator {
 /// ByteArray.Iterator.toEnd
 public extension ByteArray_Iterator {
   var toEnd: ByteArray_Iterator {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
-    let _x_4: Nat = ByteArray_size(array_2)
+    let array_2 = self.array
+    let idx_3 = self.idx
+    let _x_4 = ByteArray_size(array_2)
     return ByteArray_Iterator(array_2, _x_4)
   }
 }
@@ -168,9 +168,9 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.extract
 public func ByteArray_extract(_ a: Array<UInt8>, _ b: Nat, _ e: Nat) -> Array<UInt8> {
-  let _x_1: Array<UInt8> = ByteArray_empty
+  let _x_1 = ByteArray_empty
   let _x_2: Nat = 0
-  let _x_3: Nat = e - b
+  let _x_3 = e - b
   let _x_4: Bool = true
   return ByteArray_copySlice(a, b, _x_1, _x_2, _x_3, _x_4)
 }
@@ -178,9 +178,9 @@ public func ByteArray_extract(_ a: Array<UInt8>, _ b: Nat, _ e: Nat) -> Array<UI
 /// ByteArray.Iterator.atEnd
 public extension ByteArray_Iterator {
   var atEnd: Bool {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
-    let _x_4: Nat = ByteArray_size(array_2)
+    let array_2 = self.array
+    let idx_3 = self.idx
+    let _x_4 = ByteArray_size(array_2)
     return _x_4 <= idx_3
   }
 }
@@ -192,9 +192,9 @@ public extension ByteArray_Iterator {
 /// ByteArray.Iterator.prevn
 public extension ByteArray_Iterator {
   func prevn(_ x_2: Nat) -> ByteArray_Iterator {
-    let array_3: Array<UInt8> = self.array
-    let idx_4: Nat = self.idx
-    let _x_5: Nat = idx_4 - x_2
+    let array_3 = self.array
+    let idx_4 = self.idx
+    let _x_5 = idx_4 - x_2
     return ByteArray_Iterator(array_3, _x_5)
   }
 }
@@ -205,27 +205,24 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.instDecidableEq_src
 public func ByteArray_instDecidableEq_src(_ x_1: Array<UInt8>, _ x_2: Array<UInt8>) -> Decidable {
-  let _x_3: (UInt8, UInt8) -> Decidable = instDecidableEqUInt8
-  let _x_4: Array<UInt8> = ByteArray_data(x_1)
-  let _x_5: Array<UInt8> = ByteArray_data(x_2)
-  let _x_6: Decidable = Array_instDecidableEqImpl(_x_3, _x_4, _x_5)
-  switch _x_6 {
-  case .isFalse:
-    return Decidable.isFalse
-  case .isTrue:
+  let _x_3: (UInt8, UInt8) -> Decidable = { _pa0, _pa1 in instDecidableEqUInt8(_pa0, _pa1) }
+  let _x_4 = ByteArray_data(x_1)
+  let _x_5 = ByteArray_data(x_2)
+  let _x_6 = Array_instDecidableEqImpl(_x_3, _x_4, _x_5)
+  if Decidable_decide(_x_6) {
     return Decidable.isTrue
-  default:
-    fatalError("unreachable")
+  } else {
+    return Decidable.isFalse
   }
 }
 
 /// ByteArray.Iterator.curr
 public extension ByteArray_Iterator {
   var curr: UInt8 {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
-    let _x_4: Nat = ByteArray_size(array_2)
-    let _x_5: Bool = idx_3 < _x_4
+    let array_2 = self.array
+    let idx_3 = self.idx
+    let _x_4 = ByteArray_size(array_2)
+    let _x_5 = idx_3 < _x_4
     if _x_5 {
       return ByteArray_get(array_2, idx_3)
     } else {
@@ -241,7 +238,7 @@ public extension ByteArray_Iterator {
 
 /// ByteArray.isEmpty
 public func ByteArray_isEmpty(_ s: Array<UInt8>) -> Bool {
-  let _x_1: Nat = ByteArray_size(s)
+  let _x_1 = ByteArray_size(s)
   let _x_2: Nat = 0
   return _x_1 == _x_2
 }
@@ -255,8 +252,8 @@ public func ByteArray_mkIterator(_ arr: Array<UInt8>) -> ByteArray_Iterator {
 /// ByteArray.fastAppend
 @inline(__always) public func ByteArray_fastAppend(_ a: Array<UInt8>, _ b: Array<UInt8>) -> Array<UInt8> {
   let _x_1: Nat = 0
-  let _x_2: Nat = ByteArray_size(a)
-  let _x_3: Nat = ByteArray_size(b)
+  let _x_2 = ByteArray_size(a)
+  let _x_3 = ByteArray_size(b)
   let _x_4: Bool = false
   return ByteArray_copySlice(b, _x_1, a, _x_2, _x_3, _x_4)
 }
@@ -264,9 +261,9 @@ public func ByteArray_mkIterator(_ arr: Array<UInt8>) -> ByteArray_Iterator {
 /// ByteArray.Iterator.remainingBytes
 public extension ByteArray_Iterator {
   var remainingBytes: Nat {
-    let array_2: Array<UInt8> = self.array
-    let idx_3: Nat = self.idx
-    let _x_4: Nat = ByteArray_size(array_2)
+    let array_2 = self.array
+    let idx_3 = self.idx
+    let _x_4 = ByteArray_size(array_2)
     return _x_4 - idx_3
   }
 }
@@ -278,8 +275,8 @@ public extension ByteArray_Iterator {
 /// ByteArray.Iterator.curr'
 public extension ByteArray_Iterator {
   var `curr'`: UInt8 {
-    let array_1: Array<UInt8> = self.array
-    let idx_2: Nat = self.idx
+    let array_1 = self.array
+    let idx_2 = self.idx
     return ByteArray_get(array_1, idx_2)
   }
 }
@@ -291,10 +288,10 @@ public extension ByteArray_Iterator {
 /// ByteArray.Iterator.next'
 public extension ByteArray_Iterator {
   var `next'`: ByteArray_Iterator {
-    let array_1: Array<UInt8> = self.array
-    let idx_2: Nat = self.idx
+    let array_1 = self.array
+    let idx_2 = self.idx
     let _x_3: Nat = 1
-    let _x_4: Nat = idx_2 + _x_3
+    let _x_4 = idx_2 + _x_3
     return ByteArray_Iterator(array_1, _x_4)
   }
 }
@@ -308,11 +305,11 @@ public func ByteArray_instBEq_beq(_ x_1: Array<UInt8>, _ x_2: Array<UInt8>) -> B
   func _f_3(_ a: UInt8, _ b: UInt8) -> Bool {
     a == b
   }
-  let data_6: Array<UInt8> = x_1.data
-  let data_7: Array<UInt8> = x_2.data
-  let _x_8: Nat = Array_size(data_6)
-  let _x_9: Nat = Array_size(data_7)
-  let _x_10: Bool = _x_8 == _x_9
+  let data_6 = x_1.data
+  let data_7 = x_2.data
+  let _x_8 = Array_size(data_6)
+  let _x_9 = Array_size(data_7)
+  let _x_10 = _x_8 == _x_9
   if _x_10 {
     return Array_isEqvAux(data_6, data_7, _f_3, _x_8)
   } else {

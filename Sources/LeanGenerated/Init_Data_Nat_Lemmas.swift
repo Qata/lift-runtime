@@ -15,14 +15,11 @@ public extension Nat {
       inst_1(self)
     }
     let _x_4: Nat = self + 1
-    let _x_5: Decidable = _x_4.decidableBallLT(_f_2)
-    switch _x_5 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+    let _x_5 = _x_4.decidableBallLT(_f_2)
+    if Decidable_decide(_x_5) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
   }
 }
@@ -38,22 +35,16 @@ public extension Nat {
       return Decidable.isFalse
     } else {
       let n_3: Nat = self - 1
-      let _x_4: Decidable = h(n_3)
-      let _x_5: Decidable = n_3.decidableExistsLT(h)
-      switch _x_5 {
-      case .isFalse:
-        switch _x_4 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
-          return Decidable.isTrue
-        default:
-          fatalError("unreachable")
-        }
-      case .isTrue:
+      let _x_4 = h(n_3)
+      let _x_5 = n_3.decidableExistsLT(h)
+      if Decidable_decide(_x_5) {
         return Decidable.isTrue
-      default:
-        fatalError("unreachable")
+      } else {
+        if Decidable_decide(_x_4) {
+          return Decidable.isTrue
+        } else {
+          return Decidable.isFalse
+        }
       }
     }
   }
@@ -73,22 +64,16 @@ public extension Nat {
       return Decidable.isFalse
     } else {
       let n_4: Nat = self - 1
-      let _x_5: Decidable = n_4.`decidableExistsLT'`(_f_1)
-      switch _x_5 {
-      case .isFalse:
-        let _x_7: Decidable = I(n_4)
-        switch _x_7 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
-          return Decidable.isTrue
-        default:
-          fatalError("unreachable")
-        }
-      case .isTrue:
+      let _x_5 = n_4.`decidableExistsLT'`(_f_1)
+      if Decidable_decide(_x_5) {
         return Decidable.isTrue
-      default:
-        fatalError("unreachable")
+      } else {
+        let _x_7 = I(n_4)
+        if Decidable_decide(_x_7) {
+          return Decidable.isTrue
+        } else {
+          return Decidable.isFalse
+        }
       }
     }
   }
@@ -105,15 +90,12 @@ public extension Nat {
       I(m)
     }
     let _x_3: Nat = 1
-    let _x_4: Nat = self + _x_3
-    let _x_5: Decidable = _x_4.`decidableExistsLT'`(_f_1)
-    switch _x_5 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+    let _x_4 = self + _x_3
+    let _x_5 = _x_4.`decidableExistsLT'`(_f_1)
+    if Decidable_decide(_x_5) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
   }
 }
@@ -132,22 +114,16 @@ public extension Nat {
       return Decidable.isTrue
     } else {
       let n_7: Nat = self - 1
-      let _x_8: Decidable = n_7.decidableBallLT(_f_4)
-      switch _x_8 {
-      case .isFalse:
-        return Decidable.isFalse
-      case .isTrue:
-        let _x_12: Decidable = x_3(n_7)
-        switch _x_12 {
-        case .isFalse:
-          return Decidable.isFalse
-        case .isTrue:
+      let _x_8 = n_7.decidableBallLT(_f_4)
+      if Decidable_decide(_x_8) {
+        let _x_12 = x_3(n_7)
+        if Decidable_decide(_x_12) {
           return Decidable.isTrue
-        default:
-          fatalError("unreachable")
+        } else {
+          return Decidable.isFalse
         }
-      default:
-        fatalError("unreachable")
+      } else {
+        return Decidable.isFalse
       }
     }
   }
@@ -161,15 +137,12 @@ public extension Nat {
 public extension Nat {
   func decidableExistsLE(_ inst_1: @escaping (Nat) -> Decidable) -> Decidable {
     let _x_2: Nat = 1
-    let _x_3: Nat = self + _x_2
-    let _x_4: Decidable = _x_3.decidableExistsLT(inst_1)
-    switch _x_4 {
-    case .isFalse:
-      return Decidable.isFalse
-    case .isTrue:
+    let _x_3 = self + _x_2
+    let _x_4 = _x_3.decidableExistsLT(inst_1)
+    if Decidable_decide(_x_4) {
       return Decidable.isTrue
-    default:
-      fatalError("unreachable")
+    } else {
+      return Decidable.isFalse
     }
   }
 }

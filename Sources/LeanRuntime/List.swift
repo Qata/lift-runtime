@@ -48,12 +48,8 @@ extension List: Equatable where A: Equatable {
 
 // MARK: - Core ops (used by generated code)
 
-public func List_append<A>(_ xs: List<A>, _ ys: List<A>) -> List<A> {
-  .fromArray(xs.toArray() + ys.toArray())
-}
-public func List_appendTR<A>(_ xs: List<A>, _ ys: List<A>) -> List<A> { List_append(xs, ys) }
+public func List_appendTR<A>(_ xs: List<A>, _ ys: List<A>) -> List<A> { .fromArray(xs.toArray() + ys.toArray()) }
 public func List_length<A>(_ xs: List<A>) -> Nat { Nat(UInt(xs.toArray().count)) }
-public func List_reverse<A>(_ xs: List<A>) -> List<A> { .fromArray(xs.toArray().reversed()) }
 public func List_reverseAux<A>(_ xs: List<A>, _ acc: List<A>) -> List<A> {
   var r = acc; var c = xs
   while case .cons(let h, let t) = c { r = .cons(h, r); c = t }
@@ -63,17 +59,8 @@ public func Array_toListImpl<A>(_ xs: [A]) -> List<A> { .fromArray(xs) }
 
 // MARK: - Query
 
-public func List_all<A>(_ xs: List<A>, _ p: @escaping (A) -> Bool) -> Bool {
-  xs.toArray().allSatisfy(p)
-}
-public func List_any<A>(_ xs: List<A>, _ p: @escaping (A) -> Bool) -> Bool {
-  xs.toArray().contains(where: p)
-}
 public func List_and(_ xs: List<Bool>) -> Bool { xs.toArray().allSatisfy { $0 } }
 public func List_or(_ xs: List<Bool>) -> Bool { xs.toArray().contains(true) }
-public func List_isEmpty<A>(_ xs: List<A>) -> Bool {
-  if case .nil = xs { return true }; return false
-}
 
 // MARK: - Access
 
@@ -113,12 +100,6 @@ public func List_getD<A>(_ xs: List<A>, _ i: Nat, _ d: A) -> A {
 
 // MARK: - Sublist
 
-public func List_drop<A>(_ n: Nat, _ xs: List<A>) -> List<A> {
-  .fromArray(Array(xs.toArray().dropFirst(Int(UInt.of(n)))))
-}
-public func List_take<A>(_ n: Nat, _ xs: List<A>) -> List<A> {
-  .fromArray(Array(xs.toArray().prefix(Int(UInt.of(n)))))
-}
 public func List_dropWhile<A>(_ p: @escaping (A) -> Bool, _ xs: List<A>) -> List<A> {
   .fromArray(Array(xs.toArray().drop(while: p)))
 }
@@ -141,9 +122,6 @@ public func List_rotateRight<A>(_ xs: List<A>, _ n: Nat) -> List<A> {
 
 // MARK: - Filter / Find
 
-public func List_filter<A>(_ p: @escaping (A) -> Bool, _ xs: List<A>) -> List<A> {
-  .fromArray(xs.toArray().filter(p))
-}
 public func `List_find?`<A>(_ p: @escaping (A) -> Bool, _ xs: List<A>) -> A? {
   xs.toArray().first(where: p)
 }
@@ -173,14 +151,6 @@ public func `List_findSomeRev?TR`<A, B>(_ f: @escaping (A) -> B?, _ xs: List<A>)
 
 // MARK: - Modify
 
-public func List_set<A>(_ xs: List<A>, _ i: Nat, _ v: A) -> List<A> {
-  var arr = xs.toArray(); let idx = Int(UInt.of(i))
-  if idx < arr.count { arr[idx] = v }; return .fromArray(arr)
-}
-public func List_eraseIdx<A>(_ xs: List<A>, _ i: Nat) -> List<A> {
-  var arr = xs.toArray(); let idx = Int(UInt.of(i))
-  if idx < arr.count { arr.remove(at: idx) }; return .fromArray(arr)
-}
 public func List_eraseP<A>(_ p: @escaping (A) -> Bool, _ xs: List<A>) -> List<A> {
   var arr = xs.toArray()
   if let i = arr.firstIndex(where: p) { arr.remove(at: i) }
@@ -217,9 +187,6 @@ public func List_eraseRepsBy_loop<A>(_ eq: @escaping (A, A) -> Bool, _ xs: List<
 
 // MARK: - Build
 
-public func List_range(_ n: Nat) -> List<Nat> {
-  List_range_loop(n, .nil)
-}
 public func List_range_loop(_ n: Nat, _ acc: List<Nat>) -> List<Nat> {
   if n == 0 { return acc }
   return List_range_loop(n - 1, .cons(n - 1, acc))
@@ -234,10 +201,9 @@ public func List_range_u39_TR_go(_ s: Nat, _ e: Nat, _ step: Nat, _ acc: List<Na
   while cur < e { r.append(cur); cur = cur + step }
   return .fromArray(r)
 }
-public func List_replicate<A>(_ n: Nat, _ a: A) -> List<A> {
+public func List_replicateTR<A>(_ n: Nat, _ a: A) -> List<A> {
   .fromArray(Array(repeating: a, count: Int(UInt.of(n))))
 }
-public func List_replicateTR<A>(_ n: Nat, _ a: A) -> List<A> { List_replicate(n, a) }
 public func List_replicateTR_loop<A>(_ a: A, _ n: Nat, _ acc: List<A>) -> List<A> {
   var r = acc; var i = n
   while i > 0 { r = .cons(a, r); i = i - 1 }
@@ -254,13 +220,12 @@ public func List_rightpad<A>(_ n: Nat, _ a: A, _ xs: List<A>) -> List<A> {
 
 // MARK: - Intersperse / Intercalate
 
-public func List_intersperse<A>(_ sep: A, _ xs: List<A>) -> List<A> {
+public func List_intersperseTR<A>(_ sep: A, _ xs: List<A>) -> List<A> {
   let arr = xs.toArray(); guard arr.count > 1 else { return xs }
   var r: [A] = [arr[0]]
-  for e in arr.dropFirst() { r.append(sep); r.append(e) }
+  for i in 1..<arr.count { r.append(sep); r.append(arr[i]) }
   return .fromArray(r)
 }
-public func List_intersperseTR<A>(_ sep: A, _ xs: List<A>) -> List<A> { List_intersperse(sep, xs) }
 public func List_intercalateTR<A>(_ sep: List<A>, _ xss: List<List<A>>) -> List<A> {
   let lists = xss.toArray()
   guard !lists.isEmpty else { return .nil }

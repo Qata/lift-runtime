@@ -8,11 +8,6 @@ import Darwin
 import Glibc
 #endif
 
-/// @[extern] List.concat
-public func List_concat<A>(_ x_1: List<A>, _ x_2: A) -> List<A> {
-  return List_append(x_1, List.cons(x_2, .nil))
-}
-
 /// @[extern] List.lengthTRAux
 public func List_lengthTRAux<A>(_ x_1: List<A>, _ x_2: Nat) -> Nat {
   var n = x_2; var c = x_1; while case .cons(_, let t) = c { n = n + 1; c = t }; return n
