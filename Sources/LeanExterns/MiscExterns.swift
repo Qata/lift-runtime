@@ -535,6 +535,14 @@ public struct Subtype<A>: @unchecked Sendable {
   public init(_ val: A) { self.val = val }
 }
 
+// MARK: - String.Slice.Pos operations
+
+public func String_Slice_Pos_prevn(_ pos: String_Slice_Pos, _ n: Nat) -> String_Slice_Pos {
+  // Subtract n from the raw position (clamped at 0)
+  let newRaw = pos.raw - n
+  return String_Slice_Pos(newRaw, pos.valid)
+}
+
 // MARK: - ByteArray.data (identity — ByteArray is already Array<UInt8>)
 
 extension Array where Element == UInt8 {
