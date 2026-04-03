@@ -1,7 +1,8 @@
 // Lean panic runtime for Swift v3 backend
 
 /// Lean's panic function — terminates with a message.
-public func panic(_ msg: String) -> Never {
+/// Generic return type allows use in any return position.
+public func panic<A>(_ msg: String) -> A {
     fatalError("Lean panic: \(msg)")
 }
 
