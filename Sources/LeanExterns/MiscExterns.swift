@@ -431,14 +431,10 @@ public func Ord_compare<A: Comparable>(_ a: A, _ b: A) -> Ordering {
 
 // MARK: - Decidable combinators
 
-public func exists_prop_decidable(_ d1: Decidable, _ d2: @escaping @autoclosure () -> Decidable) -> Decidable {
+public func exists_prop_decidable(_ d1: Decidable, _ d2: @escaping () -> Decidable) -> Decidable {
   switch d1 {
   case .isTrue: return .isTrue
-  case .isFalse:
-    switch d2() {
-    case .isTrue: return .isTrue
-    case .isFalse: return .isFalse
-    }
+  case .isFalse: return d2()
   }
 }
 
