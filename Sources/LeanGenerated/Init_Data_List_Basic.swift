@@ -54,17 +54,11 @@ public extension List {
 }
 
 /// List.or
-public extension List {
-  var or: Bool {
-    func _f_1(_ _y_2: Bool) -> Bool {
-      _y_2
-    }
-    return self.any(_f_1)
+public func List_or(_ bs: List<Bool>) -> Bool {
+  func _f_1(_ _y_2: Bool) -> Bool {
+    _y_2
   }
-}
-
-@inline(__always) public func List_or(_ bs: List<Bool>) -> Bool {
-  bs.or
+  return bs.any(_f_1)
 }
 
 /// List.reverse
@@ -1566,17 +1560,11 @@ public extension List {
 }
 
 /// List.and
-public extension List {
-  var and: Bool {
-    func _f_1(_ _y_2: Bool) -> Bool {
-      _y_2
-    }
-    return self.all(_f_1)
+public func List_and(_ bs: List<Bool>) -> Bool {
+  func _f_1(_ _y_2: Bool) -> Bool {
+    _y_2
   }
-}
-
-@inline(__always) public func List_and(_ bs: List<Bool>) -> Bool {
-  bs.and
+  return bs.all(_f_1)
 }
 
 /// List.findSome?

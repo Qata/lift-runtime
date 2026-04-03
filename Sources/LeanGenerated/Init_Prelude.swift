@@ -285,22 +285,16 @@ public extension List {
 }
 
 /// List.flatten
-public extension List {
-  var flatten: List<A> {
-    switch self {
-    case .`nil`:
-      return List<A>.`nil`
-    case .cons(let head_3, let tail_4):
-      let _x_5: List<A> = tail_4.flatten
-      return head_3.append(_x_5)
-    default:
-      fatalError("unreachable")
-    }
+public func List_flatten<A>(_ x_1: List<List<A>>) -> List<A> {
+  switch x_1 {
+  case .`nil`:
+    return List<A>.`nil`
+  case .cons(let head_3, let tail_4):
+    let _x_5: List<A> = List_flatten(tail_4)
+    return head_3.append(_x_5)
+  default:
+    fatalError("unreachable")
   }
-}
-
-@inline(__always) public func List_flatten<A>(_ x_1: List<List<A>>) -> List<A> {
-  x_1.flatten
 }
 
 /// Array.mkArray6
@@ -680,15 +674,9 @@ public func Array_mkArray5<A>(_ `a₁`: A, _ `a₂`: A, _ `a₃`: A, _ `a₄`: A
 }
 
 /// List.toByteArray
-public extension List {
-  var toByteArray: Array<UInt8> {
-    let _x_1: Array<UInt8> = ByteArray_empty
-    return List_toByteArray_loop(self, _x_1)
-  }
-}
-
-@inline(__always) public func List_toByteArray(_ bs: List<UInt8>) -> Array<UInt8> {
-  bs.toByteArray
+public func List_toByteArray(_ bs: List<UInt8>) -> Array<UInt8> {
+  let _x_1: Array<UInt8> = ByteArray_empty
+  return List_toByteArray_loop(bs, _x_1)
 }
 
 /// instDecidableEqBool
@@ -788,7 +776,7 @@ public extension List {
 public extension List {
   func flatMap<B>(_ b: @escaping (A) -> List<B>) -> List<B> {
     let _x_1: List<List<B>> = self.map(b)
-    return _x_1.flatten
+    return List_flatten(_x_1)
   }
 }
 
