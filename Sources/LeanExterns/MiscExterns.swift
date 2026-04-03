@@ -470,6 +470,12 @@ extension UInt16 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 extension UInt32 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 extension UInt64 { public init(_ bv: BitVec) { self.init(UInt.of(bv.val)) } }
 
+// MARK: - ByteArray.data (identity — ByteArray is already Array<UInt8>)
+
+extension Array where Element == UInt8 {
+  public var data: Array<UInt8> { self }
+}
+
 // MARK: - Array.toList extension
 
 extension Array {
