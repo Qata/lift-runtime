@@ -112,7 +112,7 @@ public func Array_eraseIdxIfInBounds<A>(_ xs: Array<A>, _ i: Nat) -> Array<A> {
 }
 
 /// Array.isEqv
-@inline(__always) public func Array_isEqv<A>(_ xs: Array<A>, _ ys: Array<A>, _ p: @escaping (A, A) -> Bool) -> Bool {
+@inline(__always) public func Array_isEqv<A: Equatable>(_ xs: Array<A>, _ ys: Array<A>, _ p: @escaping (A, A) -> Bool) -> Bool {
   let _x_1: Nat = Array_size(xs)
   let _x_2: Nat = Array_size(ys)
   let _x_3: Bool = _x_1 == _x_2
@@ -251,7 +251,7 @@ public func Array_appendList<A>(_ `as`: Array<A>, _ bs: List<A>) -> Array<A> {
 }
 
 /// Array.isEqvAux
-public func Array_isEqvAux<A>(_ xs: Array<A>, _ ys: Array<A>, _ p: @escaping (A, A) -> Bool, _ x_1: Nat) -> Bool {
+public func Array_isEqvAux<A: Equatable>(_ xs: Array<A>, _ ys: Array<A>, _ p: @escaping (A, A) -> Bool, _ x_1: Nat) -> Bool {
   if x_1 == 0 {
     return true
   } else {

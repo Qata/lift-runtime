@@ -9,7 +9,7 @@ import LeanRuntime
 import LeanExterns
 
 /// List.merge
-public extension List {
+public extension List where A: Equatable {
   func merge(_ ys: List<A>, _ le: @escaping (A, A) -> Bool) -> List<A> {
     switch self {
     case .`nil`:

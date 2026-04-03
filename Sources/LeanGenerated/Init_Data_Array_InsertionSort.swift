@@ -9,7 +9,7 @@ import LeanRuntime
 import LeanExterns
 
 /// _private.src.Init.Data.Array.InsertionSort.0.Array.insertionSort.swapLoop
-public func Array_insertionSort_swapLoop<A>(_ lt: @escaping (A, A) -> Bool, _ xs: Array<A>, _ j: Nat) -> Array<A> {
+public func Array_insertionSort_swapLoop<A: Equatable>(_ lt: @escaping (A, A) -> Bool, _ xs: Array<A>, _ j: Nat) -> Array<A> {
   if j == 0 {
     return xs
   } else {
@@ -27,7 +27,7 @@ public func Array_insertionSort_swapLoop<A>(_ lt: @escaping (A, A) -> Bool, _ xs
 }
 
 /// _private.src.Init.Data.Array.InsertionSort.0.Array.insertionSort.traverse
-public func Array_insertionSort_traverse<A>(_ lt: @escaping (A, A) -> Bool, _ xs: Array<A>, _ i: Nat, _ fuel: Nat) -> Array<A> {
+public func Array_insertionSort_traverse<A: Equatable>(_ lt: @escaping (A, A) -> Bool, _ xs: Array<A>, _ i: Nat, _ fuel: Nat) -> Array<A> {
   if fuel == 0 {
     return xs
   } else {
@@ -46,7 +46,7 @@ public func Array_insertionSort_traverse<A>(_ lt: @escaping (A, A) -> Bool, _ xs
 }
 
 /// Array.insertionSort
-@inline(__always) public func Array_insertionSort<A>(_ xs: Array<A>, _ lt: @escaping (A, A) -> Bool) -> Array<A> {
+@inline(__always) public func Array_insertionSort<A: Equatable>(_ xs: Array<A>, _ lt: @escaping (A, A) -> Bool) -> Array<A> {
   let _x_1: Nat = 0
   let _x_2: Nat = Array_size(xs)
   return Array_insertionSort_traverse(lt, xs, _x_1, _x_2)

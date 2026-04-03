@@ -227,7 +227,7 @@ public extension List {
 }
 
 /// List.eraseRepsBy.loop
-public func List_eraseRepsBy_loop<A>(_ r: @escaping (A, A) -> Bool, _ x_1: A, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
+public func List_eraseRepsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _ x_1: A, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
   switch x_2 {
   case .`nil`:
     let _x_4: List<A> = .cons(x_1, x_3)
@@ -482,7 +482,7 @@ public extension List {
 }
 
 /// List.lex
-public extension List where A: Equatable {
+public extension List where A: Equatable, A: Equatable {
   func lex(_ `l₂`: List<A>, _ lt: @escaping (A, A) -> Bool) -> Bool {
     switch self {
     case .`nil`:
@@ -789,7 +789,7 @@ public extension List {
 }
 
 /// List.eraseDupsBy
-public extension List {
+public extension List where A: Equatable {
   func eraseDupsBy(_ r: @escaping (A, A) -> Bool) -> List<A> {
     let _x_1: List<A> = .`nil`
     return List_eraseDupsBy_loop(r, self, _x_1)
@@ -988,7 +988,7 @@ public extension List {
 }
 
 /// List.eraseRepsBy
-public extension List {
+public extension List where A: Equatable {
   func eraseRepsBy(_ r: @escaping (A, A) -> Bool) -> List<A> {
     switch self {
     case .`nil`:
@@ -1324,7 +1324,7 @@ public extension List where A: Equatable {
 }
 
 /// List.isEqv
-public extension List {
+public extension List where A: Equatable {
   func isEqv(_ x_2: List<A>, _ x_3: @escaping (A, A) -> Bool) -> Bool {
     switch self {
     case .`nil`:
@@ -1383,7 +1383,7 @@ public func List_range_loop(_ x_1: Nat, _ x_2: List<Nat>) -> List<Nat> {
 }
 
 /// List.splitBy.loop
-public func List_splitBy_loop<A>(_ R: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: A, _ x_3: List<A>, _ x_4: List<List<A>>) -> List<List<A>> {
+public func List_splitBy_loop<A: Equatable>(_ R: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: A, _ x_3: List<A>, _ x_4: List<List<A>>) -> List<List<A>> {
   switch x_1 {
   case .`nil`:
     let _x_5: List<A> = .cons(x_2, x_3)
@@ -1622,7 +1622,7 @@ public extension List {
 }
 
 /// List.splitBy
-public extension List {
+public extension List where A: Equatable {
   func splitBy(_ R: @escaping (A, A) -> Bool) -> List<List<A>> {
     switch self {
     case .`nil`:
@@ -1739,7 +1739,7 @@ public extension List {
 }
 
 /// List.eraseDupsBy.loop
-public func List_eraseDupsBy_loop<A>(_ r: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: List<A>) -> List<A> {
+public func List_eraseDupsBy_loop<A: Equatable>(_ r: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: List<A>) -> List<A> {
   switch x_1 {
   case .`nil`:
     return x_2.reverse

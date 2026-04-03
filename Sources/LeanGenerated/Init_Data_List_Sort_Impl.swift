@@ -9,13 +9,13 @@ import LeanRuntime
 import LeanExterns
 
 /// List.MergeSort.Internal.mergeTR
-public func List_MergeSort_Internal_mergeTR<A>(_ `l₁`: List<A>, _ `l₂`: List<A>, _ le: @escaping (A, A) -> Bool) -> List<A> {
+public func List_MergeSort_Internal_mergeTR<A: Equatable>(_ `l₁`: List<A>, _ `l₂`: List<A>, _ le: @escaping (A, A) -> Bool) -> List<A> {
   let _x_1: List<A> = .`nil`
   return List_MergeSort_Internal_mergeTR_go(le, `l₁`, `l₂`, _x_1)
 }
 
 /// _private.src.Init.Data.List.Sort.Impl.0.List.MergeSort.Internal.mergeTR.go
-public func List_MergeSort_Internal_mergeTR_go<A>(_ le: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
+public func List_MergeSort_Internal_mergeTR_go<A: Equatable>(_ le: @escaping (A, A) -> Bool, _ x_1: List<A>, _ x_2: List<A>, _ x_3: List<A>) -> List<A> {
   switch x_1 {
   case .`nil`:
     return List_reverseAux(x_3, x_2)
