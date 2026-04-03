@@ -120,7 +120,7 @@ public extension DoResultSBC {
 }
 
 /// instDecidableEqPEmpty_src
-public func instDecidableEqPEmpty_src(_ a: PEmpty, _ b: PEmpty) -> Decidable {
+public func instDecidableEqPEmpty_src(_ a: Never, _ b: Never) -> Decidable {
   fatalError("unreachable")
 }
 
