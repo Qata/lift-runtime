@@ -366,3 +366,57 @@ public func instDecidableEqString(_ a: String, _ b: String) -> Decidable {
 public func instDecidableEqBool(_ a: Bool, _ b: Bool) -> Decidable {
   a == b ? .isTrue : .isFalse
 }
+
+// MARK: - Decidable comparisons
+
+public func Nat_decLe(_ a: Nat, _ b: Nat) -> Decidable { a <= b ? .isTrue : .isFalse }
+public func Nat_decLt(_ a: Nat, _ b: Nat) -> Decidable { a < b ? .isTrue : .isFalse }
+public func String_decidableLT(_ a: String, _ b: String) -> Decidable { a < b ? .isTrue : .isFalse }
+public func instDecidableEqUInt8(_ a: UInt8, _ b: UInt8) -> Decidable { a == b ? .isTrue : .isFalse }
+
+// MARK: - Type conversions
+
+public func Int_toNat(_ n: SignedNat) -> Nat { n.isNegative ? 0 : n.magnitude }
+public func Nat_cast(_ n: Nat) -> BitVec { BitVec(n) }
+public func Fin_modn(_ a: Fin, _ b: Nat) -> Fin { Fin(a.val % b) }
+public func UInt8_toFin(_ n: UInt8) -> Fin { Fin(Nat(UInt(n))) }
+public func UInt16_toFin(_ n: UInt16) -> Fin { Fin(Nat(UInt(n))) }
+public func UInt32_toFin(_ n: UInt32) -> Fin { Fin(Nat(UInt(n))) }
+public func UInt64_toFin(_ n: UInt64) -> Fin { Fin(Nat(UInt(n))) }
+
+// MARK: - Array unsafe operations
+
+public func Array_foldlMUnsafe_fold<A, B>(_ f: @escaping (B, A) -> B, _ `as`: Array<A>, _ i: UInt, _ stop: UInt, _ b: B) -> B {
+  var result = b
+  var idx = Int(i)
+  let end = Int(stop)
+  while idx < end {
+    result = f(result, `as`[idx])
+    idx += 1
+  }
+  return result
+}
+
+public func Array_foldrMUnsafe_fold<A, B>(_ f: @escaping (A, B) -> B, _ `as`: Array<A>, _ i: UInt, _ stop: UInt, _ b: B) -> B {
+  var result = b
+  var idx = Int(i)
+  let end = Int(stop)
+  while idx > end {
+    idx -= 1
+    result = f(`as`[idx], result)
+  }
+  return result
+}
+
+public func Array_mapMUnsafe_map<A, B>(_ f: @escaping (A) -> B, _ sz: UInt, _ i: UInt, _ `as`: Array<A>) -> Array<B> {
+  var result: Array<B> = []
+  result.reserveCapacity(Int(sz))
+  for idx in Int(i)..<Int(sz) {
+    result.append(f(`as`[idx]))
+  }
+  return result
+}
+
+public func Array_contains<A: Equatable>(_ `as`: Array<A>, _ a: A) -> Bool {
+  `as`.contains(a)
+}
